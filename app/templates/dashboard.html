@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Flask Auth App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-dashboard.css') }}">
+   
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">Flask Auth App</div>
+        <div class="navbar-user">
+            <div class="user-info">
+                <div class="username">{{ user.username }}</div>
+                <div class="email">{{ user.email }}</div>
+            </div>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1>Welcome back, {{ user.username }}! 👋</h1>
+            <p>Here's what's happening with your account today.</p>
+            
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ user.user_data.status.login_count }}</div>
+                <div class="stat-label">Total Logins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">
+                    {% if user.user_data.status.last_login %}
+                        {{ user.user_data.status.last_login.strftime('%b %d') }}
+                    {% else %}
+                        Never
+                    {% endif %}
+                </div>
+                <div class="stat-label">Last Login</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">
+                    {{ user.user_data.status.is_verified|replace('True', 'Yes')|replace('False', 'No') }}
+                </div>
+                <div class="stat-label">Account Verified</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">
+                    {{ user.user_data.timestamps.created_at.strftime('%b %d, %Y') }}
+                </div>
+                <div class="stat-label">Member Since</div>
+            </div>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="actions-grid">
+            <div class="action-card" onclick="window.location.href='/profile'">
+                <div class="action-icon">👤</div>
+                <h3 class="action-title">Profile Settings</h3>
+                <p class="action-description">Update your personal information and preferences</p>
+            </div>
+
+            <div class="action-card" onclick="viewProgress()">
+                <div class="action-icon">📊</div>
+                <h3 class="action-title">View Progress</h3>
+                <p class="action-description">Check your learning progress and achievements</p>
+            </div>
+
+            <div class="action-card" onclick="createSampleSession()">
+                <div class="action-icon">➕</div>
+                <h3 class="action-title">Add Session</h3>
+                <p class="action-description">Create a new learning session for testing</p>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="progress-header">
+                <h2 class="progress-title">Recent Sessions</h2>
+                <button class="refresh-btn" onclick="loadProgress()">Refresh</button>
+            </div>
+            <div id="progress-list" class="progress-list">
+                <div class="no-sessions">Loading your sessions...</div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <a href="{{ url_for('webcam') }}" class="begin-btn">Begin Practice</a>
+    </div>
+
+     <script src="{{ url_for('static', filename='js/js-dashboard.js') }}"></script>
+    
+</body>
+</html>

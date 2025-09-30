@@ -159,6 +159,9 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(philosophyQuote);
     }
 });
+function redirectToWebcam() {
+    window.location.href = '/dashboard';
+}
 
 // Add CSS for ripple effect and mobile menu
 const style = document.createElement('style');

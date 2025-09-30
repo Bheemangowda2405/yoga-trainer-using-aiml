@@ -22,6 +22,9 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="nav-actions">
+                <a href="{{ url_for('login') }}" class="btn btn-login" style="background-color:#22c55e;color:#ffffff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600;">Login</a>
+            </div>
             <div class="nav-toggle">
                 <span></span>
                 <span></span>
@@ -36,7 +39,7 @@
             <div class="hero-text">
                 <h1 class="hero-title">AI-Powered Yoga Trainer</h1>
                 <p class="hero-subtitle">Blending the timeless teachings of Patanjali with modern AI — real-time posture correction, authentic Sanskrit guidance, and voice feedback.</p>
-                <button class="btn btn-hero" onclick="redirectToWebcam()">Begin Practice</button>
+                <button class="btn btn-hero" onclick="redirectToWebcam()">View Dashboard</button>
             </div>
             <div class="hero-image">
                 <img src="{{ url_for('static', filename='uploads/Save-1.png') }}" alt="Yoga Practice" />
@@ -168,10 +171,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script>
-        function redirectToWebcam() {
-            window.location.href = '/webcam';
-        }
-    </script>
+    
 </body>
 </html>

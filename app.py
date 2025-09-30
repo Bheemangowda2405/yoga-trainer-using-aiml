@@ -1,24 +1,39 @@
 import os
 import cv2
 import numpy as np
-from flask import Flask, render_template, request, jsonify, send_file
+from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for, flash
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import pickle
-from utils.pose_utils import PoseUtils
 import google.generativeai as genai
 from dotenv import load_dotenv
 import threading
 import time
 import base64
 import json
-from tts_system import AdvancedIndianTTSSystem
+from datetime import datetime
 
-# Initialize Flask app
-app = Flask(__name__, template_folder="app/templates", static_folder="app/static")
+# Import from new structure
+from config import config
+from utils.database import db
+from utils.user import User, get_user_sessions
+from utils.pose_utils import PoseUtils
+from services.tts_service import AdvancedIndianTTSSystem
+
+# Initialize Flask app with CORRECT paths
+app = Flask(__name__, 
+           template_folder="app/templates", 
+           static_folder="app/static")
 app.config['UPLOAD_FOLDER'] = 'app/static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Configuration
+app.config.from_object(config['development'])
+
+# Initialize extensions
+db.init_app(app)
 
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp'}
@@ -45,12 +60,29 @@ def load_asana_data():
     """Load asana data from JSON file"""
     global asana_data
     try:
-        with open('asana_data.json', 'r', encoding='utf-8') as f:
+        with open('app/static/asana_data.json', 'r', encoding='utf-8') as f:  # Updated path
             asana_data = json.load(f)
         print("Asana data loaded successfully")
     except Exception as e:
         print(f"Error loading asana data: {e}")
         asana_data = {}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def load_model_and_encoder():
+    """Load the trained model and label encoder"""
+    global model, le
+    try:
+        model = load_model('models/yoga_pose_dnn_model.h5')
+        with open('models/label_encoder_dnn.pkl', 'rb') as f:
+            le = pickle.load(f)
+        print("Model and encoder loaded successfully")
+    except Exception as e:
+        print(f"Error loading model: {e}")
+        model = None
+        le = None
 
 # Traditional Sanskrit pose names mapping
 traditional_names = {
@@ -138,36 +170,17 @@ traditional_names = {
     "viparita_virabhadrasana_or_reverse_warrior_pose": "Viparita Virabhadrasana"
 }
 
+
 def get_traditional_name(pose_name):
     """Get traditional Sanskrit name for a pose"""
     return traditional_names.get(pose_name, pose_name)
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def load_model_and_encoder():
-    """Load the trained model and label encoder"""
-    global model, le
-    try:
-        model = load_model('models/yoga_pose_dnn_model.h5')
-        with open('models/label_encoder_dnn.pkl', 'rb') as f:
-            le = pickle.load(f)
-        print("Model and encoder loaded successfully")
-    except Exception as e:
-        print(f"Error loading model: {e}")
-        model = None
-        le = None
-
 def get_pose_instructions_and_feedback(pose_name, language="en"):
     """Get instructions and feedback for a yoga pose using Gemini API"""
     try:
-        # Get traditional name for the pose
         traditional_name = get_traditional_name(pose_name)
         
-        # Check if Gemini model is available
         if not gemini_model:
-            print("⚠️ Gemini model not available, using fallback instructions")
             fallback_instructions = f"""
             - Arms extended overhead
             - Legs hip-width apart
@@ -234,9 +247,9 @@ def get_pose_instructions_and_feedback(pose_name, language="en"):
             
         return instructions_text, feedback_text
         
+          
     except Exception as e:
         print(f"Error getting Gemini response: {e}")
-        # Fallback instructions - shorter and more focused
         fallback_instructions = f"""
         - Arms extended overhead
         - Legs hip-width apart
@@ -247,101 +260,79 @@ def get_pose_instructions_and_feedback(pose_name, language="en"):
         fallback_feedback = f"Focus on your breathing and maintain steady alignment while performing {traditional_name}."
         return fallback_instructions, fallback_feedback
 
-def speak_pose_feedback(pose_name, feedback, language="en"):
-    """Speak only pose name using Indian TTS system - NON-BLOCKING"""
-    try:
-        if tts_system:
-            # Get traditional name for the pose
-            traditional_name = get_traditional_name(pose_name)
-            
-            # Use the non-blocking speak method directly - only speak pose name
-            return tts_system.speak_pose_feedback(traditional_name, "", language)
-        else:
-            print("TTS system not available")
-            return False
-    except Exception as e:
-        print(f"Error speaking pose name: {e}")
-        return False
+# Flask-Login setup
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-def speak_welcome_message(language="en"):
-    """Speak welcome message using Indian TTS system - NON-BLOCKING"""
-    try:
-        if tts_system:
-            # Use the non-blocking speak method directly
-            return tts_system.speak_welcome(language)
-        else:
-            print("TTS system not available")
-            return False
-    except Exception as e:
-        print(f"Error speaking welcome: {e}")
-        return False
+@login_manager.user_loader
+def load_user(user_id):
+    return User.find_by_id(user_id)
 
-def speak_pose_name_tts(pose_name, language="en"):
-    """Speak pose name using gTTS with female voice - NON-BLOCKING"""
-    try:
-        from gtts import gTTS
-        import pygame
-        import tempfile
-        import os
-        import threading
-        
-        # Language mapping for gTTS
-        language_codes = {
-            'en': 'en',
-            'hi': 'hi',
-            'kn': 'kn',
-            'ta': 'ta',
-            'te': 'te',
-            'mr': 'mr',
-            'bn': 'bn',
-            'gu': 'gu',
-            'pa': 'pa'
-        }
-        
-        tts_lang = language_codes.get(language, 'en')
-        
-        def speak_async():
-            try:
-                # Create gTTS object with female voice (slower speed for more feminine sound)
-                tts = gTTS(text=pose_name, lang=tts_lang, slow=False)
-                
-                # Create temporary file
-                with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as tmp_file:
-                    tts.save(tmp_file.name)
-                    
-                    # Play the audio
-                    pygame.mixer.init()
-                    pygame.mixer.music.load(tmp_file.name)
-                    pygame.mixer.music.play()
-                    
-                    # Wait for playback to complete
-                    while pygame.mixer.music.get_busy():
-                        pygame.time.wait(100)
-                    
-                    # Clean up
-                    pygame.mixer.quit()
-                    os.unlink(tmp_file.name)
-                    
-                print(f"✅ Spoke pose name: {pose_name} in {language}")
-                
-            except Exception as e:
-                print(f"Error in async speak: {e}")
-        
-        # Run in separate thread to avoid blocking
-        thread = threading.Thread(target=speak_async)
-        thread.daemon = True
-        thread.start()
-        
-        return True
-        
-    except Exception as e:
-        print(f"Error speaking pose name: {e}")
-        return False
+# ==================== AUTHENTICATION ROUTES ====================
 
 @app.route('/')
 def index():
     """Render the main page"""
     return render_template('index.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        
+        # Check if user exists
+        if User.find_by_username(username) or User.find_by_email(email):
+            flash('Username or email already exists', 'error')
+            return render_template('register.html')
+        
+        # Create new user
+        User.create_user(username, email, password)
+        flash('Registration successful! Please login.', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        user = User.find_by_username(username)
+        
+        if user and user.check_password(password):
+            login_user(user)
+            user.update_login_stats()
+            
+            flash('Login successful!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid username or password', 'error')
+    
+    return render_template('login.html')
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('dashboard.html', user=current_user)
+
+@app.route('/api/user/progress')
+@login_required
+def user_progress():
+    user_sessions = get_user_sessions(current_user.id)
+    return jsonify(user_sessions)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('login'))
+
+# ==================== YOGA POSE DETECTION ROUTES ====================
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -398,7 +389,7 @@ def get_instructions():
     """Get instructions and feedback for a pose"""
     data = request.get_json()
     pose_name = data.get('pose_name', '')
-    language = data.get('language', 'en-in')
+    language = data.get('language', 'en')
     
     if not pose_name:
         return jsonify({'error': 'No pose name provided'})
@@ -410,292 +401,6 @@ def get_instructions():
         'feedback': feedback
     })
 
-@app.route('/speak_feedback', methods=['POST'])
-def speak_feedback():
-    """Speak pose feedback using Indian TTS"""
-    data = request.get_json()
-    pose_name = data.get('pose_name', '')
-    feedback = data.get('feedback', '')
-    language = data.get('language', 'en-in')
-    
-    if not pose_name or not feedback:
-        return jsonify({'error': 'Missing pose name or feedback'})
-    
-    success = speak_pose_feedback(pose_name, feedback, language)
-    
-    return jsonify({
-        'success': success,
-        'message': 'Feedback spoken' if success else 'Failed to speak feedback'
-    })
-
-@app.route('/speak_welcome', methods=['POST'])
-def speak_welcome():
-    """Speak welcome message using Indian TTS"""
-    data = request.get_json()
-    language = data.get('language', 'en-in')
-    
-    success = speak_welcome_message(language)
-    
-    return jsonify({
-        'success': success,
-        'message': 'Welcome message spoken' if success else 'Failed to speak welcome message'
-    })
-
-@app.route('/speak_pose_name', methods=['POST'])
-def speak_pose_name():
-    """Speak pose name using Indian TTS with female voice"""
-    data = request.get_json()
-    pose_name = data.get('pose_name', '')
-    language = data.get('language', 'en')
-    
-    if not pose_name:
-        return jsonify({'error': 'No pose name provided'})
-    
-    try:
-        # Get traditional name for the pose
-        traditional_name = get_traditional_name(pose_name)
-        
-        # Use gTTS with female voice for Indian languages
-        success = speak_pose_name_tts(traditional_name, language)
-        
-        return jsonify({
-            'success': success,
-            'message': 'Pose name spoken' if success else 'Failed to speak pose name'
-        })
-    except Exception as e:
-        print(f"Error speaking pose name: {e}")
-        return jsonify({
-            'success': False,
-            'message': f'Error: {str(e)}'
-        })
-
-@app.route('/get_languages', methods=['GET'])
-def get_languages():
-    """Get available Indian languages"""
-    if tts_system:
-        languages = tts_system.get_available_languages()
-        return jsonify({
-            'languages': languages,
-            'current': tts_system.current_language
-        })
-    else:
-        return jsonify({'error': 'TTS system not available'})
-
-@app.route('/set_language', methods=['POST'])
-def set_language():
-    """Set the TTS language"""
-    data = request.get_json()
-    language = data.get('language', 'en-in')
-    
-    if tts_system:
-        success = tts_system.set_language(language)
-        return jsonify({
-            'success': success,
-            'language': language,
-            'message': f'Language set to {language}' if success else f'Language {language} not available'
-        })
-    else:
-        return jsonify({'error': 'TTS system not available'})
-
-@app.route('/get_pose_benefits', methods=['POST'])
-def get_pose_benefits():
-    """Get detailed benefits for a yoga pose from asana_data.json"""
-    data = request.get_json()
-    pose_name = data.get('pose_name', '')
-    language = data.get('language', 'en')
-    
-    if not pose_name:
-        return jsonify({'error': 'No pose name provided'})
-    
-    try:
-        traditional_name = get_traditional_name(pose_name)
-        
-        # First try to get data from asana_data.json
-        if asana_data and pose_name in asana_data:
-            pose_info = asana_data[pose_name]
-            benefits_list = pose_info.get('benefits', [])
-            warnings_list = pose_info.get('warnings', [])
-            
-            # Format benefits as a single string
-            benefits_text = '\n'.join([f"• {benefit}" for benefit in benefits_list])
-            contraindications_text = '\n'.join([f"• {warning}" for warning in warnings_list])
-            
-            return jsonify({
-                'benefits': benefits_text,
-                'contraindications': contraindications_text,
-                'timing': f"Best timing for {traditional_name} will be displayed here"
-            })
-        
-        # Fallback to Gemini API if pose not found in asana_data.json
-        if not gemini_model:
-            return jsonify({
-                'benefits': f"Benefits for {traditional_name} will be displayed here",
-                'contraindications': f"Contraindications for {traditional_name} will be displayed here",
-                'timing': f"Best timing for {traditional_name} will be displayed here"
-            })
-        
-        language_names = {
-            "en": "Indian English",
-            "hi": "Hindi",
-            "kn": "Kannada", 
-            "ta": "Tamil",
-            "te": "Telugu",
-            "mr": "Marathi"
-        }
-        
-        target_lang_name = language_names.get(language, "Indian English")
-        
-        benefits_prompt = f"""
-        Provide detailed benefits for the yoga pose: {traditional_name}
-        Language: {target_lang_name}
-        
-        Format as a clear, concise list of 3-5 key benefits.
-        Focus on physical, mental, and spiritual benefits.
-        Keep each benefit under 15 words.
-        """
-        
-        contraindications_prompt = f"""
-        Provide contraindications (when to avoid) for the yoga pose: {traditional_name}
-        Language: {target_lang_name}
-        
-        Format as a clear, concise list of 2-4 key contraindications.
-        Focus on medical conditions, injuries, and situations to avoid.
-        Keep each contraindication under 15 words.
-        """
-        
-        timing_prompt = f"""
-        Provide timing recommendations for the yoga pose: {traditional_name}
-        Language: {target_lang_name}
-        
-        Include: best time of day, duration to hold, frequency, and any dietary considerations.
-        Keep it concise and practical.
-        """
-        
-        benefits_response = gemini_model.generate_content(benefits_prompt)
-        contraindications_response = gemini_model.generate_content(contraindications_prompt)
-        timing_response = gemini_model.generate_content(timing_prompt)
-        
-        return jsonify({
-            'benefits': benefits_response.text.strip(),
-            'contraindications': contraindications_response.text.strip(),
-            'timing': timing_response.text.strip()
-        })
-        
-    except Exception as e:
-        print(f"Error getting pose benefits: {e}")
-        return jsonify({
-            'benefits': f"Benefits for {traditional_name} will be displayed here",
-            'contraindications': f"Contraindications for {traditional_name} will be displayed here",
-            'timing': f"Best timing for {traditional_name} will be displayed here"
-        })
-
-@app.route('/get_body_measurements', methods=['POST'])
-def get_body_measurements():
-    """Get body part measurements and analysis for a pose"""
-    data = request.get_json()
-    pose_name = data.get('pose_name', '')
-    landmarks = data.get('landmarks', [])
-    
-    if not pose_name or not landmarks:
-        return jsonify({'error': 'No pose name or landmarks provided'})
-    
-    try:
-        # Calculate body measurements from landmarks
-        measurements = calculate_body_measurements(landmarks, pose_name)
-        return jsonify(measurements)
-    except Exception as e:
-        print(f"Error calculating body measurements: {e}")
-        return jsonify({'error': 'Failed to calculate measurements'})
-
-def calculate_body_measurements(landmarks, pose_name):
-    """Calculate body part measurements from pose landmarks"""
-    if len(landmarks) < 33:  # MediaPipe pose has 33 landmarks
-        return {
-            'spine_angle': 0,
-            'knee_angle': 0,
-            'hip_angle': 0,
-            'shoulder_angle': 0,
-            'arm_span': 0,
-            'leg_length': 0,
-            'torso_length': 0,
-            'balance_score': 0
-        }
-    
-    # Convert landmarks to numpy array for easier calculation
-    import numpy as np
-    landmarks = np.array(landmarks).reshape(-1, 3)
-    
-    # Key landmark indices for MediaPipe pose
-    # 11: left_shoulder, 12: right_shoulder, 13: left_elbow, 14: right_elbow
-    # 15: left_wrist, 16: right_wrist, 23: left_hip, 24: right_hip
-    # 25: left_knee, 26: right_knee, 27: left_ankle, 28: right_ankle
-    # 0: nose, 1: left_eye_inner, 2: left_eye, 3: left_eye_outer
-    
-    def calculate_angle(p1, p2, p3):
-        """Calculate angle between three points"""
-        v1 = p1 - p2
-        v2 = p3 - p2
-        cos_angle = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
-        cos_angle = np.clip(cos_angle, -1.0, 1.0)
-        return np.degrees(np.arccos(cos_angle))
-    
-    def calculate_distance(p1, p2):
-        """Calculate distance between two points"""
-        return np.linalg.norm(p1 - p2)
-    
-    # Calculate spine angle (using shoulder and hip alignment)
-    left_shoulder = landmarks[11]
-    right_shoulder = landmarks[12]
-    left_hip = landmarks[23]
-    right_hip = landmarks[24]
-    
-    shoulder_center = (left_shoulder + right_shoulder) / 2
-    hip_center = (left_hip + right_hip) / 2
-    
-    # Spine angle relative to vertical
-    spine_vector = shoulder_center - hip_center
-    vertical_vector = np.array([0, 1, 0])
-    spine_angle = calculate_angle(spine_vector, np.array([0, 0, 0]), vertical_vector)
-    
-    # Calculate knee angles
-    left_knee_angle = calculate_angle(landmarks[23], landmarks[25], landmarks[27])  # hip-knee-ankle
-    right_knee_angle = calculate_angle(landmarks[24], landmarks[26], landmarks[28])
-    knee_angle = (left_knee_angle + right_knee_angle) / 2
-    
-    # Calculate hip angles
-    left_hip_angle = calculate_angle(landmarks[11], landmarks[23], landmarks[25])  # shoulder-hip-knee
-    right_hip_angle = calculate_angle(landmarks[12], landmarks[24], landmarks[26])
-    hip_angle = (left_hip_angle + right_hip_angle) / 2
-    
-    # Calculate shoulder angles
-    left_shoulder_angle = calculate_angle(landmarks[13], landmarks[11], landmarks[12])  # elbow-shoulder-shoulder
-    right_shoulder_angle = calculate_angle(landmarks[14], landmarks[12], landmarks[11])
-    shoulder_angle = (left_shoulder_angle + right_shoulder_angle) / 2
-    
-    # Calculate body measurements
-    arm_span = calculate_distance(landmarks[15], landmarks[16])  # wrist to wrist
-    left_leg_length = calculate_distance(landmarks[23], landmarks[27])  # hip to ankle
-    right_leg_length = calculate_distance(landmarks[24], landmarks[28])
-    leg_length = (left_leg_length + right_leg_length) / 2
-    
-    torso_length = calculate_distance(shoulder_center, hip_center)
-    
-    # Calculate balance score (symmetry between left and right sides)
-    left_side_balance = abs(left_knee_angle - right_knee_angle) + abs(left_hip_angle - right_hip_angle)
-    right_side_balance = abs(left_shoulder_angle - right_shoulder_angle)
-    balance_score = max(0, 100 - (left_side_balance + right_side_balance) * 2)
-    
-    return {
-        'spine_angle': round(spine_angle, 1),
-        'knee_angle': round(knee_angle, 1),
-        'hip_angle': round(hip_angle, 1),
-        'shoulder_angle': round(shoulder_angle, 1),
-        'arm_span': round(arm_span * 100, 1),  # Convert to cm
-        'leg_length': round(leg_length * 100, 1),  # Convert to cm
-        'torso_length': round(torso_length * 100, 1),  # Convert to cm
-        'balance_score': round(balance_score, 1)
-    }
-
 @app.route('/webcam')
 def webcam():
     """Webcam pose detection page"""
@@ -705,6 +410,14 @@ def webcam():
 def test():
     """Test button functionality"""
     return send_file('test_button.html')
+
+# Add this to handle MongoDB connection errors gracefully
+@app.before_request
+def check_db_connection():
+    """Check if database is connected before each request"""
+    if request.endpoint and request.endpoint not in ['static', 'index']:
+        if db.db is None:
+            flash('Database connection unavailable. Some features may not work.', 'warning')
 
 if __name__ == '__main__':
     # Load model before starting the server
@@ -717,4 +430,4 @@ if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5002)
+    app.run(debug=True, host='0.0.0.0', port=5000)

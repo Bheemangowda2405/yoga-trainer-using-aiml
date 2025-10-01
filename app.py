@@ -21,6 +21,7 @@ from utils.database import db
 from utils.user import User, get_user_sessions
 from utils.pose_utils import PoseUtils
 from services.tts_service import AdvancedIndianTTSSystem
+from utils.user import log_user_activity, get_user_activity_stats, get_user_streak
 
 # Initialize Flask app with CORRECT paths
 app = Flask(__name__, 
@@ -374,6 +375,10 @@ def predict():
         annotated_filename = f"annotated_{filename}"
         annotated_filepath = os.path.join(app.config['UPLOAD_FOLDER'], annotated_filename)
         cv2.imwrite(annotated_filepath, annotated_image)
+
+        #user log activity list
+        if current_user.is_authenticated:
+            log_user_activity(current_user.id, pose_name, float(confidence))
         
         # Return results
         return jsonify({
@@ -400,16 +405,95 @@ def get_instructions():
         'instructions': instructions,
         'feedback': feedback
     })
-
+#actual webcam application request handling
 @app.route('/webcam')
+@login_required
 def webcam():
     """Webcam pose detection page"""
     return render_template('webcam.html')
+
+
+@app.route('/api/current_user')
+@login_required
+def get_current_user():
+    """Get current user information"""
+    return jsonify({
+        'user_id': current_user.id,
+        'username': current_user.username,
+        'email': current_user.email
+    })
+
 
 @app.route('/test')
 def test():
     """Test button functionality"""
     return send_file('test_button.html')
+
+#=========================user tracking system starts here=======================================
+@app.route('/api/log_activity', methods=['POST'])
+@login_required
+def log_activity():
+    """Log user activity when they perform an asana"""
+    try:
+        data = request.get_json()
+        pose_name = data.get('pose_name')
+        confidence = data.get('confidence', 0)
+        duration = data.get('duration_seconds', 0)
+        
+        if not pose_name:
+            return jsonify({'error': 'Pose name required'}), 400
+        
+        # Log the activity
+        activity_id = log_user_activity(
+            current_user.id, 
+            pose_name, 
+            confidence,
+            duration_seconds=duration
+        )
+        
+        if activity_id:
+            return jsonify({
+                'success': True,
+                'activity_id': activity_id,
+                'message': 'Activity logged successfully'
+            })
+        else:
+            return jsonify({'error': 'Failed to log activity'}), 500
+            
+    except Exception as e:
+        print(f"Error logging activity: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/user/stats')
+@login_required
+def get_user_stats():
+    """Get user statistics for dashboard"""
+    try:
+        days = request.args.get('days', 30, type=int)
+        stats = get_user_activity_stats(current_user.id, days)
+        streak = get_user_streak(current_user.id)
+        
+        stats['current_streak'] = streak
+        stats['user_level'] = calculate_user_level(stats['total_asanas'])
+        
+        return jsonify(stats)
+    except Exception as e:
+        print(f"Error getting user stats: {e}")
+        return jsonify({'error': 'Failed to get user stats'}), 500
+
+def calculate_user_level(total_asanas):
+    """Calculate user level based on total asanas performed"""
+    if total_asanas >= 500:
+        return "Yoga Master 🏆"
+    elif total_asanas >= 250:
+        return "Advanced Yogi 🌟"
+    elif total_asanas >= 100:
+        return "Intermediate Yogi 💫"
+    elif total_asanas >= 50:
+        return "Beginner Yogi 🌱"
+    else:
+        return "New Yogi 🎯"
+#=========================user tracking system ends here ========================================
 
 # Add this to handle MongoDB connection errors gracefully
 @app.before_request

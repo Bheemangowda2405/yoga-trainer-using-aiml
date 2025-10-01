@@ -278,3 +278,347 @@ body {
     outline: 3px solid rgba(34, 197, 94, 0.35);
     outline-offset: 2px;
 }
+.stats-section {
+    margin: 2rem 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.stat-level {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.activity-charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.chart-container, .top-asanas {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.daily-activity {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    height: 150px;
+    margin-top: 1rem;
+}
+
+.day-activity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.day-bar {
+    width: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0.5rem;
+}
+
+.day-name {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.day-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.asana-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.asana-item:last-child {
+    border-bottom: none;
+}
+
+.asana-rank {
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.asana-name {
+    flex: 1;
+    margin-left: 1rem;
+    font-weight: 500;
+}
+
+.asana-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.no-data {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* Yoga Stats Section */
+.stats-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+    border-left: 4px solid #667eea;
+}
+
+.stats-section h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Account Stats Section */
+.account-stats-section {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+    margin: 2rem 0;
+    border: 1px solid #e9ecef;
+}
+
+.account-stats-section h2 {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+/* Actions Section */
+.actions-section {
+    margin: 2rem 0;
+}
+
+.actions-section h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Activity Charts */
+.activity-charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.chart-container, .top-asanas {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f1f3f4;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.chart-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.daily-activity {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    height: 150px;
+    margin-top: 1rem;
+}
+
+.day-activity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.day-bar {
+    width: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.day-bar:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.day-name {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.day-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Top Asanas */
+.asana-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.asana-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.asana-item:last-child {
+    border-bottom: none;
+}
+
+.asana-rank {
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.asana-name {
+    flex: 1;
+    margin-left: 1rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.asana-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Loading States */
+.loading {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 2rem;
+}
+
+.no-data {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 2rem;
+}
+
+/* Begin Practice Button in Welcome Section */
+.welcome-section .begin-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #51cf66, #40c057);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(81, 207, 102, 0.3);
+}
+
+.welcome-section .begin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .activity-charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .daily-activity {
+        height: 120px;
+    }
+}

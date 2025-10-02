@@ -12,8 +12,15 @@ let isSpeaking = false;
 let currentUserId = window.currentUserId || null;
 let poseDetectionCount = 0;
 
+// Session tracking variables
+let sessionActive = false;
+let sessionId = null;
+let sessionStartTime = null;
+let detectedPoses = new Map(); // Track poses and their durations
+
 const CAPTURE_MS = 1500; // Reduced to 1.5 seconds for faster detection
 const POSE_CONFIRMATION_TIME = 1500; // Reduced to 1.5 seconds for faster voice feedback
+const MIN_CONFIDENCE_FOR_LOGGING = 0.60; // Only log poses with 60%+ confidence
 
 
 
@@ -742,7 +749,8 @@ async function captureAndPredict() {
         if (data.confidence >= 0.60) {
             console.log(`🎯 Detected pose: ${data.pose} with ${Math.round(data.confidence * 100)}% confidence`)
             
-        
+            // Log the activity to database
+            await logPoseDetection(data.pose, data.confidence);
         
         // For now, we'll use simulated landmarks since we need to extract them from MediaPipe
         // In a real implementation, you would extract landmarks from the MediaPipe results
@@ -850,15 +858,32 @@ startBtn.addEventListener('click', async () => {
     // Start camera first
     const cameraStarted = await startCamera();
     if (cameraStarted) {
+        // Initialize session tracking
+        sessionActive = true;
+        sessionId = generateSessionId();
+        sessionStartTime = new Date();
+        detectedPoses.clear();
+        poseDetectionCount = 0;
+        
+        console.log('🎯 Session started:', sessionId);
+        
         startLoop();
         startBtn.disabled = true;
         stopBtn.disabled = false;
     }
 });
 
-stopBtn.addEventListener('click', () => {
+stopBtn.addEventListener('click', async () => {
     stopLoop();
     stopCamera(); // Stop the webcam when end session is pressed
+    
+    // Save session data before resetting
+    if (sessionActive) {
+        await saveSessionData();
+        sessionActive = false;
+        console.log('✅ Session ended and saved');
+    }
+    
     resetUI();
     // Enable start button for restart
     startBtn.disabled = false;
@@ -974,6 +999,40 @@ stopBtn.disabled = true;
 
 
 
+// Generate unique session ID
+function generateSessionId() {
+    return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+// Save session data to database
+async function saveSessionData() {
+    if (!currentUserId || !sessionId) {
+        console.warn('Cannot save session: missing user ID or session ID');
+        return;
+    }
+    
+    try {
+        const sessionDuration = Math.floor((new Date() - sessionStartTime) / 1000); // in seconds
+        const uniquePoses = detectedPoses.size;
+        const totalDetections = poseDetectionCount;
+        
+        console.log('💾 Saving session data:', {
+            sessionId,
+            duration: sessionDuration,
+            uniquePoses,
+            totalDetections,
+            poses: Array.from(detectedPoses.keys())
+        });
+        
+        // Session data is already logged via individual pose detections
+        // This is just a summary log
+        console.log(`✅ Session summary: ${totalDetections} poses detected, ${uniquePoses} unique poses, ${sessionDuration}s duration`);
+        
+    } catch (error) {
+        console.error('Error saving session data:', error);
+    }
+}
+
 // Set current user ID (called from webcam.html)
 function setCurrentUserId(userId) {
     currentUserId = userId;
@@ -982,12 +1041,32 @@ function setCurrentUserId(userId) {
 
 // Function to log pose detection
 async function logPoseDetection(poseName, confidence, landmarks = null) {
-    if (!currentUserId) {
-        console.warn('No user ID available. User might not be logged in.');
+    if (!currentUserId || !sessionActive) {
+        console.warn('Cannot log pose: session not active or user not logged in');
         return;
     }
     
+    // Only log poses with sufficient confidence
+    if (confidence < MIN_CONFIDENCE_FOR_LOGGING) {
+        return;
+    }
+    
+    // Track pose in session
+    if (!detectedPoses.has(poseName)) {
+        detectedPoses.set(poseName, {
+            firstDetected: new Date(),
+            count: 0,
+            totalConfidence: 0
+        });
+    }
+    
+    const poseData = detectedPoses.get(poseName);
+    poseData.count++;
+    poseData.totalConfidence += confidence;
     poseDetectionCount++;
+    
+    // Calculate duration since first detection of this pose
+    const duration = Math.floor((new Date() - poseData.firstDetected) / 1000);
     
     try {
         const response = await fetch('/api/log_activity', {
@@ -998,13 +1077,15 @@ async function logPoseDetection(poseName, confidence, landmarks = null) {
             body: JSON.stringify({
                 pose_name: poseName,
                 confidence: confidence,
-                duration_seconds: 3, // Default duration
-                landmarks: landmarks
+                duration_seconds: Math.max(duration, 1),
+                session_id: sessionId
             })
         });
         
         if (response.ok) {
-            console.log(`✅ Activity logged (${poseDetectionCount}): ${poseName}`);
+            const result = await response.json();
+            console.log(`✅ Activity logged (${poseDetectionCount}): ${poseName} - ${Math.round(confidence * 100)}%`);
+            showActivityIndicator(poseName, confidence);
         } else {
             console.error('Failed to log activity:', response.status);
         }

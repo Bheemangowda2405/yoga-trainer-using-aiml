@@ -92,14 +92,24 @@ async function loadUserStats() {
 
 function updateDailyActivity(dailyData) {
     const container = document.getElementById('dailyActivity');
+    if (!container) return;
+    
     container.innerHTML = '';
+    
+    // Find the maximum count to scale bars properly
+    const maxCount = Math.max(...dailyData.map(d => d.count), 1);
+    const maxBarHeight = 100; // Maximum height in pixels
     
     dailyData.forEach(day => {
         const dayElement = document.createElement('div');
         dayElement.className = 'day-activity';
+        
+        // Scale bar height: if count is 0, show 5px; otherwise scale proportionally
+        const barHeight = day.count === 0 ? 5 : Math.max((day.count / maxCount) * maxBarHeight, 10);
+        
         dayElement.innerHTML = `
             <div class="day-name">${day.day_name}</div>
-            <div class="day-bar" style="height: ${Math.max(day.count * 10, 5)}px"></div>
+            <div class="day-bar" style="height: ${barHeight}px"></div>
             <div class="day-count">${day.count}</div>
         `;
         container.appendChild(dayElement);
@@ -178,12 +188,21 @@ function updateDailyActivity(dailyData) {
     if (!container) return;
     
     container.innerHTML = '';
+    
+    // Find the maximum count to scale bars properly
+    const maxCount = Math.max(...dailyData.map(d => d.count), 1);
+    const maxBarHeight = 100; // Maximum height in pixels
+    
     dailyData.forEach(day => {
         const dayElement = document.createElement('div');
         dayElement.className = 'day-activity';
+        
+        // Scale bar height: if count is 0, show 5px; otherwise scale proportionally
+        const barHeight = day.count === 0 ? 5 : Math.max((day.count / maxCount) * maxBarHeight, 10);
+        
         dayElement.innerHTML = `
             <div class="day-name">${day.day_name}</div>
-            <div class="day-bar" style="height: ${Math.max(day.count * 10, 5)}px"></div>
+            <div class="day-bar" style="height: ${barHeight}px"></div>
             <div class="day-count">${day.count}</div>
         `;
         container.appendChild(dayElement);

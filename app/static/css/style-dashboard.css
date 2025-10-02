@@ -490,16 +490,19 @@ body {
 .daily-activity {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: flex-end;
     height: 150px;
     margin-top: 1rem;
+    gap: 0.5rem;
 }
 
 .day-activity {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
     flex: 1;
+    height: 100%;
 }
 
 .day-bar {
@@ -508,6 +511,8 @@ body {
     border-radius: 4px 4px 0 0;
     margin-bottom: 0.5rem;
     transition: all 0.3s ease;
+    max-height: 100px;
+    min-height: 5px;
 }
 
 .day-bar:hover {

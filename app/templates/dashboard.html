@@ -10,12 +10,26 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-brand">🧘‍♀️ Yoga Pose Detector</div>
+        <div class="navbar-nav">
+            <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
+            <a href="{{ url_for('webcam') }}" class="nav-link">📷 Practice</a>
+            <a href="{{ url_for('profile') }}" class="nav-link">👤 Profile</a>
+        </div>
         <div class="navbar-user">
             <div class="user-info">
-                <div class="username">{{ user.username }}</div>
-                <div class="email">{{ user.email }}</div>
+                <div class="user-avatar">
+                    {% if user.user_data.profile.avatar_url %}
+                        <img src="{{ user.user_data.profile.avatar_url }}" alt="Avatar" class="avatar-img">
+                    {% else %}
+                        <div class="avatar-placeholder">👤</div>
+                    {% endif %}
+                </div>
+                <div class="user-details">
+                    <div class="username">{{ user.username }}</div>
+                    <div class="email">{{ user.email }}</div>
+                </div>
             </div>
-            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            <a href="{{ url_for('logout', next='/dashboard') }}" class="logout-btn">Logout</a>
         </div>
     </nav>
 
@@ -140,14 +154,14 @@
             </div>
         </div>
 
-        <!-- Progress Section -->
-        <div class="progress-section">
-            <div class="progress-header">
-                <h2 class="progress-title">Recent Yoga Sessions</h2>
-                <button class="refresh-btn" onclick="loadProgress()">Refresh</button>
+        <!-- Global Leaderboard Section -->
+        <div class="leaderboard-section">
+            <div class="leaderboard-header">
+                <h2 class="leaderboard-title">🏆 Global Leaderboard</h2>
+                <div class="leaderboard-subtitle">Top yoga practitioners ranked by total asanas</div>
             </div>
-            <div id="progress-list" class="progress-list">
-                <div class="no-sessions">Loading your sessions...</div>
+            <div id="leaderboard-list" class="leaderboard-list">
+                <div class="loading">Loading leaderboard...</div>
             </div>
         </div>
     </div>

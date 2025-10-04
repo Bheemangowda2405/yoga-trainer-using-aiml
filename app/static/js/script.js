@@ -159,8 +159,30 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(philosophyQuote);
     }
 });
-function redirectToWebcam() {
-    window.location.href = '/dashboard';
+async function redirectToWebcam() {
+    console.log('redirectToWebcam called');
+    
+    try {
+        // Check if user is logged in by calling the current_user API
+        console.log('Checking user authentication...');
+        const response = await fetch('/api/current_user');
+        
+        console.log('API response status:', response.status);
+        
+        if (response.ok) {
+            // User is logged in, redirect to webcam
+            console.log('User is authenticated, redirecting to webcam');
+            window.location.href = '/webcam';
+        } else {
+            // User is not logged in, redirect to login with next parameter
+            console.log('User not authenticated, redirecting to login');
+            window.location.href = '/login?next=' + encodeURIComponent('/webcam');
+        }
+    } catch (error) {
+        // If API call fails, assume not logged in
+        console.log('API call failed, assuming not logged in:', error);
+        window.location.href = '/login?next=' + encodeURIComponent('/webcam');
+    }
 }
 
 // Add CSS for ripple effect and mobile menu
@@ -212,9 +234,65 @@ style.textContent = `
         transform: rotate(45deg) translate(-5px, -6px);
     }
     
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #22c55e;
+    }
+    
+    .user-avatar-placeholder {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        border: 2px solid #22c55e;
+    }
+    
+    .username {
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+    }
+    
+    .btn-logout {
+        background-color: #ef4444;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-logout:hover {
+        background-color: #dc2626;
+    }
+    
     @media (max-width: 768px) {
         .nav-links {
             display: none;
+        }
+        
+        .user-info {
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .username {
+            font-size: 12px;
         }
     }
     

@@ -1,37 +1,84 @@
 
-// Load progress when page loads
+// Load leaderboard when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    loadProgress();
+    loadLeaderboard();
 });
 
-// Load user progress from API
-async function loadProgress() {
+// Load global leaderboard from API
+async function loadLeaderboard() {
     try {
-        const response = await fetch('/api/user/progress');
-        const sessions = await response.json();
+        console.log('Loading leaderboard...');
+        const response = await fetch('/api/leaderboard');
         
-        const progressList = document.getElementById('progress-list');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
-        if (sessions.length === 0) {
-            progressList.innerHTML = '<div class="no-sessions">No sessions found. Create your first session!</div>';
+        const leaderboard = await response.json();
+        console.log('Leaderboard data:', leaderboard);
+        
+        const leaderboardList = document.getElementById('leaderboard-list');
+        
+        if (!leaderboard || leaderboard.length === 0) {
+            leaderboardList.innerHTML = '<div class="no-data">No users found. Start practicing to appear on the leaderboard!</div>';
             return;
         }
         
-        progressList.innerHTML = sessions.map(session => `
-            <div class="progress-item">
-                <div class="progress-info">
-                    <h4>${session.session_type.charAt(0).toUpperCase() + session.session_type.slice(1)} Session</h4>
-                    <p>Created: ${new Date(session.created_at).toLocaleDateString()}</p>
+        // Check if it's an error response
+        if (leaderboard.error) {
+            throw new Error(leaderboard.error);
+        }
+        
+        leaderboardList.innerHTML = leaderboard.map((user, index) => {
+            const rank = index + 1;
+            const isCurrentUser = user.is_current_user;
+            const rankClass = getRankClass(rank);
+            const userLevel = calculateUserLevel(user.total_asanas);
+            
+            return `
+                <div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}">
+                    <div class="rank-badge ${rankClass}">
+                        ${rank <= 3 ? getRankEmoji(rank) : rank}
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">
+                            ${user.username}${isCurrentUser ? ' (You)' : ''}
+                        </div>
+                        <div class="user-level">${userLevel}</div>
+                    </div>
+                    <div class="user-score">
+                        ${user.total_asanas}
+                        <span class="score-label">asanas</span>
+                    </div>
                 </div>
-                <div class="progress-percentage">
-                    ${session.progress.percentage || 0}%
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     } catch (error) {
-        console.error('Error loading progress:', error);
-        document.getElementById('progress-list').innerHTML = '<div class="no-sessions">Error loading sessions</div>';
+        console.error('Error loading leaderboard:', error);
+        const leaderboardList = document.getElementById('leaderboard-list');
+        leaderboardList.innerHTML = `<div class="no-data">Error loading leaderboard: ${error.message}</div>`;
     }
+}
+
+// Helper functions for leaderboard
+function getRankClass(rank) {
+    if (rank === 1) return 'gold';
+    if (rank === 2) return 'silver';
+    if (rank === 3) return 'bronze';
+    return '';
+}
+
+function getRankEmoji(rank) {
+    const emojis = { 1: '🥇', 2: '🥈', 3: '🥉' };
+    return emojis[rank] || rank;
+}
+
+function calculateUserLevel(totalAsanas) {
+    if (totalAsanas >= 500) return "Yoga Master 🏆";
+    if (totalAsanas >= 250) return "Advanced Yogi 🌟";
+    if (totalAsanas >= 100) return "Intermediate Yogi 💫";
+    if (totalAsanas >= 50) return "Beginner Yogi 🌱";
+    return "New Yogi 🎯";
 }
 
 // Create sample session
@@ -230,7 +277,11 @@ function refreshStats() {
     loadUserStats();
 }
 
-// Load stats when page loads
+// Load stats and leaderboard when page loads
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(loadUserStats, 1000);
+    setTimeout(loadLeaderboard, 1500);
+    
+    // Auto-refresh leaderboard every 30 seconds
+    setInterval(loadLeaderboard, 30000);
 });

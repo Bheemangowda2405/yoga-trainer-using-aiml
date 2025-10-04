@@ -4,6 +4,7 @@ import numpy as np
 from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import pickle
@@ -14,6 +15,7 @@ import time
 import base64
 import json
 from datetime import datetime
+from bson.objectid import ObjectId
 
 # Import from new structure
 from config import config
@@ -275,7 +277,29 @@ def load_user(user_id):
 @app.route('/')
 def index():
     """Render the main page"""
-    return render_template('index.html')
+    # Check if user is logged in
+    user_info = None
+    if current_user.is_authenticated:
+        try:
+            # Get user data from database
+            user_doc = db.db.users.find_one({'_id': ObjectId(current_user.id)})
+            if user_doc:
+                profile = user_doc.get('profile', {})
+                user_info = {
+                    'username': user_doc.get('username', ''),
+                    'email': user_doc.get('email', ''),
+                    'avatar_url': profile.get('avatar_url', '')
+                }
+        except Exception as e:
+            print(f"Error getting user info for index: {e}")
+            # Fallback to basic info
+            user_info = {
+                'username': current_user.username,
+                'email': current_user.email,
+                'avatar_url': ''
+            }
+    
+    return render_template('index.html', user=user_info)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -315,10 +339,75 @@ def login():
     
     return render_template('login.html')
 
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    """Forgot password page"""
+    if request.method == 'POST':
+        username = request.form['username']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+        
+        # Validate passwords match
+        if new_password != confirm_password:
+            flash('Passwords do not match', 'error')
+            return render_template('forgot-password.html')
+        
+        # Validate password length
+        if len(new_password) < 6:
+            flash('Password must be at least 6 characters long', 'error')
+            return render_template('forgot-password.html')
+        
+        # Find user
+        user = User.find_by_username(username)
+        if not user:
+            flash('Username not found', 'error')
+            return render_template('forgot-password.html')
+        
+        try:
+            # Update password
+            new_password_hash = generate_password_hash(new_password)
+            result = db.db.users.update_one(
+                {'_id': ObjectId(user.id)},
+                {'$set': {
+                    'password_hash': new_password_hash,
+                    'security.password_changed_at': datetime.utcnow()
+                }}
+            )
+            
+            if result.modified_count > 0:
+                flash('Password reset successfully! You can now login with your new password.', 'success')
+                return redirect(url_for('login'))
+            else:
+                flash('Failed to reset password. Please try again.', 'error')
+                
+        except Exception as e:
+            print(f"Error resetting password: {e}")
+            flash('An error occurred. Please try again.', 'error')
+    
+    return render_template('forgot-password.html')
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    try:
+        # Get complete user data from database including profile
+        user_doc = db.db.users.find_one({'_id': ObjectId(current_user.id)})
+        if user_doc:
+            # Create a user object with all data
+            user_data = {
+                'id': str(user_doc['_id']),
+                'username': user_doc.get('username', ''),
+                'email': user_doc.get('email', ''),
+                'user_data': user_doc
+            }
+        else:
+            # Fallback to current_user if database query fails
+            user_data = current_user
+    except Exception as e:
+        print(f"Error getting user data for dashboard: {e}")
+        user_data = current_user
+    
+    return render_template('dashboard.html', user=user_data)
 
 @app.route('/api/user/progress')
 @login_required
@@ -331,6 +420,15 @@ def user_progress():
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
+    
+    # Check if there's a 'next' parameter to redirect to
+    next_page = request.args.get('next')
+    if next_page:
+        # Validate that the next_page is safe (starts with /)
+        if next_page.startswith('/') and not next_page.startswith('//'):
+            return redirect(next_page)
+    
+    # Default redirect to login page
     return redirect(url_for('login'))
 
 # ==================== YOGA POSE DETECTION ROUTES ====================
@@ -439,6 +537,7 @@ def log_activity():
         pose_name = data.get('pose_name')
         confidence = data.get('confidence', 0)
         duration = data.get('duration_seconds', 0)
+        session_id = data.get('session_id')
         
         if not pose_name:
             return jsonify({'error': 'Pose name required'}), 400
@@ -448,6 +547,7 @@ def log_activity():
             current_user.id, 
             pose_name, 
             confidence,
+            session_id=session_id,
             duration_seconds=duration
         )
         
@@ -481,18 +581,301 @@ def get_user_stats():
         print(f"Error getting user stats: {e}")
         return jsonify({'error': 'Failed to get user stats'}), 500
 
+@app.route('/api/leaderboard')
+@login_required
+def get_leaderboard():
+    """Get global leaderboard ranked by total asanas (all-time)"""
+    try:
+        print(f"Getting leaderboard for user: {current_user.id}")
+        
+        # Check if database connection exists
+        if db.db is None:
+            print("Database connection is None!")
+            return jsonify({'error': 'Database not connected'}), 500
+        
+        # Get all users who have activities
+        users_with_activities = db.db.user_activities.distinct('user_id')
+        print(f"Users with activities: {len(users_with_activities)}")
+        
+        if not users_with_activities:
+            return jsonify([])
+        
+        leaderboard = []
+        
+        # For each user, count their total activities (same logic as dashboard stats)
+        for user_id in users_with_activities:
+            # Count total asanas for this user (all-time)
+            total_asanas = db.db.user_activities.count_documents({
+                'user_id': user_id
+            })
+            
+            # Get user info
+            user = db.db.users.find_one({'_id': user_id})
+            if user:
+                leaderboard.append({
+                    'user_id': str(user_id),
+                    'username': user['username'],
+                    'total_asanas': total_asanas,
+                    'is_current_user': str(user_id) == current_user.id
+                })
+                print(f"User {user['username']}: {total_asanas} asanas")
+        
+        # Sort by total asanas descending (highest first)
+        leaderboard.sort(key=lambda x: x['total_asanas'], reverse=True)
+        
+        # Limit to top 20
+        leaderboard = leaderboard[:20]
+        
+        print(f"Final leaderboard: {len(leaderboard)} users")
+        return jsonify(leaderboard)
+        
+    except Exception as e:
+        print(f"Error getting leaderboard: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': f'Failed to get leaderboard: {str(e)}'}), 500
+
+@app.route('/api/debug/activities')
+@login_required
+def debug_activities():
+    """Debug endpoint to check user activities"""
+    try:
+        print(f"Debug endpoint called for user: {current_user.id}")
+        
+        # Check if database connection exists
+        if db.db is None:
+            return jsonify({'error': 'Database not connected', 'db_status': 'None'}), 500
+        
+        print("Database connection OK, checking collections...")
+        
+        # List all collections to see what exists
+        collections = db.db.list_collection_names()
+        print(f"Available collections: {collections}")
+        
+        # Check total count of activities
+        total_count = db.db.user_activities.count_documents({})
+        print(f"Total activities: {total_count}")
+        
+        # Check activities for current user
+        user_count = db.db.user_activities.count_documents({'user_id': ObjectId(current_user.id)})
+        print(f"User activities: {user_count}")
+        
+        # Get sample activities
+        sample_activities = list(db.db.user_activities.find().limit(5))
+        print(f"Sample activities found: {len(sample_activities)}")
+        
+        # Convert ObjectIds to strings for JSON serialization
+        for activity in sample_activities:
+            activity['_id'] = str(activity['_id'])
+            activity['user_id'] = str(activity['user_id'])
+        
+        return jsonify({
+            'database_status': 'connected',
+            'collections': collections,
+            'total_activities': total_count,
+            'current_user_activities': user_count,
+            'current_user_id': current_user.id,
+            'sample_activities': sample_activities
+        })
+    except Exception as e:
+        print(f"Error in debug endpoint: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'type': type(e).__name__}), 500
+
 def calculate_user_level(total_asanas):
     """Calculate user level based on total asanas performed"""
-    if total_asanas >= 500:
+    if total_asanas >= 5000:
         return "Yoga Master 🏆"
-    elif total_asanas >= 250:
+    elif total_asanas >= 2500:
         return "Advanced Yogi 🌟"
-    elif total_asanas >= 100:
+    elif total_asanas >= 1000:
         return "Intermediate Yogi 💫"
-    elif total_asanas >= 50:
+    elif total_asanas >= 500:
         return "Beginner Yogi 🌱"
     else:
         return "New Yogi 🎯"
+    
+#update profile section
+@app.route('/api/user/profile', methods=['GET', 'PUT'])
+@login_required
+def user_profile():
+    """Get or update user profile data"""
+    if request.method == 'GET':
+        try:
+            # Get current user data
+            user_doc = db.db.users.find_one({'_id': ObjectId(current_user.id)})
+            if not user_doc:
+                return jsonify({'error': 'User not found'}), 404
+            
+            # Return user profile data
+            profile_data = {
+                'username': user_doc.get('username', ''),
+                'email': user_doc.get('email', ''),
+                'profile': user_doc.get('profile', {
+                    'first_name': '',
+                    'last_name': '',
+                    'gender': '',
+                    'age': None,
+                    'avatar_url': '',
+                    'bio': ''
+                })
+            }
+            
+            return jsonify(profile_data)
+            
+        except Exception as e:
+            print(f"Error getting user profile: {e}")
+            return jsonify({'error': 'Internal server error'}), 500
+    
+    elif request.method == 'PUT':
+        try:
+            data = request.get_json()
+            
+            update_data = {
+                'profile.first_name': data.get('first_name', ''),
+                'profile.last_name': data.get('last_name', ''),
+                'profile.gender': data.get('gender', ''),
+                'profile.age': data.get('age'),
+                'profile.avatar_url': data.get('avatar_url', ''),
+                'profile.bio': data.get('bio', ''),
+                'timestamps.updated_at': datetime.utcnow()
+            }
+            
+            # Remove empty fields to avoid setting them to empty strings
+            update_data = {k: v for k, v in update_data.items() if v is not None}
+            
+            result = db.db.users.update_one(
+                {'_id': ObjectId(current_user.id)},
+                {'$set': update_data}
+            )
+            
+            if result.modified_count > 0:
+                return jsonify({'success': True, 'message': 'Profile updated successfully'})
+            else:
+                return jsonify({'success': True, 'message': 'No changes made'})
+                
+        except Exception as e:
+            print(f"Error updating user profile: {e}")
+            return jsonify({'error': 'Internal server error'}), 500
+    
+#========================update profile section starts here ======================================
+@app.route('/profile')
+@login_required
+def profile():
+    """User profile page"""
+    return render_template('profile.html', user=current_user)
+
+@app.route('/account-settings')
+
+def account_settings():
+    """Account settings page"""
+    return render_template('account-settings.html', user=current_user)
+
+@app.route('/api/user/username', methods=['PUT'])
+@login_required
+def change_username():
+    """Change username"""
+    try:
+        data = request.get_json()
+        new_username = data.get('new_username')
+        password = data.get('password')
+        
+        if not new_username or not password:
+            return jsonify({'error': 'Username and password are required'}), 400
+        
+        # Verify current password
+        user = User.find_by_id(current_user.id)
+        if not user or not user.check_password(password):
+            return jsonify({'error': 'Current password is incorrect'}), 401
+        
+        # Check if username already exists
+        if User.find_by_username(new_username):
+            return jsonify({'error': 'Username already exists'}), 400
+        
+        # Update username
+        result = db.db.users.update_one(
+            {'_id': ObjectId(current_user.id)},
+            {'$set': {'username': new_username}}
+        )
+        
+        if result.modified_count > 0:
+            return jsonify({'success': True, 'message': 'Username updated successfully'})
+        else:
+            return jsonify({'error': 'Failed to update username'}), 500
+            
+    except Exception as e:
+        print(f"Error changing username: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/user/password', methods=['PUT'])
+@login_required
+def change_password():
+    """Change password"""
+    try:
+        data = request.get_json()
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        
+        if not current_password or not new_password:
+            return jsonify({'error': 'Current and new password are required'}), 400
+        
+        if len(new_password) < 6:
+            return jsonify({'error': 'New password must be at least 6 characters'}), 400
+        
+        # Verify current password
+        user = User.find_by_id(current_user.id)
+        if not user or not user.check_password(current_password):
+            return jsonify({'error': 'Current password is incorrect'}), 401
+        
+        # Update password
+        new_password_hash = generate_password_hash(new_password)
+        result = db.db.users.update_one(
+            {'_id': ObjectId(current_user.id)},
+            {'$set': {
+                'password_hash': new_password_hash,
+                'security.password_changed_at': datetime.utcnow()
+            }}
+        )
+        
+        if result.modified_count > 0:
+            return jsonify({'success': True, 'message': 'Password updated successfully'})
+        else:
+            return jsonify({'error': 'Failed to update password'}), 500
+            
+    except Exception as e:
+        print(f"Error changing password: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/user/account', methods=['DELETE'])
+@login_required
+def delete_account():
+    """Delete user account"""
+    try:
+        user_id = current_user.id
+        
+        # Delete user activities
+        db.db.user_activities.delete_many({'user_id': ObjectId(user_id)})
+        
+        # Delete user sessions
+        db.db.sessions.delete_many({'user_id': ObjectId(user_id)})
+        
+        # Delete user account
+        result = db.db.users.delete_one({'_id': ObjectId(user_id)})
+        
+        if result.deleted_count > 0:
+            logout_user()
+            return jsonify({'success': True, 'message': 'Account deleted successfully'})
+        else:
+            return jsonify({'error': 'Failed to delete account'}), 500
+            
+    except Exception as e:
+        print(f"Error deleting account: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+#=========================end of user profile edit section=======================================
+
+
 #=========================user tracking system ends here ========================================
 
 # Add this to handle MongoDB connection errors gracefully

@@ -23,7 +23,21 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="{{ url_for('login') }}" class="btn btn-login" style="background-color:#22c55e;color:#ffffff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600;">Login</a>
+                {% if user %}
+                    <!-- User is logged in -->
+                    <div class="user-info">
+                        {% if user.avatar_url %}
+                            <img src="{{ user.avatar_url }}" alt="Avatar" class="user-avatar">
+                        {% else %}
+                            <div class="user-avatar-placeholder">👤</div>
+                        {% endif %}
+                        <span class="username">{{ user.username }}</span>
+                        <a href="{{ url_for('logout', next='/') }}" class="btn btn-logout">Logout</a>
+                    </div>
+                {% else %}
+                    <!-- User is not logged in -->
+                    <a href="{{ url_for('login') }}" class="btn btn-login" style="background-color:#22c55e;color:#ffffff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600;">Login</a>
+                {% endif %}
             </div>
             <div class="nav-toggle">
                 <span></span>

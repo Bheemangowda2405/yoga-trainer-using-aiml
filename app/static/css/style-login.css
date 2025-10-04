@@ -124,6 +124,25 @@ body {
     text-decoration: underline;
 }
 
+.forgot-password-link {
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+    font-size: 13px;
+}
+
+.forgot-password-link a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.forgot-password-link a:hover {
+    color: #ee5a52;
+    text-decoration: underline;
+}
+
 .alert {
     padding: 12px 16px;
     border-radius: 10px;

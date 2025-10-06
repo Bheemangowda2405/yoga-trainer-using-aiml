@@ -163,9 +163,9 @@ async function redirectToWebcam() {
     console.log('redirectToWebcam called');
     
     try {
-        // Check if user is logged in by calling the current_user API
+        // Check if user is logged in by calling the auth_check API
         console.log('Checking user authentication...');
-        const response = await fetch('/api/current_user');
+        const response = await fetch('/api/auth_check');
         
         console.log('API response status:', response.status);
         
@@ -182,6 +182,32 @@ async function redirectToWebcam() {
         // If API call fails, assume not logged in
         console.log('API call failed, assuming not logged in:', error);
         window.location.href = '/login?next=' + encodeURIComponent('/webcam');
+    }
+}
+
+async function redirectToDashboard() {
+    console.log('redirectToDashboard called');
+    
+    try {
+        // Check if user is logged in by calling the auth_check API
+        console.log('Checking user authentication...');
+        const response = await fetch('/api/auth_check');
+        
+        console.log('API response status:', response.status);
+        
+        if (response.ok) {
+            // User is logged in, redirect to dashboard
+            console.log('User is authenticated, redirecting to dashboard');
+            window.location.href = '/dashboard';
+        } else {
+            // User is not logged in, redirect to login with next parameter
+            console.log('User not authenticated, redirecting to login');
+            window.location.href = '/login?next=' + encodeURIComponent('/dashboard');
+        }
+    } catch (error) {
+        // If API call fails, assume not logged in
+        console.log('API call failed, assuming not logged in:', error);
+        window.location.href = '/login?next=' + encodeURIComponent('/dashboard');
     }
 }
 

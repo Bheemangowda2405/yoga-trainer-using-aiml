@@ -322,20 +322,43 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # Check if user is already logged in
+    if current_user.is_authenticated:
+        next_page = request.args.get('next')
+        if next_page and next_page.startswith('/') and not next_page.startswith('//'):
+            return redirect(next_page)
+        else:
+            return redirect(url_for('dashboard'))
+    
+    # Get the next parameter from either form data or URL args
+    next_page = request.form.get('next') or request.args.get('next')
+    
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         
+        if not username or not password:
+            flash('Please enter both username and password', 'error')
+            if next_page:
+                return redirect(url_for('login', next=next_page))
+            return render_template('login.html')
+        
         user = User.find_by_username(username)
         
         if user and user.check_password(password):
-            login_user(user)
+            login_user(user, remember=True)
             user.update_login_stats()
             
-            flash('Login successful!', 'success')
-            return redirect(url_for('dashboard'))
+            # Handle the 'next' parameter for proper redirection
+            if next_page and next_page.startswith('/') and not next_page.startswith('//'):
+                return redirect(next_page)
+            else:
+                return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password', 'error')
+            # Preserve the next parameter in the URL when there's an error
+            if next_page:
+                return redirect(url_for('login', next=next_page))
     
     return render_template('login.html')
 
@@ -525,6 +548,24 @@ def get_current_user():
         'email': current_user.email,
         'avatar': avatar_url
     })
+
+@app.route('/api/auth_check')
+def check_authentication():
+    """Check if user is authenticated without requiring login"""
+    if current_user.is_authenticated:
+        avatar_url = ""
+        if hasattr(current_user, 'user_data') and 'profile' in current_user.user_data:
+            avatar_url = current_user.user_data['profile'].get('avatar_url', '')
+        
+        return jsonify({
+            'authenticated': True,
+            'user_id': current_user.id,
+            'username': current_user.username,
+            'email': current_user.email,
+            'avatar': avatar_url
+        })
+    else:
+        return jsonify({'authenticated': False}), 401
 
 
 @app.route('/test')
@@ -902,4 +943,4 @@ if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5002)
+    app.run(debug=True, host='0.0.0.0', port=5000)

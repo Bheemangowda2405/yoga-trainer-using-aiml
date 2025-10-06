@@ -249,9 +249,7 @@ window.showAllPoses = function() {
 };
 
 
-// Initialize application (moved to end of file)
-    console.log('Use testPoseMatching("pose_name") to test pose matching');
-});
+// Initialization moved to end of file
 
 
 async function startCamera() {

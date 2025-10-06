@@ -16,14 +16,27 @@ function togglePassword() {
 // Form submission loading state
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     const btn = document.getElementById('loginBtn');
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    console.log('Form submitted:', { username, hasPassword: !!password });
+    
+    if (!username || !password) {
+        e.preventDefault();
+        alert('Please enter both username and password');
+        return;
+    }
+    
     btn.classList.add('loading');
     btn.disabled = true;
+    btn.textContent = 'Logging in...';
     
-    // Re-enable after 3 seconds (in case of error)
+    // Re-enable after 5 seconds (in case of error)
     setTimeout(() => {
         btn.classList.remove('loading');
         btn.disabled = false;
-    }, 3000);
+        btn.textContent = 'Login';
+    }, 5000);
 });
 
 // Add focus effects

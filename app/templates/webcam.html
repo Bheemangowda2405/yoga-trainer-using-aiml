@@ -16,7 +16,7 @@
     <script>
       // Check authentication immediately when page loads
       document.addEventListener("DOMContentLoaded", function () {
-        fetch("/api/current_user")
+        fetch("/api/auth_check")
           .then((response) => {
             if (!response.ok) {
               // Redirect to login if not authenticated
@@ -27,12 +27,21 @@
             return response.json();
           })
           .then((userData) => {
-            if (userData) {
+            if (userData && userData.authenticated) {
               console.log("User authenticated:", userData.username);
               // Set user ID for webcam.js to use
               window.currentUserId = userData.user_id;
-              // Load user profile data
-              loadUserProfile();
+              // Load user profile data when the function is available
+              if (typeof loadUserProfile === 'function') {
+                loadUserProfile();
+              } else {
+                // Wait for the function to be available
+                setTimeout(() => {
+                  if (typeof loadUserProfile === 'function') {
+                    loadUserProfile();
+                  }
+                }, 100);
+              }
             }
           })
           .catch((error) => {
@@ -242,6 +251,6 @@
       ✅ Activity Logged
     </div>
 
-    <script src="{{ url_for('static', filename='js/js-webcam.js') }}?v=1007"></script>
+    <script src="{{ url_for('static', filename='js/js-webcam.js') }}?v=1008"></script>
   </body>
 </html>

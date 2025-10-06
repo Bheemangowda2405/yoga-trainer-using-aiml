@@ -36,8 +36,8 @@ body::before {
     flex-direction: row;
 }
 
-/* Mediapipe Analysis Box */
-.mediapipe-analysis {
+/* User Analysis Box */
+.user-analysis-box {
     width: 300px;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
@@ -65,6 +65,64 @@ body::before {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+}
+
+/* User Profile Section */
+.user-profile-container {
+    background: rgba(255, 215, 0, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar-webcam {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.avatar-placeholder {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-info-webcam {
+    flex: 1;
+}
+
+.user-name-webcam {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffd700;
+    margin-bottom: 4px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.user-email-webcam {
+    font-size: 0.8rem;
+    color: #ffa500;
+    opacity: 0.8;
 }
 
 .pose-info {
@@ -412,14 +470,14 @@ body::before {
 /* Pose Title Bar */
 .pose-title-bar {
     background: rgba(0, 0, 0, 0.3);
-    padding: 12px 25px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     backdrop-filter: blur(5px);
     border-top: 2px solid rgba(255, 215, 0, 0.3);
     position: fixed;
-    bottom: 70px;
+    bottom: 65px;
     left: 10px;
     right: 320px;
     z-index: 1001;
@@ -427,6 +485,7 @@ body::before {
     border-radius: 8px;
     margin: 0 5px;
     max-width: 800px;
+    height: 50px;
 }
 
 .current-pose-title {
@@ -467,7 +526,7 @@ body::before {
 /* Footer Controls */
 .footer-controls {
     background: rgba(0, 0, 0, 0.4);
-    padding: 12px 25px;
+    padding: 8px 15px;
     backdrop-filter: blur(5px);
     border-top: 2px solid rgba(255, 215, 0, 0.3);
     position: fixed;
@@ -479,14 +538,16 @@ body::before {
     border-radius: 8px;
     margin: 0 5px;
     max-width: 800px;
+    height: 60px;
 }
 
 .control-buttons {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    height: 100%;
 }
 
 .toggle-panel-btn {
@@ -499,24 +560,66 @@ body::before {
     font-weight: 600;
 }
 
+/* Navigation Buttons */
+.nav-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+}
+
+.home-btn {
+    background: linear-gradient(135deg, #2ed573, #17c0eb);
+    box-shadow: 0 3px 10px rgba(46, 213, 115, 0.3);
+}
+
+.home-btn:hover {
+    box-shadow: 0 5px 15px rgba(46, 213, 115, 0.5);
+}
+
+.dashboard-btn {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+}
+
+.dashboard-btn:hover {
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.5);
+}
+
 .toggle-panel-btn:hover {
     background: linear-gradient(135deg, #ffed4e, #ffa500);
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
 }
 
 button {
-    padding: 6px 12px;
+    padding: 4px 8px;
     border: none;
-    border-radius: 15px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #ffd700, #ff8c00);
     color: #000;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
-    font-size: 0.75rem;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+    font-size: 0.65rem;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 button:hover {
@@ -535,9 +638,9 @@ button:disabled {
 }
 
 .language-select {
-    padding: 6px 12px;
+    padding: 4px 8px;
     border: 2px solid rgba(255, 215, 0, 0.5);
-    border-radius: 15px;
+    border-radius: 12px;
     background: rgba(255, 215, 0, 0.1);
     color: #ffd700;
     font-weight: 600;
@@ -545,8 +648,8 @@ button:disabled {
     transition: all 0.3s ease;
     box-shadow: 0 2px 6px rgba(255, 215, 0, 0.2);
     backdrop-filter: blur(10px);
-    font-size: 0.75rem;
-    min-width: 120px;
+    font-size: 0.65rem;
+    min-width: 80px;
 }
 
 .language-select:hover {

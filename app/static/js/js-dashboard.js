@@ -282,6 +282,42 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(loadUserStats, 1000);
     setTimeout(loadLeaderboard, 1500);
     
-    // Auto-refresh leaderboard every 30 seconds
-    setInterval(loadLeaderboard, 30000);
+    // Note: Auto-refresh removed to save resources - use manual refresh button instead
 });
+
+// Enhanced refresh function with loading state
+async function refreshLeaderboard(button) {
+    // Add loading state
+    button.classList.add('loading');
+    button.disabled = true;
+    
+    const originalText = button.innerHTML;
+    button.innerHTML = '<span class="refresh-icon">🔄</span><span>Refreshing...</span>';
+    
+    try {
+        await loadLeaderboard();
+        
+        // Success feedback
+        button.innerHTML = '<span class="refresh-icon">✅</span><span>Updated!</span>';
+        
+        // Reset after 1 second
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('loading');
+            button.disabled = false;
+        }, 1000);
+        
+    } catch (error) {
+        console.error('Error refreshing leaderboard:', error);
+        
+        // Error feedback
+        button.innerHTML = '<span class="refresh-icon">❌</span><span>Error</span>';
+        
+        // Reset after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('loading');
+            button.disabled = false;
+        }, 2000);
+    }
+}

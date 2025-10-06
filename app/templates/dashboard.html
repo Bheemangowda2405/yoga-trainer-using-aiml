@@ -16,18 +16,16 @@
             <a href="{{ url_for('profile') }}" class="nav-link">👤 Profile</a>
         </div>
         <div class="navbar-user">
-            <div class="user-info">
-                <div class="user-avatar">
-                    {% if user.user_data.profile.avatar_url %}
-                        <img src="{{ user.user_data.profile.avatar_url }}" alt="Avatar" class="avatar-img">
-                    {% else %}
-                        <div class="avatar-placeholder">👤</div>
-                    {% endif %}
-                </div>
-                <div class="user-details">
-                    <div class="username">{{ user.username }}</div>
-                    <div class="email">{{ user.email }}</div>
-                </div>
+            <div class="user-details">
+                <div class="username">{{ user.username }}</div>
+                <div class="email">{{ user.email }}</div>
+            </div>
+            <div class="user-avatar">
+                {% if user.user_data.profile.avatar_url %}
+                    <img src="{{ user.user_data.profile.avatar_url }}" alt="Avatar" class="avatar-img">
+                {% else %}
+                    <div class="avatar-placeholder">👤</div>
+                {% endif %}
             </div>
             <a href="{{ url_for('logout', next='/dashboard') }}" class="logout-btn">Logout</a>
         </div>
@@ -157,8 +155,14 @@
         <!-- Global Leaderboard Section -->
         <div class="leaderboard-section">
             <div class="leaderboard-header">
-                <h2 class="leaderboard-title">🏆 Global Leaderboard</h2>
-                <div class="leaderboard-subtitle">Top yoga practitioners ranked by total asanas</div>
+                <div class="leaderboard-title-section">
+                    <h2 class="leaderboard-title">🏆 Global Leaderboard</h2>
+                    <div class="leaderboard-subtitle">Top yoga practitioners ranked by total asanas</div>
+                </div>
+                <button class="refresh-btn" onclick="refreshLeaderboard(this)">
+                    <span class="refresh-icon">🔄</span>
+                    <span>Refresh</span>
+                </button>
             </div>
             <div id="leaderboard-list" class="leaderboard-list">
                 <div class="loading">Loading leaderboard...</div>

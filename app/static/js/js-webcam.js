@@ -174,9 +174,7 @@ const sanskritName = document.getElementById('sanskritName');
 const confidenceValueAnalysis = document.getElementById('confidenceValueAnalysis');
 const confidenceBarAnalysis = document.getElementById('confidenceBarAnalysis');
 
-// New elements
-const mediapipeVideo = document.getElementById('mediapipeVideo');
-const mediapipeCanvas = document.getElementById('mediapipeCanvas');
+// Body measurement elements
 const spineAngle = document.getElementById('spineAngle');
 const kneeAngle = document.getElementById('kneeAngle');
 const hipAngle = document.getElementById('hipAngle');
@@ -250,12 +248,8 @@ window.showAllPoses = function() {
     }
 };
 
-// Initialize application
-document.addEventListener('DOMContentLoaded', function() {
-    // Load asana data
-    loadAsanaData();
-    // Application is ready
-    console.log('Yoga AI Trainer initialized');
+
+// Initialize application (moved to end of file)
     console.log('Use testPoseMatching("pose_name") to test pose matching');
 });
 
@@ -273,10 +267,7 @@ async function startCamera() {
         video.style.display = 'block'; // Make video visible
         await video.play();
         
-        // Also set up mediapipe video
-        mediapipeVideo.srcObject = stream;
-        mediapipeVideo.style.display = 'block';
-        await mediapipeVideo.play();
+        // Video setup complete
         
         return true;
     } catch (err) {
@@ -294,7 +285,6 @@ function stopCamera() {
         video.srcObject = null;
     }
     video.style.display = 'none'; // Hide video when stopped
-    mediapipeVideo.style.display = 'none'; // Hide mediapipe video when stopped
 }
 
 
@@ -1142,3 +1132,76 @@ function showActivityIndicator(poseName, confidence) {
         indicator.style.display = 'none';
     }, 1000);
 }
+
+// Load asana data from JSON file
+async function loadAsanaData() {
+    try {
+        const response = await fetch('/static/asana_data.json');
+        if (!response.ok) {
+            throw new Error('Failed to load asana data');
+        }
+        asanaData = await response.json();
+        console.log('Asana data loaded successfully');
+        console.log('Available poses:', Object.keys(asanaData));
+        
+        // Test with a known pose
+        const testPose = 'Tree_Pose_or_Vrksasana_';
+        if (asanaData[testPose]) {
+            console.log('Test pose data:', asanaData[testPose]);
+        }
+    } catch (error) {
+        console.error('Error loading asana data:', error);
+        asanaData = null;
+    }
+}
+
+// Load user profile data
+async function loadUserProfile() {
+    try {
+        const response = await fetch('/api/current_user');
+        if (response.ok) {
+            const userData = await response.json();
+            
+            // Update user profile display
+            const userNameElement = document.getElementById('userNameWebcam');
+            const userEmailElement = document.getElementById('userEmailWebcam');
+            const userAvatarElement = document.getElementById('userAvatarWebcam');
+            
+            if (userNameElement) {
+                userNameElement.textContent = userData.username || 'User';
+            }
+            if (userEmailElement) {
+                userEmailElement.textContent = userData.email || 'user@example.com';
+            }
+            if (userAvatarElement) {
+                if (userData.avatar && userData.avatar.trim() !== '') {
+                    userAvatarElement.innerHTML = `<img src="${userData.avatar}" alt="Avatar" class="avatar-img">`;
+                } else {
+                    // Keep the placeholder but update it with user initials if available
+                    const initials = userData.username ? userData.username.charAt(0).toUpperCase() : '👤';
+                    userAvatarElement.innerHTML = `<div class="avatar-placeholder">${initials}</div>`;
+                }
+            }
+            
+            console.log('User profile loaded:', userData.username, 'Avatar:', userData.avatar);
+        }
+    } catch (error) {
+        console.error('Error loading user profile:', error);
+        // Set default values on error
+        const userNameElement = document.getElementById('userNameWebcam');
+        const userEmailElement = document.getElementById('userEmailWebcam');
+        if (userNameElement) userNameElement.textContent = 'User';
+        if (userEmailElement) userEmailElement.textContent = 'user@example.com';
+    }
+}
+
+// Initialize application
+document.addEventListener('DOMContentLoaded', function() {
+    // Load asana data
+    loadAsanaData();
+    // Load user profile
+    loadUserProfile();
+    // Application is ready
+    console.log('Yoga AI Trainer initialized');
+    console.log('Use testPoseMatching("pose_name") to test pose matching');
+});

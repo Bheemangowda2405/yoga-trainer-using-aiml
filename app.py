@@ -515,10 +515,15 @@ def webcam():
 @login_required
 def get_current_user():
     """Get current user information"""
+    avatar_url = ""
+    if hasattr(current_user, 'user_data') and 'profile' in current_user.user_data:
+        avatar_url = current_user.user_data['profile'].get('avatar_url', '')
+    
     return jsonify({
         'user_id': current_user.id,
         'username': current_user.username,
-        'email': current_user.email
+        'email': current_user.email,
+        'avatar': avatar_url
     })
 
 
@@ -897,4 +902,4 @@ if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5002)

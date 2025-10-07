@@ -20,7 +20,7 @@ let detectedPoses = new Map(); // Track poses and their durations
 
 const CAPTURE_MS = 1500; // Reduced to 1.5 seconds for faster detection
 const POSE_CONFIRMATION_TIME = 1500; // Reduced to 1.5 seconds for faster voice feedback
-const MIN_CONFIDENCE_FOR_LOGGING = 0.60; // Only log poses with 60%+ confidence
+const MIN_CONFIDENCE_FOR_LOGGING = 0.85; // Only log poses with 85%+ confidence
 
 
 
@@ -586,7 +586,7 @@ async function updatePoseDisplay(poseName, confidence, landmarks = null) {
     confidenceBarAnalysis.style.width = confidencePercent + '%';
     
     // Update body angles - try to get real measurements if landmarks available
-    if (landmarks && confidence >= 0.60) {
+    if (landmarks && confidence >= 0.85) {
         try {
             const measurements = await getBodyMeasurements(poseName, landmarks);
             if (measurements) {
@@ -602,8 +602,8 @@ async function updatePoseDisplay(poseName, confidence, landmarks = null) {
         updateBodyAngles(poseName, confidence);
     }
     
-    // Only show pose names if accuracy is 60% and above
-    if (confidence >= 0.60) {
+    // Only show pose names if accuracy is 85% and above
+    if (confidence >= 0.85) {
         // Get traditional name from the backend mapping
         const traditionalName = getTraditionalName(poseName);
         
@@ -630,7 +630,7 @@ async function updatePoseDisplay(poseName, confidence, landmarks = null) {
             speakPoseName(poseName, currentLanguage);
         }
     } else {
-        // Hide pose names and accuracy when below 60%
+        // Hide pose names and accuracy when below 85%
         poseNameEl.textContent = '—';
         poseNameFull.textContent = '—';
         sanskritName.textContent = '—';
@@ -734,7 +734,7 @@ async function captureAndPredict() {
         }
         
         // Update current pose for info buttons
-        if (data.confidence >= 0.60) {
+        if (data.confidence >= 0.85) {
             console.log(`🎯 Detected pose: ${data.pose} with ${Math.round(data.confidence * 100)}% confidence`)
             
             // Log the activity to database
@@ -747,10 +747,10 @@ async function captureAndPredict() {
 
             currentPoseForInfo = data.pose;
         }
-        // Optimized pose confirmation logic - only show when accuracy >= 60%
+        // Optimized pose confirmation logic - only show when accuracy >= 85%
         if (data.pose === currentPose) {
             if (poseStartTime && (Date.now() - poseStartTime) >= POSE_CONFIRMATION_TIME) {
-                if (data.pose !== lastAnnouncedPose && data.confidence >= 0.60) {
+                if (data.pose !== lastAnnouncedPose && data.confidence >= 0.85) {
                     lastAnnouncedPose = data.pose;
                     
                     // Get instructions and feedback in parallel for speed

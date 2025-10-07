@@ -74,6 +74,20 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def cleanup_temp_files():
+    """Clean up temporary webcam files"""
+    upload_folder = app.config['UPLOAD_FOLDER']
+    temp_files = ['frame.jpg', 'annotated_frame.jpg']
+    
+    for temp_file in temp_files:
+        file_path = os.path.join(upload_folder, temp_file)
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+                print(f"Cleaned up: {temp_file}")
+            except Exception as e:
+                print(f"Error cleaning up {temp_file}: {e}")
+
 def load_model_and_encoder():
     """Load the trained model and label encoder"""
     global model, le
@@ -467,13 +481,10 @@ def predict():
         return jsonify({'error': 'No file selected'})
     
     if file and allowed_file(file.filename):
-        # Save the uploaded file
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+        # Process image directly from memory without saving to disk
+        file_bytes = np.frombuffer(file.read(), np.uint8)
+        image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
         
-        # Read and process the image
-        image = cv2.imread(filepath)
         if image is None:
             return jsonify({'error': 'Could not read image'})
         
@@ -491,21 +502,17 @@ def predict():
         confidence = prediction[0][class_idx]
         pose_name = le.inverse_transform([class_idx])[0]
         
-        # Draw landmarks on image
-        annotated_image = pose_utils.draw_landmarks(image, results)
-        annotated_filename = f"annotated_{filename}"
-        annotated_filepath = os.path.join(app.config['UPLOAD_FOLDER'], annotated_filename)
-        cv2.imwrite(annotated_filepath, annotated_image)
-
+        # No need to save annotated image for real-time webcam processing
+        # Only save if specifically requested or for debugging
+        
         #user log activity list
         if current_user.is_authenticated:
             log_user_activity(current_user.id, pose_name, float(confidence))
         
-        # Return results
+        # Return results without image_url since we're not saving files
         return jsonify({
             'pose': pose_name,
-            'confidence': float(confidence),
-            'image_url': f"/static/uploads/{annotated_filename}"
+            'confidence': float(confidence)
         })
     
     return jsonify({'error': 'Invalid file type'})
@@ -932,6 +939,15 @@ def check_db_connection():
         if db.db is None:
             flash('Database connection unavailable. Some features may not work.', 'warning')
 
+@app.route('/cleanup_temp_files', methods=['POST'])
+def cleanup_temp_files_route():
+    """API endpoint to clean up temporary files"""
+    try:
+        cleanup_temp_files()
+        return jsonify({'success': True, 'message': 'Temporary files cleaned up'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
 if __name__ == '__main__':
     # Load model before starting the server
     load_model_and_encoder()
@@ -942,5 +958,12 @@ if __name__ == '__main__':
     # Create upload directory if it doesn't exist
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
-    # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Clean up any existing temp files on startup
+    cleanup_temp_files()
+    
+    try:
+        # Run the Flask app
+        app.run(debug=True, host='0.0.0.0', port=5001)
+    finally:
+        # Clean up temp files on shutdown
+        cleanup_temp_files()

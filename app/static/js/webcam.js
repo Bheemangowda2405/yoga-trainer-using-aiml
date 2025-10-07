@@ -389,7 +389,7 @@
         // Check if we've been doing the same pose for 5 seconds
         if (poseStartTime && (Date.now() - poseStartTime) >= 5000) {
           // 5 seconds have passed, announce the pose
-          if (data.pose !== lastAnnouncedPose && data.confidence >= 0.60) {
+          if (data.pose !== lastAnnouncedPose && data.confidence >= 0.85) {
             console.log('🎯 5 seconds passed, announcing pose:', data.pose);
             lastAnnouncedPose = data.pose;
             

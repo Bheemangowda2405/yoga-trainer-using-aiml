@@ -13,6 +13,8 @@
         <div class="navbar-nav">
             <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
             <a href="{{ url_for('webcam') }}" class="nav-link">📷 Practice</a>
+            <a href="{{ url_for('update_image_predictor') }}" class="nav-link">🖼️ Upload</a>
+            <a href="{{ url_for('yoga_manual') }}" class="nav-link">📖 Manual</a>
             <a href="{{ url_for('profile') }}" class="nav-link">👤 Profile</a>
         </div>
         <div class="navbar-user">
@@ -144,7 +146,7 @@
                     <p class="action-description">Begin real-time yoga pose detection</p>
                 </div>
 
-                <div class="action-card" onclick="window.location.href='/'">
+                <div class="action-card" onclick="window.location.href='/update-image-predictor'">
                     <div class="action-icon">🖼️</div>
                     <h3 class="action-title">Upload Image</h3>
                     <p class="action-description">Analyze yoga poses from uploaded images</p>

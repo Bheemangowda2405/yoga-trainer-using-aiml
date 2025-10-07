@@ -192,6 +192,28 @@ def get_traditional_name(pose_name):
     """Get traditional Sanskrit name for a pose"""
     return traditional_names.get(pose_name, pose_name)
 
+def get_pose_names(pose_name):
+    """Get both English and Sanskrit names for a pose"""
+    # Get Sanskrit name from mapping
+    sanskrit_name = traditional_names.get(pose_name, pose_name)
+    
+    # Extract English name from the original pose_name
+    # Format: "English_Name_or_Sanskrit_Name_" or just "Sanskrit_Name"
+    english_name = pose_name.replace('_', ' ').strip()
+    
+    # If the pose name contains "or", split and get the English part
+    if '_or_' in pose_name:
+        parts = pose_name.split('_or_')
+        english_name = parts[0].replace('_', ' ').strip()
+    else:
+        # If no "or", use the cleaned up version
+        english_name = english_name.rstrip('_').strip()
+    
+    return {
+        'sanskrit': sanskrit_name,
+        'english': english_name
+    }
+
 def get_pose_instructions_and_feedback(pose_name, language="en"):
     """Get instructions and feedback for a yoga pose using Gemini API"""
     try:
@@ -314,6 +336,17 @@ def index():
             }
     
     return render_template('index.html', user=user_info)
+
+@app.route('/yoga-manual')
+def yoga_manual():
+    """Yoga manual page - no login required"""
+    return render_template('yoga-manual.html')
+
+@app.route('/update-image-predictor')
+@login_required
+def update_image_predictor():
+    """Image upload and prediction page"""
+    return render_template('update-image-predictor.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -509,9 +542,14 @@ def predict():
         if current_user.is_authenticated:
             log_user_activity(current_user.id, pose_name, float(confidence))
         
+        # Get both Sanskrit and English names
+        pose_names = get_pose_names(pose_name)
+        
         # Return results without image_url since we're not saving files
         return jsonify({
             'pose': pose_name,
+            'sanskrit_name': pose_names['sanskrit'],
+            'english_name': pose_names['english'],
             'confidence': float(confidence)
         })
     
@@ -540,6 +578,69 @@ def webcam():
     """Webcam pose detection page"""
     return render_template('webcam.html')
 
+@app.route('/speak_feedback', methods=['POST'])
+@login_required
+def speak_feedback():
+    """Speak pose feedback using TTS"""
+    try:
+        data = request.get_json()
+        pose_name = data.get('pose_name', '')
+        feedback = data.get('feedback', '')
+        language = data.get('language', 'en')
+        
+        if not pose_name:
+            return jsonify({'success': False, 'message': 'No pose name provided'})
+        
+        # Use TTS system to speak
+        success = tts_system.speak_pose_feedback(pose_name, feedback, language)
+        
+        if success:
+            return jsonify({'success': True, 'message': 'Feedback spoken successfully'})
+        else:
+            return jsonify({'success': False, 'message': 'Failed to speak feedback'})
+            
+    except Exception as e:
+        print(f"Error in speak_feedback: {e}")
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/speak_welcome', methods=['POST'])
+@login_required
+def speak_welcome():
+    """Speak welcome message using TTS"""
+    try:
+        data = request.get_json()
+        language = data.get('language', 'en')
+        
+        # Use TTS system to speak welcome
+        success = tts_system.speak_welcome(language)
+        
+        if success:
+            return jsonify({'success': True, 'message': 'Welcome spoken successfully'})
+        else:
+            return jsonify({'success': False, 'message': 'Failed to speak welcome'})
+            
+    except Exception as e:
+        print(f"Error in speak_welcome: {e}")
+        return jsonify({'success': False, 'message': str(e)})
+
+@app.route('/set_language', methods=['POST'])
+@login_required
+def set_tts_language():
+    """Set TTS language"""
+    try:
+        data = request.get_json()
+        language = data.get('language', 'en')
+        
+        success = tts_system.set_language(language)
+        
+        if success:
+            return jsonify({'success': True, 'message': f'Language set to {language}'})
+        else:
+            return jsonify({'success': False, 'message': 'Invalid language'})
+            
+    except Exception as e:
+        print(f"Error in set_language: {e}")
+        return jsonify({'success': False, 'message': str(e)})
 
 @app.route('/api/current_user')
 @login_required

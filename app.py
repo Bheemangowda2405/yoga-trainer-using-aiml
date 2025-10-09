@@ -893,7 +893,7 @@ def user_profile():
                 'profile.age': data.get('age'),
                 'profile.avatar_url': data.get('avatar_url', ''),
                 'profile.bio': data.get('bio', ''),
-                'timestamps.updated_at': datetime.utcnow()
+                'timestamps.updated_at':  datetime.now(datetime.UTC)
             }
             
             # Remove empty fields to avoid setting them to empty strings
@@ -1064,7 +1064,7 @@ if __name__ == '__main__':
     
     try:
         # Run the Flask app
-        app.run(debug=True, host='0.0.0.0', port=5001)
+        app.run(debug=True, host='0.0.0.0', port=5000)
     finally:
         # Clean up temp files on shutdown
         cleanup_temp_files()

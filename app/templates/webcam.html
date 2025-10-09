@@ -31,6 +31,19 @@
               console.log("User authenticated:", userData.username);
               // Set user ID for webcam.js to use
               window.currentUserId = userData.user_id;
+              
+              // Call setCurrentUserId function when available
+              if (typeof setCurrentUserId === 'function') {
+                setCurrentUserId(userData.user_id);
+              } else {
+                // Wait for the function to be available
+                setTimeout(() => {
+                  if (typeof setCurrentUserId === 'function') {
+                    setCurrentUserId(userData.user_id);
+                  }
+                }, 100);
+              }
+              
               // Load user profile data when the function is available
               if (typeof loadUserProfile === 'function') {
                 loadUserProfile();

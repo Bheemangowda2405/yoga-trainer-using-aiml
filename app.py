@@ -538,9 +538,9 @@ def predict():
         # No need to save annotated image for real-time webcam processing
         # Only save if specifically requested or for debugging
         
-        #user log activity list
-        if current_user.is_authenticated:
-            log_user_activity(current_user.id, pose_name, float(confidence))
+        # NOTE: DO NOT log activity here! The /api/log_activity endpoint handles logging
+        # with proper deduplication, confidence checks, and duration tracking.
+        # Logging here would create duplicate entries for every detection (every 1.5 seconds).
         
         # Get both Sanskrit and English names
         pose_names = get_pose_names(pose_name)
@@ -680,6 +680,11 @@ def check_authentication():
 def test():
     """Test button functionality"""
     return send_file('test_button.html')
+
+@app.route('/test_google_tts')
+def test_google_tts():
+    """Google TTS test page"""
+    return send_file('test_google_tts.html')
 
 #=========================user tracking system starts here=======================================
 @app.route('/api/log_activity', methods=['POST'])
@@ -1064,7 +1069,7 @@ if __name__ == '__main__':
     
     try:
         # Run the Flask app
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        app.run(debug=True, host='0.0.0.0', port=5001)
     finally:
         # Clean up temp files on shutdown
         cleanup_temp_files()

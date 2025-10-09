@@ -1,11 +1,12 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timezone
 from pymongo import DESCENDING
 from .database import db
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from bson.objectid import ObjectId
+import pytz
 
 class User(UserMixin):
     def __init__(self, user_data):
@@ -117,6 +118,11 @@ def get_user_sessions(user_id):
 def log_user_activity(user_id, pose_name, confidence, session_id=None, duration_seconds=0):
     """Log when a user performs a yoga asana"""
     try:
+        # Use Indian Standard Time (IST, UTC+5:30)
+        from datetime import timezone, timedelta
+        ist = timezone(timedelta(hours=5, minutes=30))
+        ist_time = datetime.now(ist)
+        
         activity_data = {
             'user_id': ObjectId(user_id),
             'pose_name': pose_name,
@@ -124,7 +130,7 @@ def log_user_activity(user_id, pose_name, confidence, session_id=None, duration_
             'confidence': float(confidence),
             'session_id': session_id or str(ObjectId()),
             'duration_seconds': duration_seconds,
-            'timestamp': datetime.utcnow()
+            'timestamp': ist_time
         }
         
         result = db.db.user_activities.insert_one(activity_data)

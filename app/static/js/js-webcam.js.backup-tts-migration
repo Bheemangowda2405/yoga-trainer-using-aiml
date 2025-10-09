@@ -1410,92 +1410,178 @@ function formatAsBulletPoints(items) {
     return items.map(item => `• ${item}`).join('\n');
 }
 
-// Voice feedback functions - Using Google TTS (server-side)
-async function speakPoseName(poseName, language = 'en') {
+// Voice feedback functions
+function speakPoseName(poseName, language = 'en') {
     if (isSpeaking || poseName === lastSpokenPose) {
         return; // Don't speak if already speaking or same pose
     }
     
-    try {
-        isSpeaking = true;
-        lastSpokenPose = poseName;
-        
-        const traditionalName = getTraditionalName(poseName);
-        console.log(`🎤 Speaking pose via Google TTS: ${traditionalName} in ${language}`);
-        
-        // Call server-side TTS endpoint
-        const response = await fetch('/speak_feedback', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                pose_name: traditionalName,
-                feedback: '',  // Empty feedback, only speak pose name
-                language: language
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`TTS request failed: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            console.log('✅ Pose name spoken via Google TTS');
-        } else {
-            console.error('❌ TTS failed:', data.message);
+    // Check if browser supports speech synthesis
+    if (!('speechSynthesis' in window)) {
+        console.warn('⚠️ Speech synthesis not supported in this browser');
+        return;
+    }
+    
+    const traditionalName = getTraditionalName(poseName);
+    console.log(`🎤 Speaking pose: ${traditionalName} in ${language}`);
+    
+    // Function to actually speak (called after voices are loaded)
+    const doSpeak = () => {
+        try {
+            isSpeaking = true;
+            lastSpokenPose = poseName;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Small delay to ensure cancel completes
+            setTimeout(() => {
+                // Create speech utterance
+                const utterance = new SpeechSynthesisUtterance(traditionalName);
+                
+                // Language mapping for Web Speech API
+                const languageCodes = {
+                    'en': 'en-US',  // Use US English for better compatibility
+                    'hi': 'hi-IN',  // Hindi
+                    'kn': 'kn-IN',  // Kannada
+                    'ta': 'ta-IN',  // Tamil
+                    'te': 'te-IN',  // Telugu
+                    'mr': 'mr-IN',  // Marathi
+                    'bn': 'bn-IN',  // Bengali
+                    'gu': 'gu-IN',  // Gujarati
+                    'pa': 'pa-IN'   // Punjabi
+                };
+                
+                const targetLang = languageCodes[language] || 'en-US';
+                utterance.lang = targetLang;
+                
+                // Get available voices
+                const voices = window.speechSynthesis.getVoices();
+                
+                if (voices.length === 0) {
+                    console.warn('⚠️ No voices available yet');
+                    isSpeaking = false;
+                    return;
+                }
+                
+                // Try to find the best voice
+                let selectedVoice = null;
+                
+                // For English, try to find a female voice
+                if (language === 'en') {
+                    // Priority 1: Google US English Female
+                    selectedVoice = voices.find(voice => 
+                        voice.name.includes('Google') && 
+                        voice.lang.startsWith('en') &&
+                        voice.name.toLowerCase().includes('female')
+                    );
+                    
+                    // Priority 2: Any Google English voice
+                    if (!selectedVoice) {
+                        selectedVoice = voices.find(voice => 
+                            voice.name.includes('Google') && 
+                            voice.lang.startsWith('en')
+                        );
+                    }
+                    
+                    // Priority 3: Any English female voice
+                    if (!selectedVoice) {
+                        selectedVoice = voices.find(voice => 
+                            voice.lang.startsWith('en') &&
+                            voice.name.toLowerCase().includes('female')
+                        );
+                    }
+                    
+                    // Priority 4: First English voice
+                    if (!selectedVoice) {
+                        selectedVoice = voices.find(voice => voice.lang.startsWith('en'));
+                    }
+                } else {
+                    // For Indian languages, find matching voice
+                    selectedVoice = voices.find(voice => voice.lang === targetLang);
+                    
+                    if (!selectedVoice) {
+                        selectedVoice = voices.find(voice => voice.lang.startsWith(language));
+                    }
+                }
+                
+                // Fallback to first available voice
+                if (!selectedVoice && voices.length > 0) {
+                    selectedVoice = voices[0];
+                }
+                
+                if (selectedVoice) {
+                    utterance.voice = selectedVoice;
+                    console.log(`🎤 Using voice: ${selectedVoice.name} (${selectedVoice.lang})`);
+                }
+                
+                utterance.rate = 0.9;   // Slightly slower for clarity
+                utterance.pitch = 1.0;  // Natural pitch
+                utterance.volume = 1.0;
+                
+                // Event handlers
+                utterance.onstart = () => {
+                    console.log('🎤 Speech started');
+                };
+                
+                utterance.onend = () => {
+                    console.log('✅ Pose name spoken successfully');
+                    isSpeaking = false;
+                };
+                
+                utterance.onerror = (event) => {
+                    console.error('❌ Speech synthesis error:', event.error);
+                    isSpeaking = false;
+                    
+                    // If synthesis fails, try again with default voice
+                    if (event.error === 'synthesis-failed') {
+                        console.log('🔄 Retrying with default voice...');
+                        setTimeout(() => {
+                            const simpleUtterance = new SpeechSynthesisUtterance(traditionalName);
+                            simpleUtterance.lang = 'en-US';
+                            simpleUtterance.rate = 0.9;
+                            window.speechSynthesis.speak(simpleUtterance);
+                        }, 100);
+                    }
+                };
+                
+                // Speak the text
+                window.speechSynthesis.speak(utterance);
+                
+            }, 100); // Small delay after cancel
+            
+        } catch (error) {
+            console.error('❌ Error speaking pose name:', error);
             isSpeaking = false;
         }
-        
-        // Reset speaking flag after estimated audio duration
-        // Google TTS typically takes 1-3 seconds for pose names
-        setTimeout(() => {
-            isSpeaking = false;
-        }, 3000);
-        
-    } catch (error) {
-        console.error('❌ Error calling TTS endpoint:', error);
-        isSpeaking = false;
-        
-        // Show user-friendly error message
-        console.warn('⚠️ Voice feedback unavailable - continuing without audio');
+    };
+    
+    // Check if voices are loaded
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        doSpeak();
+    } else {
+        // Wait for voices to load
+        console.log('⏳ Waiting for voices to load...');
+        window.speechSynthesis.onvoiceschanged = () => {
+            doSpeak();
+        };
     }
 }
 
-// Speak welcome message when page loads
-async function speakWelcomeMessage(language = 'en') {
-    try {
-        console.log(`🎤 Speaking welcome message via Google TTS in ${language}`);
-        
-        // Call server-side TTS welcome endpoint
-        const response = await fetch('/speak_welcome', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                language: language
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Welcome TTS request failed: ${response.status}`);
+// Load voices when they become available
+if ('speechSynthesis' in window) {
+    // Trigger voice loading
+    window.speechSynthesis.getVoices();
+    
+    // Chrome/Brave loads voices asynchronously
+    window.speechSynthesis.onvoiceschanged = () => {
+        const voices = window.speechSynthesis.getVoices();
+        console.log(`🎤 ${voices.length} voices available`);
+        if (voices.length > 0) {
+            console.log('🎤 Sample voices:', voices.slice(0, 5).map(v => `${v.name} (${v.lang})`).join(', '));
         }
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            console.log('✅ Welcome message spoken via Google TTS');
-        } else {
-            console.error('❌ Welcome TTS failed:', data.message);
-        }
-        
-    } catch (error) {
-        console.error('❌ Error calling welcome TTS endpoint:', error);
-        console.warn('⚠️ Welcome message unavailable - continuing without audio');
-    }
+    };
 }
 
 // Get traditional Sanskrit name for a pose (matches Python backend mapping)
@@ -2618,13 +2704,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAsanaData();
     // Load user profile
     loadUserProfile();
-    
-    // Speak welcome message after a short delay (let page load first)
-    setTimeout(() => {
-        const currentLang = document.getElementById('languageSelect')?.value || 'en';
-        speakWelcomeMessage(currentLang);
-    }, 1000); // 1 second delay to ensure page is fully loaded
-    
     // Application is ready
     console.log('Yoga AI Trainer initialized');
     console.log('Use testPoseMatching("pose_name") to test pose matching');

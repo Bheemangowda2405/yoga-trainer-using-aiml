@@ -53,3 +53,10 @@ inputs.forEach(input => {
 
 // Auto-focus username field
 document.getElementById('username').focus();
+
+// Escape key to go back to index page
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        window.location.href = '/';
+    }
+});

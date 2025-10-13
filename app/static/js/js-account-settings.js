@@ -175,24 +175,38 @@ passwordForm.addEventListener("submit", async function (e) {
   }
 });
 
-// Delete account confirmation
+// Delete account modal functions
 function showDeleteConfirmation() {
-  if (
-    confirm(
-      "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently lost."
-    )
-  ) {
-    if (
-      confirm(
-        "This is your final warning. All your yoga progress, profile data, and account information will be permanently deleted. Are you absolutely sure?"
-      )
-    ) {
-      deleteAccount();
-    }
-  }
+  const modal = document.getElementById("deleteModal");
+  modal.classList.add("active");
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = "hidden";
 }
 
-async function deleteAccount() {
+function closeDeleteModal() {
+  const modal = document.getElementById("deleteModal");
+  modal.classList.remove("active");
+  // Restore body scroll
+  document.body.style.overflow = "";
+}
+
+// Close modal when clicking outside
+document.getElementById("deleteModal").addEventListener("click", function (e) {
+  if (e.target === this) {
+    closeDeleteModal();
+  }
+});
+
+// Close modal with Escape key
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    closeDeleteModal();
+  }
+});
+
+async function confirmDelete() {
+  closeDeleteModal();
+
   try {
     const response = await fetch("/api/user/account", {
       method: "DELETE",

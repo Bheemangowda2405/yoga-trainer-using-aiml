@@ -69,7 +69,23 @@
       <!-- Main Video Section -->
       <div class="video-section">
         <div class="video-header">
-          <div class="session-title">🧘‍♀️ Divine Yoga AI Trainer</div>
+          <div class="session-title">
+            <div class="nav-logo">
+              <img src="/static/uploads/yogologo.jpg" alt="Yoga Logo" style="height: 40px">
+              <span class="logo-text">AI Yoga Trainer</span>
+            </div>
+          </div>
+          <div class="header-nav-buttons">
+            <button id="homeBtn" class="nav-btn home-btn" onclick="window.location.href='/'" title="Go to Home">
+              🏠 Home
+            </button>
+            <button id="yogaManualBtn" class="nav-btn yoga-manual-btn" onclick="window.location.href='/yoga-manual'" title="Go to Yoga Manual">
+              📖 Yoga Manual
+            </button>
+            <button id="dashboardBtn" class="nav-btn dashboard-btn" onclick="window.location.href='/dashboard'" title="Go to Dashboard">
+              📊 Dashboard
+            </button>
+          </div>
         </div>
 
         <div class="video-container">
@@ -123,12 +139,6 @@
               <span>Start Session</span>
             </button>
             <button id="stopBtn" disabled>End Session</button>
-            <button id="homeBtn" class="nav-btn home-btn" onclick="window.location.href='/'" title="Go to Home">
-              🏠 Home
-            </button>
-            <button id="dashboardBtn" class="nav-btn dashboard-btn" onclick="window.location.href='/dashboard'" title="Go to Dashboard">
-              📊 Dashboard
-            </button>
           </div>
         </div>
       </div>

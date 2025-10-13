@@ -1,7 +1,7 @@
 import os
 import cv2
 import numpy as np
-from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for, flash, send_from_directory
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
@@ -337,6 +337,11 @@ def index():
     
     return render_template('index.html', user=user_info)
 
+@app.route('/favicon.ico')
+def favicon():
+    """Serve favicon"""
+    return send_from_directory('app/static/uploads', 'yogologo.jpg', mimetype='image/jpeg')
+
 @app.route('/yoga-manual')
 def yoga_manual():
     """Yoga manual page - no login required"""
@@ -414,6 +419,7 @@ def forgot_password():
     """Forgot password page"""
     if request.method == 'POST':
         username = request.form['username']
+        email = request.form['email']
         new_password = request.form['new_password']
         confirm_password = request.form['confirm_password']
         
@@ -427,10 +433,15 @@ def forgot_password():
             flash('Password must be at least 6 characters long', 'error')
             return render_template('forgot-password.html')
         
-        # Find user
+        # Find user by username
         user = User.find_by_username(username)
         if not user:
             flash('Username not found', 'error')
+            return render_template('forgot-password.html')
+        
+        # Verify email matches
+        if user.email.lower() != email.lower():
+            flash('Email does not match the registered email for this username', 'error')
             return render_template('forgot-password.html')
         
         try:
@@ -898,7 +909,7 @@ def user_profile():
                 'profile.age': data.get('age'),
                 'profile.avatar_url': data.get('avatar_url', ''),
                 'profile.bio': data.get('bio', ''),
-                'timestamps.updated_at':  datetime.now(datetime.UTC)
+                'timestamps.updated_at': datetime.utcnow()
             }
             
             # Remove empty fields to avoid setting them to empty strings
@@ -926,7 +937,7 @@ def profile():
     return render_template('profile.html', user=current_user)
 
 @app.route('/account-settings')
-
+@login_required
 def account_settings():
     """Account settings page"""
     return render_template('account-settings.html', user=current_user)
@@ -1069,7 +1080,7 @@ if __name__ == '__main__':
     
     try:
         # Run the Flask app
-        app.run(debug=True, host='0.0.0.0', port=5001)
+        app.run(debug=True, host='0.0.0.0', port=5000)
     finally:
         # Clean up temp files on shutdown
         cleanup_temp_files()

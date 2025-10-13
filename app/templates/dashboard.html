@@ -9,7 +9,12 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <div class="navbar-brand">🧘‍♀️ Yoga Pose Detector</div>
+        <div class="navbar-brand">
+            <div class="nav-logo">
+                <img src="/static/uploads/yogologo.jpg" alt="Yoga Logo" style="height: 40px">
+                <span class="logo-text">AI Yoga Trainer</span>
+            </div>
+        </div>
         <div class="navbar-nav">
             <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
             <a href="{{ url_for('webcam') }}" class="nav-link">📷 Practice</a>

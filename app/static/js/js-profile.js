@@ -88,8 +88,10 @@ function updateDisplay(userData) {
   // Update avatar display
   updateAvatarDisplay(profile.avatar_url);
 
-  // Update email
-  emailDisplay.textContent = userData.email || "";
+  // Update email (keep existing if API doesn't return one)
+  if (userData.email) {
+    emailDisplay.textContent = userData.email;
+  }
 }
 
 // Update avatar preview

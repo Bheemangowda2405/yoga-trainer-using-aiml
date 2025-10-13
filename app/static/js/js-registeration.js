@@ -16,3 +16,26 @@ document.querySelector('form').addEventListener('submit', function(e) {
         return;
     }
 });
+
+// Password visibility toggle
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleButton = document.querySelector('.password-toggle');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = '🔒';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = '👁️';
+    }
+}
+
+// Escape key to go back to login page
+document.addEventListener('keydown', function(e) {
+    console.log('Key pressed:', e.key); // Debug log
+    if (e.key === 'Escape' || e.keyCode === 27) {
+        e.preventDefault();
+        window.location.href = '/login';
+    }
+});

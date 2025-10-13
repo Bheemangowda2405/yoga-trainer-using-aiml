@@ -8,3 +8,5 @@ gTTS>=2.3.0
 pygame>=2.1.0
 python-dotenv>=0.19.0
 google-generativeai>=0.3.0
+google-cloud-texttospeech
+flask

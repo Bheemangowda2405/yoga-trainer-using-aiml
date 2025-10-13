@@ -70,19 +70,19 @@ class YogaPosePredictor:
 
 # Example usage
 if __name__ == "__main__":
-    # For hybrid model
-    predictor = YogaPosePredictor(
-        "models/yoga_pose_hybrid_model.h5", 
-        "models/label_encoder.pkl",
-        use_hybrid=True
-    )
-    
-    # For DNN model
+    # # For hybrid model
     # predictor = YogaPosePredictor(
-    #     "models/yoga_pose_dnn_model.h5", 
-    #     "models/label_encoder_dnn.pkl",
-    #     use_hybrid=False
+    #     "models/yoga_pose_hybrid_model.h5", 
+    #     "models/label_encoder.pkl",
+    #     use_hybrid=True
     # )
+    
+    #For DNN model
+    predictor = YogaPosePredictor(
+        "models/yoga_pose_dnn_model.h5", 
+        "models/label_encoder_dnn.pkl",
+        use_hybrid=False
+    )
     
     # Test prediction
     image_path = "test_image.jpg"  # Replace with your test image path

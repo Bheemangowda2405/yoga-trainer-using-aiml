@@ -360,6 +360,33 @@ def register():
         email = request.form['email']
         password = request.form['password']
         
+        # Server-side username validation
+        import re
+        
+        # Check length
+        if len(username) < 3:
+            flash('Username must be at least 3 characters long', 'error')
+            return render_template('register.html')
+        
+        if len(username) > 20:
+            flash('Username must not exceed 20 characters', 'error')
+            return render_template('register.html')
+        
+        # Must start with a letter
+        if not re.match(r'^[a-zA-Z]', username):
+            flash('Username must start with a letter', 'error')
+            return render_template('register.html')
+        
+        # Only letters, numbers, and underscores allowed
+        if not re.match(r'^[a-zA-Z][a-zA-Z0-9_]*$', username):
+            flash('Username can only contain letters, numbers, and underscores', 'error')
+            return render_template('register.html')
+        
+        # Check if numbers are in the middle followed by letters
+        if re.search(r'\d+[a-zA-Z]+', username):
+            flash('Numbers should be at the end of the username', 'error')
+            return render_template('register.html')
+        
         # Check if user exists
         if User.find_by_username(username) or User.find_by_email(email):
             flash('Username or email already exists', 'error')

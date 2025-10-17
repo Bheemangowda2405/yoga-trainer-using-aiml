@@ -1,58 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - Flask Auth App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-registerpage.css') }}">
-    
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style-registerpage.css') }}"
+    />
+  </head>
+  <body>
     <div class="container">
-        <div class="yoga-icon">
-            <img src="/static/uploads/yogologo.jpg" alt="Yoga Logo">
+      <div class="yoga-icon">
+        <img src="/static/uploads/yogologo.jpg" alt="Yoga Logo" />
+      </div>
+      <div class="logo">
+        <h1>Create Account</h1>
+      </div>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert {{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            placeholder="Enter your username"
+            minlength="3"
+            maxlength="20"
+            pattern="^[a-zA-Z][a-zA-Z0-9_]*$"
+            title="Username must start with a letter and contain only letters, numbers, and underscores"
+          />
+          <div
+            class="username-rules"
+            style="margin-top: 0.5rem; font-size: 0.75rem; color: #666"
+          >
+            <strong>Username rules:</strong>
+            <ul style="margin: 0.25rem 0 0 1.25rem; padding: 0">
+              <li>Must start with a letter</li>
+              <li>3-20 characters long</li>
+              <li>Only letters, numbers, and underscores (_)</li>
+              <li>Numbers should be at the end</li>
+            </ul>
+          </div>
         </div>
-        <div class="logo">
-            <h1>Create Account</h1>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Enter your email"
+          />
         </div>
 
-        <!-- Flash Messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert {{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <form method="POST">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required 
-                       placeholder="Enter your username">
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required 
-                       placeholder="Enter your email">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required 
-                       placeholder="Create a password">
-                <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
-            </div>
-
-            <button type="submit" class="btn">Create Account</button>
-        </form>
-
-        <div class="login-link">
-            Already have an account? <a href="{{ url_for('login') }}">Sign in here</a>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Create a password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            onclick="togglePassword()"
+          >
+            👁️
+          </button>
         </div>
+
+        <button type="submit" class="btn">Create Account</button>
+      </form>
+
+      <div class="login-link">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Sign in here</a>
+      </div>
     </div>
     <script src="{{ url_for('static', filename='js/js-registeration.js') }}"></script>
-    
-</body>
+  </body>
 </html>

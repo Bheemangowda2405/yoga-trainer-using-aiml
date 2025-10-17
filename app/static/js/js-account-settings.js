@@ -7,6 +7,14 @@ const confirmPasswordInput = document.getElementById("confirmPassword");
 const passwordStrength = document.getElementById("passwordStrength");
 const passwordMatch = document.getElementById("passwordMatch");
 
+// Scroll to top helper function
+function scrollToTop() {
+  // Try multiple methods for better browser compatibility
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
 // Show message to user
 function showMessage(message, type = "success") {
   flashMessages.innerHTML = `
@@ -49,12 +57,15 @@ function checkPasswordMatch() {
 
   if (confirm.length === 0) {
     passwordMatch.innerHTML = "";
+    return true;
   } else if (password === confirm) {
     passwordMatch.innerHTML =
       '<span style="color: #51cf66;">✓ Passwords match</span>';
+    return true;
   } else {
     passwordMatch.innerHTML =
       '<span style="color: #ff6b6b;">✗ Passwords do not match</span>';
+    return false;
   }
 }
 
@@ -102,15 +113,18 @@ usernameForm.addEventListener("submit", async function (e) {
 
     if (response.ok) {
       showMessage("Username updated successfully!", "success");
+      scrollToTop();
       document.getElementById("currentUsername").textContent =
         data.new_username;
       this.reset();
     } else {
       showMessage(result.error || "Failed to update username", "error");
+      scrollToTop();
     }
   } catch (error) {
     console.error("Error updating username:", error);
     showMessage("Error updating username", "error");
+    scrollToTop();
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = originalText;
@@ -121,9 +135,28 @@ usernameForm.addEventListener("submit", async function (e) {
 passwordForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  // Check if passwords match
-  if (newPasswordInput.value !== confirmPasswordInput.value) {
+  const currentPassword = document.getElementById("currentPassword").value;
+  const newPassword = newPasswordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  // Client-side validation - check all fields before sending request
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    showMessage("All password fields are required", "error");
+    scrollToTop();
+    return;
+  }
+
+  // Check password length
+  if (newPassword.length < 6) {
+    showMessage("New password must be at least 6 characters long", "error");
+    scrollToTop();
+    return;
+  }
+
+  // Check if passwords match - CRITICAL: validate before sending to server
+  if (newPassword !== confirmPassword) {
     showMessage("Passwords do not match", "error");
+    scrollToTop();
     return;
   }
 
@@ -160,15 +193,21 @@ passwordForm.addEventListener("submit", async function (e) {
 
     if (response.ok) {
       showMessage("Password updated successfully!", "success");
+      scrollToTop();
       this.reset();
       passwordStrength.innerHTML = "";
       passwordMatch.innerHTML = "";
     } else {
-      showMessage(result.error || "Failed to update password", "error");
+      // Display the error message from the server
+      const errorMessage = result.error || "Failed to update password";
+      showMessage(errorMessage, "error");
+      scrollToTop();
+      console.log("Password change error:", errorMessage);
     }
   } catch (error) {
     console.error("Error updating password:", error);
     showMessage("Error updating password", "error");
+    scrollToTop();
   } finally {
     submitBtn.disabled = false;
     submitBtn.innerHTML = originalText;

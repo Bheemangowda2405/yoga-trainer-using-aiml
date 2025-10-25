@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weekly Yoga Practice</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-attachment: fixed;
+        color: #2d3748;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* Animated background pattern */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(255, 255, 255, 0.1) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Back Button */
+      .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #667eea;
+        padding: 12px 24px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .back-button:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        background: white;
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .back-button:active {
+        transform: translateY(-1px) scale(0.98);
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 215, 0, 0.05) 100%
+        );
+        backdrop-filter: blur(20px);
+        border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        margin-top: 60px;
+        box-shadow: 0 4px 24px rgba(255, 165, 0, 0.2),
+          0 0 60px rgba(255, 215, 0, 0.1);
+      }
+
+      .hero {
+        padding: 3rem 0 2rem 0;
+        text-align: center;
+        animation: fadeInDown 0.6s ease-out;
+      }
+
+      /* Title Container */
+      .title-container {
+        display: inline-block;
+        position: relative;
+        padding: 2rem 3rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .title-container::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.25) 0%,
+          rgba(255, 215, 0, 0.15) 100%
+        );
+        border-radius: 30px;
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 215, 0, 0.4);
+        box-shadow: 0 8px 32px rgba(255, 165, 0, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.5),
+          0 0 40px rgba(255, 215, 0, 0.15);
+      }
+
+      .title-container::after {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.4) 0%,
+          rgba(255, 165, 0, 0.2) 50%,
+          rgba(255, 215, 0, 0.4) 100%
+        );
+        border-radius: 32px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .title-container:hover::after {
+        opacity: 1;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: -1px;
+        background: linear-gradient(
+          135deg,
+          #ffd700 0%,
+          #ffa500 50%,
+          #ff8c42 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-family: "Segoe UI", "Arial Black", "Helvetica", sans-serif;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))
+          drop-shadow(0 2px 4px rgba(255, 215, 0, 0.4));
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+      }
+
+      .title-emoji {
+        display: inline-block;
+        font-size: 3rem;
+        margin-right: 0.5rem;
+        animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .subtitle-container {
+        margin-top: 1rem;
+        padding: 0.75rem 2rem;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 215, 0, 0.25) 0%,
+          rgba(255, 165, 0, 0.2) 100%
+        );
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        display: inline-block;
+        border: 2px solid rgba(255, 215, 0, 0.5);
+        box-shadow: 0 4px 16px rgba(255, 165, 0, 0.25),
+          0 0 30px rgba(255, 215, 0, 0.15);
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        color: #ffd700;
+        font-weight: 600;
+        letter-spacing: 1px;
+        font-family: "Segoe UI", "Helvetica", sans-serif;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4),
+          0 0 20px rgba(255, 215, 0, 0.3);
+        margin: 0;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Filter Buttons */
+      .filter-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding: 0 0 2rem 0;
+        animation: fadeIn 0.8s ease-out 0.2s both;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .filter-btn {
+        background: rgba(255, 255, 255, 0.95);
+        color: #667eea;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 28px;
+        border-radius: 30px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .filter-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        background: white;
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .filter-btn.active {
+        background: white;
+        color: #667eea;
+        border-color: white;
+        box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .filter-btn.active:hover {
+        transform: translateY(-3px) scale(1.08);
+        box-shadow: 0 12px 40px rgba(255, 255, 255, 0.4);
+      }
+
+      .filter-btn:active {
+        transform: translateY(-1px) scale(1.02);
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.125rem;
+        color: #b3101f;;
+      }
+
+      /* Main Content */
+      main {
+        padding: 2.5rem 0 4rem 0;
+        animation: fadeInUp 0.8s ease-out 0.3s both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+
+      /* Summary Section */
+      .summary-card {
+        background: white;
+        border: none;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .summary-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+      }
+
+      .summary-header {
+        padding: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .summary-icon {
+        width: 3rem;
+        height: 3rem;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+      }
+
+      .summary-icon svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: white;
+      }
+
+      .summary-header h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .summary-stats {
+        padding: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .stat-card {
+        padding: 2rem;
+        background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+        border: none;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(118, 75, 162, 0.1) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 32px rgba(102, 126, 234, 0.2);
+      }
+
+      .stat-card:hover::before {
+        opacity: 1;
+      }
+
+      .stat-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .stat-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .stat-icon svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        color: white;
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #667eea;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .stat-value {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .stat-description {
+        font-size: 0.9rem;
+        color: #718096;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Day Section */
+      .day-section {
+        margin-bottom: 2.5rem;
+        animation: slideInUp 0.5s ease-out;
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .day-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        margin-bottom: 0;
+      }
+
+      .day-icon {
+        width: 3rem;
+        height: 3rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .day-icon svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: white;
+      }
+
+      .day-info h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+      }
+
+      .day-meta {
+        font-size: 0.9rem;
+        color: #667eea;
+        font-weight: 500;
+      }
+
+      .asana-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        background: white;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      /* Asana Card */
+      .asana-card {
+        background: white;
+        border: none;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+
+      .asana-card:last-child {
+        border-bottom: none;
+      }
+
+      .asana-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+      }
+
+      .asana-card:hover {
+        background: linear-gradient(
+          90deg,
+          rgba(102, 126, 234, 0.05) 0%,
+          transparent 100%
+        );
+        transform: translateX(8px);
+        box-shadow: inset 0 0 0 1px rgba(102, 126, 234, 0.1);
+      }
+
+      .asana-card:hover::before {
+        transform: scaleY(1);
+      }
+
+      .asana-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .asana-number {
+        width: 3.5rem;
+        height: 3.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      }
+
+      .asana-card:hover .asana-number {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+      }
+
+      .asana-number span {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: white;
+      }
+
+      .asana-name {
+        flex: 1;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #2d3748;
+        transition: color 0.3s ease;
+      }
+
+      .asana-card:hover .asana-name {
+        color: #667eea;
+      }
+
+      .asana-duration {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.625rem 1rem;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(118, 75, 162, 0.1) 100%
+        );
+        border-radius: 12px;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+      }
+
+      .asana-card:hover .asana-duration {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.15) 0%,
+          rgba(118, 75, 162, 0.15) 100%
+        );
+        transform: scale(1.05);
+      }
+
+      .asana-duration svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        color: #667eea;
+      }
+
+      .asana-duration span {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #667eea;
+      }
+
+      /* Loading */
+      .loading {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .loading-content {
+        text-align: center;
+        padding: 3rem;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(10px);
+      }
+
+      .spinner {
+        width: 3rem;
+        height: 3rem;
+        border: 4px solid rgba(102, 126, 234, 0.2);
+        border-top-color: #667eea;
+        border-radius: 50%;
+        animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        margin: 0 auto 1.5rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        font-size: 1.125rem;
+        color: #667eea;
+        font-weight: 600;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+
+        .filter-container {
+          flex-wrap: wrap;
+          gap: 0.75rem;
+        }
+
+        .filter-btn {
+          padding: 10px 20px;
+          font-size: 0.875rem;
+        }
+
+        .asana-content {
+          gap: 1rem;
+        }
+
+        .asana-number {
+          width: 3rem;
+          height: 3rem;
+        }
+
+        .asana-number span {
+          font-size: 1rem;
+        }
+
+        .asana-name {
+          font-size: 1rem;
+        }
+
+        .asana-duration {
+          padding: 0.5rem 0.75rem;
+        }
+
+        .summary-stats {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .stat-value {
+          font-size: 2.5rem;
+        }
+
+        .day-header {
+          padding: 1rem;
+        }
+
+        .asana-card {
+          padding: 1rem;
+        }
+
+        .back-button {
+          padding: 10px 18px;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .filter-btn {
+          flex: 1;
+          min-width: 120px;
+          justify-content: center;
+        }
+
+        .asana-content {
+          flex-wrap: wrap;
+        }
+
+        .asana-duration {
+          margin-left: auto;
+        }
+
+        .stat-value {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Back Button -->
+    <a href="/dashboard" class="back-button"> ← Back to Dashboard </a>
+
+    <div id="app">
+      <!-- Loading state -->
+      <div class="loading">
+        <div class="loading-content">
+          <div class="spinner"></div>
+          <p class="loading-text">Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // State management
+      let activityLog = [];
+      let currentFilter = "all";
+
+      // Calculate totals
+      function calculateTotals(schedule) {
+        let totalAsanas = 0;
+        let totalSessions = 0;
+        let totalSeconds = 0;
+
+        schedule.forEach((day) => {
+          day.asanas.forEach((asana) => {
+            totalAsanas += asana.count;
+            totalSessions += 1;
+            // Parse duration string to seconds
+            const duration = asana.duration;
+            let seconds = 0;
+
+            // Handle different duration formats:
+            // "5 min 30s", "5 min", "30s", "< 1s"
+            if (duration.includes("< 1s")) {
+              seconds = 0;
+            } else if (duration.includes("min")) {
+              const parts = duration.split(" ");
+              const mins = parseInt(parts[0]);
+              seconds += mins * 60;
+              // Check if there are seconds after "min"
+              if (parts.length > 2 && parts[2].includes("s")) {
+                seconds += parseInt(parts[2].replace("s", ""));
+              }
+            } else if (duration.includes("s")) {
+              // Just seconds like "30s"
+              seconds = parseInt(duration.replace("s", ""));
+            }
+            totalSeconds += seconds;
+          });
+        });
+
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const secs = totalSeconds % 60;
+
+        let totalTime = "";
+        if (hours > 0) {
+          totalTime = `${hours}h ${minutes}m`;
+        } else if (minutes > 0) {
+          totalTime = `${minutes}m`;
+          if (secs > 0) {
+            totalTime += ` ${secs}s`;
+          }
+        } else {
+          totalTime = `${secs}s`;
+        }
+
+        return { totalAsanas, totalSessions, totalTime };
+      }
+
+      // SVG Icons
+      const icons = {
+        award:
+          '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" /></svg>',
+        timer:
+          '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+        calendar:
+          '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>',
+        clock:
+          '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+      };
+
+      // Render functions
+      function renderAsanaCard(asana) {
+        return `
+                <div class="asana-card">
+                    <div class="asana-content">
+                        <div class="asana-number">
+                            <span>${asana.slNo}</span>
+                        </div>
+                        <h3 class="asana-name">${asana.name} ${
+          asana.count > 1
+            ? `<span style="color: #667eea; font-size: 0.9rem;">(×${asana.count})</span>`
+            : ""
+        }</h3>
+                        <div class="asana-duration">
+                            ${icons.clock}
+                            <span>${asana.duration}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      function renderDaySection(dateInfo) {
+        const { date, asanas } = dateInfo;
+        const totalCount = asanas.reduce((sum, asana) => sum + asana.count, 0);
+        return `
+                <section class="day-section">
+                    <div class="day-header">
+                        <div class="day-icon">
+                            ${icons.calendar}
+                        </div>
+                        <div class="day-info">
+                            <h2>${date}</h2>
+                            <p class="day-meta">${asanas.length} unique ${
+          asanas.length === 1 ? "asana" : "asanas"
+        } • ${totalCount} total ${totalCount === 1 ? "session" : "sessions"}</p>
+                        </div>
+                    </div>
+                    <div class="asana-list">
+                        ${asanas
+                          .map((asana) => renderAsanaCard(asana))
+                          .join("")}
+                    </div>
+                </section>
+            `;
+      }
+
+      function renderSummarySection(totals, filterType) {
+        const filterLabel =
+          filterType === "all"
+            ? "All Time"
+            : filterType === "weekly"
+            ? "Last 7 Days"
+            : "Last 30 Days";
+        return `
+                <section class="summary-card">
+                    <div class="summary-header">
+                        <div class="summary-icon">
+                            ${icons.award}
+                        </div>
+                        <h2>${filterLabel} Summary</h2>
+                    </div>
+                    <div class="summary-stats">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    ${icons.award}
+                                </div>
+                                <span class="stat-label">Total Sessions</span>
+                            </div>
+                            <div class="stat-value">${totals.totalAsanas}</div>
+                            <p class="stat-description">Asana sessions completed</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    ${icons.timer}
+                                </div>
+                                <span class="stat-label">Practice Time</span>
+                            </div>
+                            <div class="stat-value">${totals.totalTime}</div>
+                            <p class="stat-description">Total commitment</p>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon">
+                                    ${icons.calendar}
+                                </div>
+                                <span class="stat-label">Unique Poses</span>
+                            </div>
+                            <div class="stat-value">${totals.totalSessions}</div>
+                            <p class="stat-description">Different asanas</p>
+                        </div>
+                    </div>
+                </section>
+            `;
+      }
+
+      function renderApp(data) {
+        const { schedule, filter, total_days } = data;
+        const totals = calculateTotals(schedule);
+
+        return `
+                <header>
+                    <div class="container">
+                        <div class="hero">
+                            <h1>Practice Log</h1>
+                            <p>Your complete yoga journey</p>
+                        </div>
+                        <div class="filter-container">
+                            <button class="filter-btn ${
+                              filter === "all" ? "active" : ""
+                            }" onclick="applyFilter('all')">📋 All Time</button>
+                            <button class="filter-btn ${
+                              filter === "weekly" ? "active" : ""
+                            }" onclick="applyFilter('weekly')">📅 Last 7 Days</button>
+                            <button class="filter-btn ${
+                              filter === "monthly" ? "active" : ""
+                            }" onclick="applyFilter('monthly')">📆 Last 30 Days</button>
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="container">
+                        <div class="content-wrapper">
+                            ${renderSummarySection(totals, filter)}
+                            ${schedule
+                              .map((dateInfo) => renderDaySection(dateInfo))
+                              .join("")}
+                        </div>
+                    </div>
+                </main>
+            `;
+      }
+
+      // Fetch activity log from backend
+      async function fetchActivityLog(filter = "all") {
+        try {
+          const response = await fetch(
+            `/api/user/activity-log?filter=${filter}`
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch activity log");
+          }
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Error fetching activity log:", error);
+          return { schedule: [], filter: filter, total_days: 0 };
+        }
+      }
+
+      // Apply filter
+      async function applyFilter(filter) {
+        currentFilter = filter;
+
+        // Show loading
+        document.getElementById("app").innerHTML = `
+                <header>
+                    <div class="container">
+                        <div class="hero">
+                            <h1>Practice Log</h1>
+                            <p>Your yoga journey</p>
+                        </div>
+                        <div class="filter-container">
+                            <button class="filter-btn ${
+                              filter === "all" ? "active" : ""
+                            }" onclick="applyFilter('all')">📋 All Time</button>
+                            <button class="filter-btn ${
+                              filter === "weekly" ? "active" : ""
+                            }" onclick="applyFilter('weekly')">📅 Last 7 Days</button>
+                            <button class="filter-btn ${
+                              filter === "monthly" ? "active" : ""
+                            }" onclick="applyFilter('monthly')">📆 Last 30 Days</button>
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="container">
+                        <div class="loading">
+                            <div class="loading-content">
+                                <div class="spinner"></div>
+                                <p class="loading-text">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            `;
+
+        // Fetch and render
+        const data = await fetchActivityLog(filter);
+        activityLog = data.schedule;
+
+        // Update the DOM with rendered content
+        document.getElementById("app").innerHTML = renderApp(data);
+      }
+
+      // Initialize app
+      async function init() {
+        try {
+          // Show loading state
+          document.getElementById("app").innerHTML = `
+                    <div class="loading">
+                        <div class="loading-content">
+                            <div class="spinner"></div>
+                            <p class="loading-text">Loading your practice log...</p>
+                        </div>
+                    </div>
+                `;
+
+          // Fetch real data (default: all)
+          const data = await fetchActivityLog("all");
+          activityLog = data.schedule;
+          currentFilter = data.filter;
+
+          // Check if schedule is empty
+          if (data.schedule.length === 0) {
+            document.getElementById("app").innerHTML = `
+                        <header>
+                            <div class="container">
+                                <div class="hero">
+                                    <h1>Practice Log</h1>
+                                    <p>Your complete yoga journey</p>
+                                </div>
+                            </div>
+                        </header>
+                        <main>
+                            <div class="container">
+                                <div class="content-wrapper">
+                                    <div style="text-align: center; padding: 3rem; background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);">
+                                        <div style="font-size: 4rem; margin-bottom: 1rem;">🧘‍♂️</div>
+                                        <h2 style="color: #2d3748; margin-bottom: 1rem;">No Practice Data Yet</h2>
+                                        <p style="color: #718096; margin-bottom: 2rem;">Start your yoga journey by practicing some asanas!</p>
+                                        <a href="/webcam" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: 600;">Start Practice</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    `;
+            return;
+          }
+
+          document.getElementById("app").innerHTML = renderApp(data);
+        } catch (error) {
+          console.error("Error initializing app:", error);
+          document.getElementById("app").innerHTML = `
+                    <div class="loading">
+                        <div class="loading-content">
+                            <p class="loading-text" style="color: #e53e3e;">Error loading data. Please try again.</p>
+                        </div>
+                    </div>
+                `;
+        }
+      }
+
+      // Start app
+      init();
+    </script>
+  </body>
+</html>

@@ -19,6 +19,7 @@
             <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
             <a href="{{ url_for('webcam') }}" class="nav-link">📷 Practice</a>
             <a href="{{ url_for('update_image_predictor') }}" class="nav-link">🖼️ Upload</a>
+            <a href="{{ url_for('detailed_list') }}" class="nav-link">📅 Weekly Schedule</a>
             <a href="{{ url_for('yoga_manual') }}" class="nav-link">📖 Manual</a>
             <a href="{{ url_for('profile') }}" class="nav-link">👤 Profile</a>
         </div>
@@ -94,7 +95,10 @@
                 </div>
                 
                 <div class="top-asanas">
-                    <h3>Top Asanas</h3>
+                    <div class="top-asanas-header">
+                        <h3>Top Asanas</h3>
+                        <a href="{{ url_for('detailed_list') }}" class="detailed-log-btn">📅 Detailed Log</a>
+                    </div>
                     <div id="topAsanasList">
                         <div class="loading">Loading top asanas...</div>
                     </div>

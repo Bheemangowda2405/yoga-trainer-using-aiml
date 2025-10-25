@@ -494,6 +494,12 @@ def forgot_password():
     
     return render_template('forgot-password.html')
 
+@app.route('/detailed-list')
+@login_required
+def detailed_list():
+    """Weekly asana schedule page"""
+    return render_template('detailedList.html')
+
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -777,6 +783,109 @@ def get_user_stats():
     except Exception as e:
         print(f"Error getting user stats: {e}")
         return jsonify({'error': 'Failed to get user stats'}), 500
+
+@app.route('/api/user/activity-log')
+@login_required
+def get_activity_log():
+    """Get user's asana activity log with optional filtering"""
+    try:
+        from datetime import datetime, timedelta
+        from collections import defaultdict
+        
+        # Get filter parameter (default: all)
+        filter_type = request.args.get('filter', 'all')
+        
+        # Calculate date range based on filter
+        end_date = datetime.utcnow()
+        if filter_type == 'weekly':
+            start_date = end_date - timedelta(days=7)
+        elif filter_type == 'monthly':
+            start_date = end_date - timedelta(days=30)
+        else:  # 'all'
+            start_date = datetime.min  # Get all records
+        
+        # Query user activities
+        query = {'user_id': ObjectId(current_user.id)}
+        if filter_type != 'all':
+            query['timestamp'] = {'$gte': start_date, '$lte': end_date}
+        
+        activities = db.db.user_activities.find(query).sort('timestamp', -1)  # Most recent first
+        
+        # Organize by date
+        schedule = defaultdict(list)
+        
+        for activity in activities:
+            # Format date as "Monday, Oct 23, 2025"
+            date_key = activity['timestamp'].strftime('%A, %b %d, %Y')
+            
+            # Check if this asana is already in the day's list
+            existing = next((item for item in schedule[date_key] if item['name'] == activity.get('traditional_name', activity['pose_name'])), None)
+            
+            if existing:
+                # Increment count and add duration
+                existing['count'] += 1
+                existing['duration_seconds'] += activity.get('duration_seconds', 0)
+            else:
+                # Add new asana to the day
+                schedule[date_key].append({
+                    'name': activity.get('traditional_name', activity['pose_name']),
+                    'duration_seconds': activity.get('duration_seconds', 0),
+                    'count': 1,
+                    'timestamp': activity['timestamp']
+                })
+        
+        # Format the schedule with proper numbering and duration formatting
+        formatted_schedule = []
+        for date_key in sorted(schedule.keys(), key=lambda x: schedule[x][0]['timestamp'], reverse=True):
+            asanas = schedule[date_key]
+            formatted_asanas = []
+            
+            for idx, asana in enumerate(asanas, 1):
+                duration_sec = asana['duration_seconds']
+                minutes = int(duration_sec // 60)
+                seconds = int(duration_sec % 60)
+                
+                if minutes > 0:
+                    duration_str = f"{minutes} min"
+                    if seconds > 0:
+                        duration_str += f" {seconds}s"
+                else:
+                    duration_str = f"{seconds}s" if seconds > 0 else "< 1s"
+                
+                formatted_asanas.append({
+                    'slNo': idx,
+                    'name': asana['name'],
+                    'duration': duration_str,
+                    'count': asana['count']
+                })
+            
+            formatted_schedule.append({
+                'date': date_key,
+                'asanas': formatted_asanas
+            })
+        
+        return jsonify({
+            'schedule': formatted_schedule,
+            'filter': filter_type,
+            'total_days': len(formatted_schedule)
+        })
+        
+    except Exception as e:
+        print(f"Error getting activity log: {e}")
+        return jsonify({'error': str(e)}), 500
+
+def calculate_user_level(total_asanas):
+    """Calculate user level based on total asanas"""
+    if total_asanas >= 500:
+        return "Yoga Master 🏆"
+    elif total_asanas >= 250:
+        return "Advanced Yogi 🌟"
+    elif total_asanas >= 100:
+        return "Intermediate Yogi 💫"
+    elif total_asanas >= 50:
+        return "Beginner Yogi 🌱"
+    else:
+        return "New Yogi 🎯"
 
 @app.route('/api/leaderboard')
 @login_required

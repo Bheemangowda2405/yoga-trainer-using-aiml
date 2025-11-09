@@ -1,0 +1,41 @@
+body {
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.practice-controls {
+    display: flex;
+    gap: 20px;
+}
+
+.button {
+    background: linear-gradient(135deg, #6dd5ed, #2193b0);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 15px 30px;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background: linear-gradient(135deg, #2193b0, #6dd5ed);
+}
+
+.button:active {
+    transform: scale(0.95);
+}
+
+.play-pause {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+}
+
+.stop {
+    background: linear-gradient(135deg, #ff6a00, #ee0979);
+}

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Surya Namaskar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <button class="back-btn" id="backBtn" aria-label="Back">←</button>
+    <h1 class="title">Surya Namaskar</h1>
+    <span></span>
+  </header>
+
+  <main id="app" class="app-content">
+    <section id="home" class="screen active">
+      <div class="hero">
+        <img src="fit-woman-doing-yoga-sun-salutation-surya-namaskar-sivananda-style-asana-sequence-on-mat-at.webp" alt="Surya Namaskar" />
+      </div>
+
+      <div class="card info-card">
+        <h2 class="card-title">Introduction</h2>
+        <p>Welcome to <strong>SURYA NAMASKAR</strong>, a calm and elegant exploration of the ancient <em>Sun Salutation</em> — a flowing sequence of twelve postures that harmonizes breath, movement, and mindful awareness. Rooted in the Vedic tradition and refined through Hatha Yoga, Surya Namaskar honors the sun as a symbol of vitality, clarity, and renewal.</p>
+        <p>Practiced regularly, it improves flexibility, posture, and strength while easing stress and enhancing focus. This project offers a balanced, modern view for real‑world users and examiners — highlighting origins, benefits, and level‑based practice options. Begin gently, breathe steadily, and experience how this timeless ritual nurtures body and mind.</p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit card">
+          <div class="benefit-emoji">🧘‍♀️</div>
+          <div class="benefit-title">Mindful Movement</div>
+          <div class="benefit-sub">Breath‑led flow for balance</div>
+        </div>
+        <div class="benefit card">
+          <div class="benefit-emoji">💪</div>
+          <div class="benefit-title">Strength & Flexibility</div>
+          <div class="benefit-sub">Engage core, legs, and spine</div>
+        </div>
+        <div class="benefit card">
+          <div class="benefit-emoji">🧠</div>
+          <div class="benefit-title">Clarity & Focus</div>
+          <div class="benefit-sub">Reduce stress, improve calm</div>
+        </div>
+      </div>
+
+      
+
+      <div class="card">
+        <h2 class="card-title">History and Origin</h2>
+        <p>The practice has ancient roots in India and is traditionally performed facing the rising sun. The term "Surya Namaskar" is derived from Sanskrit: "Surya" means sun and "Namaskar" means salutation or greeting. The origins trace back to the Vedic period and evolved through Hatha Yoga traditions.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">What is the best time to do Surya Namaskar?</h2>
+        <p>Anytime of day works; however, sunrise yields the best results as sun exposure activates our solar plexus.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">What precautions should be taken before practicing Surya Namaskar?</h2>
+        <ul class="bullets">
+          <li>Don’t eat or drink immediately before or after practice.</li>
+          <li>Do a brief warm-up and synchronize with breath.</li>
+          <li>Consult a doctor for medical concerns; avoid during menstrual period and pregnancy.</li>
+          <li>Practice in a peaceful, well‑ventilated place; wear comfortable clothing.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Is Surya Namaskar helpful for healthy skin and hair?</h2>
+        <p>Improved blood circulation nourishes the scalp and skin, helping prevent hair loss and supporting youthful, healthy skin.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Practice Tips</h2>
+        <ul class="bullets">
+          <li><strong>Consistency:</strong> Practice daily, preferably in the morning facing the sun.</li>
+          <li><strong>Breathing:</strong> Synchronize each movement with deep, rhythmic breaths.</li>
+          <li><strong>Warm‑Up:</strong> Begin with gentle stretches.</li>
+          <li><strong>Listen to your body:</strong> Modify poses to suit your flexibility and strength.</li>
+          <li><strong>Repetitions:</strong> Start with a few rounds and increase gradually.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <p>Surya Namaskar integrates body, mind, and spirit. Whether a beginner or experienced practitioner, adding it to your routine can greatly improve health and wellbeing.</p>
+      </div>
+
+    </section>
+
+    <section id="setup" class="screen">
+      <div class="card">
+        <h2 class="card-title">Choose Your Speed</h2>
+        <div class="speed-options">
+          <button class="speed-btn" data-speed="soft">
+            <div class="speed-icon">🐢</div>
+            <span>Soft</span>
+          </button>
+          <button class="speed-btn" data-speed="regular">
+            <div class="speed-icon">🦌</div>
+            <span>Regular</span>
+          </button>
+          <button class="speed-btn" data-speed="accelerated">
+            <div class="speed-icon">🐆</div>
+            <span>Accelerated</span>
+          </button>
+        </div>
+        <p id="roundTimeNote" class="muted" style="margin:8px 0 0 0"></p>
+      </div>
+
+      <div class="card">
+        <div id="learnCard" class="learn-card" tabindex="0" role="button" aria-label="Learn Surya Namaskar">
+          <div class="learn-copy">
+            <div class="learn-sub">How to do?</div>
+            <div class="learn-title">Learn Surya Namaskar <span class="chev">›</span></div>
+          </div>
+          <img class="learn-thumb" src="fit-woman-doing-yoga-sun-salutation-surya-namaskar-sivananda-style-asana-sequence-on-mat-at.webp" alt="Learn Surya Namaskar">
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Choose a level</h2>
+        <div class="level-table">
+          <div class="level-table-header">
+            <div class="level-col">Level</div>
+            <div class="rounds-col">Rounds</div>
+            <div class="duration-col">~Duration</div>
+          </div>
+          <div class="level-table-body">
+            <label class="level-row selected">
+              <input type="radio" name="level" value="beginner" checked>
+              <div class="level-col">
+                <span class="radio-btn"></span>
+                <span class="level-name">Beginner</span>
+              </div>
+              <div class="rounds-col">12</div>
+              <div class="duration-col">~12 Min</div>
+            </label>
+            <label class="level-row">
+              <input type="radio" name="level" value="intermediate">
+              <div class="level-col">
+                <span class="radio-btn"></span>
+                <span class="level-name">Intermediate</span>
+              </div>
+              <div class="rounds-col">51</div>
+              <div class="duration-col">~51 Min</div>
+            </label>
+            <label class="level-row">
+              <input type="radio" name="level" value="custom">
+              <div class="level-col">
+                <span class="radio-btn"></span>
+                <span class="level-name">Custom (1 to 500)</span>
+              </div>
+              <div class="rounds-col">5</div>
+              <div class="duration-col">~5 Min</div>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <label class="checkbox-option">
+          <input type="checkbox" id="recoveryIntervals" checked>
+          <span class="checkmark"></span>
+          <span class="checkbox-text">Include recovery intervals between rounds</span>
+        </label>
+      </div>
+
+      <button class="setup-start-btn" id="setupStartBtn">▶ Start Practice</button>
+    </section>
+
+    <section id="poses" class="screen">
+      <div class="card card--header">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" style="margin:0">All Poses</h2>
+            <p class="muted" style="margin:4px 0 0 0">Follow the steps in order. <strong>Step 1</strong> is the beginning and <strong>Step 12</strong> completes the cycle.</p>
+          </div>
+        </div>
+      </div>
+      <div id="poses-grid" class="poses-grid"></div>
+      <div class="poses-start-wrap">
+        <button class="poses-start-btn" id="posesStartBtn">▶ Start Practice</button>
+      </div>
+    </section>
+  </main>
+
+  <section id="practice" class="practice-screen">
+    <div class="practice-wrap">
+      <div class="practice-head">
+        <div class="practice-step" id="practiceStep"></div>
+        <h2 class="practice-title" id="practiceTitle"></h2>
+        <div class="practice-mantra" id="practiceMantra" aria-live="polite"></div>
+      </div>
+
+      <div class="practice-stage">
+        <img id="practiceImage" class="practice-image" alt="Current pose" />
+        <div class="fade-layer" id="fadeLayer"></div>
+        <div class="countdown-overlay" id="countdownOverlay">
+          <div class="countdown-text">Get Ready</div>
+          <div class="practice-countdown" id="practiceCountdown" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="practice-progress">
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div class="practice-controls">
+        <!-- Replace the Start button with breath box -->
+        <div id="breathBox" class="breath-box exhale">Exhale</div>
+        <button id="btnPause" class="control-btn">Pause</button>
+        <button id="btnResume" class="control-btn">Resume</button>
+        <button id="btnRestart" class="control-btn">Restart</button>
+        <!-- Sound toggle -->
+        <label class="voice-toggle" style="margin-left:12px;align-items:center;">
+          <input type="checkbox" id="soundToggle" checked />
+          <span style="font-weight:700;margin-left:6px;color:var(--muted)">Sound</span>
+        </label>
+        <!-- Exit button -->
+        <button id="exitBtn" class="control-btn" style="margin-left:10px;border:2px solid #e5d6bd;background:#fff7ea;">
+          Exit
+        </button>
+      </div>
+
+      <div class="practice-complete" id="practiceComplete" aria-live="polite">Session Complete ✨</div>
+    </div>
+  </section>
+
+  
+
+  <nav class="tabbar">
+    <button class="tab active" data-target="home">Home</button>
+    <button class="tab" data-target="poses">Poses</button>
+    <button class="tab-start" id="navStartBtn">▶ Start</button>
+  </nav>
+
+  <!-- Exit / Resume confirmation dialog (shown when Back pressed during practice) -->
+  <div class="confirm-overlay" id="exitConfirm" role="dialog" aria-modal="true" hidden>
+    <div class="confirm-dialog" role="document" aria-labelledby="exitConfirmTitle">
+      <h3 id="exitConfirmTitle">Exit practice?</h3>
+      <p class="muted">Do you want to exit the session or resume practice?</p>
+      <div class="confirm-actions">
+        <button id="confirmExit" class="control-btn">Exit</button>
+        <button id="confirmResume" class="control-btn primary">Resume</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
+
+

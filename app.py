@@ -622,6 +622,18 @@ def webcam():
     """Webcam pose detection page"""
     return render_template('webcam.html')
 
+@app.route('/index-standalone')
+@login_required
+def index_standalone():
+    """Standalone index page"""
+    return render_template('index-standalone.html')
+
+@app.route('/suryanamaskara')
+@login_required
+def suryanamaskara():
+    """Surya Namaskara practice page"""
+    return render_template('suryanamaskara.html')
+
 @app.route('/speak_feedback', methods=['POST'])
 @login_required
 def speak_feedback():

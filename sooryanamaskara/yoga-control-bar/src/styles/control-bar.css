@@ -9,7 +9,73 @@ body {
 
 .practice-controls {
     display: flex;
+    flex-direction: column;
     gap: 20px;
+    align-items: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 40px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-primary:active {
+    transform: scale(0.95);
+}
+
+.practice-options {
+    display: flex;
+    gap: 15px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.practice-options.expanded {
+    max-height: 200px;
+    opacity: 1;
+}
+
+.practice-options.hidden {
+    max-height: 0;
+    opacity: 0;
+}
+
+.control-button {
+    background: linear-gradient(135deg, #6dd5ed, #2193b0);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 12px 25px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.control-button:hover {
+    background: linear-gradient(135deg, #2193b0, #6dd5ed);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.control-button:active {
+    transform: scale(0.95);
 }
 
 .button {

@@ -177,16 +177,18 @@ async function redirectToWebcam() {
     if (response.ok) {
       // User is logged in, redirect to index-standalone
       console.log("User is authenticated, redirecting to index-standalone");
-      window.location.href = "/indexStandalone";
+      window.location.href = "/index-standalone";
     } else {
       // User is not logged in, redirect to login with next parameter
       console.log("User not authenticated, redirecting to login");
-      window.location.href = "/login?next=" + encodeURIComponent("/index-standalone");
+      window.location.href =
+        "/login?next=" + encodeURIComponent("/index-standalone");
     }
   } catch (error) {
     // If API call fails, assume not logged in
     console.log("API call failed, assuming not logged in:", error);
-    window.location.href = "/login?next=" + encodeURIComponent("/index-standalone");
+    window.location.href =
+      "/login?next=" + encodeURIComponent("/index-standalone");
   }
 }
 

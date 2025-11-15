@@ -73,6 +73,111 @@
         padding: 0 1.5rem;
       }
 
+      /* Navigation */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #2d5a27;
+        transition: transform 0.3s ease;
+      }
+
+      .nav-logo:hover {
+        transform: scale(1.05);
+      }
+
+      .nav-logo img {
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .nav-logo img:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d5a27;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .nav-links a:hover {
+        color: #2d5a27;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #2d5a27;
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .nav-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .nav-toggle span {
+        width: 25px;
+        height: 3px;
+        background: #333;
+        margin: 3px 0;
+        transition: 0.3s;
+      }
+
       /* Page Transitions */
       .page {
         display: none;
@@ -622,9 +727,124 @@
         font-size: 1.125rem;
         font-style: italic;
       }
+
+      /* Navbar Avatar Styling - Compact version */
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      
+      .user-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #22c55e;
+      }
+      
+      .user-avatar-placeholder {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        border: 2px solid #22c55e;
+      }
+      
+      .username {
+        font-weight: 600;
+        color: #333;
+        font-size: 12px;
+      }
+      
+      .btn-logout {
+        background-color: #ef4444;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 12px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .btn-logout:hover {
+        background-color: #dc2626;
+      }
+      
+      /* Responsive adjustments for navbar */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .nav-actions {
+          display: flex;
+        }
+        
+        .user-info {
+          flex-direction: row;
+          gap: 8px;
+        }
+        
+        .username {
+          font-size: 12px;
+        }
+
+        .nav-toggle {
+          display: flex;
+        }
+      }
     </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
   </head>
   <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <img
+            src="{{ url_for('static', filename='uploads/yogologo.jpg') }}"
+            alt="Yoga Logo"
+            style="height: 40px"
+          />
+          <span class="logo-text">AI Yoga Trainer</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('yoga_manual') }}">Yoga Manual</a></li>
+          <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+          {% if user %}
+          <!-- User is logged in -->
+          <div class="user-info">
+            {% if user.avatar_url %}
+            <img src="{{ user.avatar_url }}" alt="Avatar" class="user-avatar" />
+            {% else %}
+            <div class="user-avatar-placeholder">👤</div>
+            {% endif %}
+            <span class="username">{{ user.username }}</span>
+            <a href="{{ url_for('logout', next='/') }}" class="btn btn-logout">Logout</a>
+          </div>
+          {% else %}
+          <!-- User is not logged in -->
+          <a href="{{ url_for('login') }}" class="btn btn-login" style="background-color: #22c55e; color: #ffffff; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 600;">Login</a>
+          {% endif %}
+        </div>
+        <div class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
     <!-- Home Page -->
     <div id="home" class="page active">
       <header>
@@ -1356,13 +1576,13 @@
     <script>
       function navigateTo(page) {
         // Redirect to appropriate pages
-        if (page === 'yoga') {
+        if (page === "yoga") {
           // Redirect to webcam page for yoga journey
-          window.location.href = '/webcam';
-        } else if (page === 'surya') {
+          window.location.href = "/webcam";
+        } else if (page === "surya") {
           // Redirect to Surya Namaskara page
-          window.location.href = '/suryanamaskara';
-        } else if (page === 'home') {
+          window.location.href = "/suryanamaskara";
+        } else if (page === "home") {
           // Stay on current page and show home section
           document.querySelectorAll(".page").forEach((p) => {
             p.classList.remove("active");

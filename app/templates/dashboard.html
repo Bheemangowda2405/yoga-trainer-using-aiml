@@ -17,7 +17,7 @@
         </div>
         <div class="navbar-nav">
             <a href="{{ url_for('index') }}" class="nav-link">🏠 Home</a>
-            <a href="{{ url_for('webcam') }}" class="nav-link">📷 Practice</a>
+            <a href="{{ url_for('index_standalone') }}" class="nav-link">📷 Practice</a>
             <a href="{{ url_for('update_image_predictor') }}" class="nav-link">🖼️ Upload</a>
             <a href="{{ url_for('detailed_list') }}" class="nav-link">📅 Weekly Schedule</a>
             <a href="{{ url_for('yoga_manual') }}" class="nav-link">📖 Manual</a>
@@ -149,7 +149,7 @@
                     <p class="action-description">Update your personal information and preferences</p>
                 </div>
 
-                <div class="action-card" onclick="window.location.href='/webcam'">
+                <div class="action-card" onclick="window.location.href='/index-standalone'">
                     <div class="action-icon">📷</div>
                     <h3 class="action-title">Start Practice</h3>
                     <p class="action-description">Begin real-time yoga pose detection</p>

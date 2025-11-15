@@ -10,9 +10,217 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='suryanamaskara/styles.css') }}" />
+    <style>
+      /* Override body to remove any extra space */
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Adjust app-header to account for navbar */
+      .app-header {
+        position: relative !important; /* Override sticky positioning */
+        top: 0 !important;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+      
+      /* Ensure navbar is above app-header */
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        margin-bottom: 0;
+      }
+      
+      /* Main app container - remove any gaps and add solid background */
+      #app {
+        margin-top: 0;
+        padding-top: 0;
+        background: var(--beige);
+        min-height: 100vh;
+      }
+      
+      /* Remove extra spacing and ensure content starts immediately */
+      .app-content {
+        margin-top: 0;
+        padding-top: 0;
+        background: var(--beige);
+      }
+      
+      /* Remove any extra space above hero */
+      #home {
+        padding-top: 0;
+        margin-top: 0;
+      }
+      
+      .screen {
+        padding-top: 0;
+        background: var(--beige);
+      }
+      
+      /* Fix user avatar styling in navbar - use specific selectors */
+      .navbar .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .navbar .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #22c55e;
+      }
+      
+      .navbar .user-avatar-placeholder {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        border: 2px solid #22c55e;
+      }
+      
+      .navbar .username {
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      
+      .navbar .btn-logout {
+        background-color: #ef4444;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        white-space: nowrap;
+      }
+      
+      .navbar .btn-logout:hover {
+        background-color: #dc2626;
+      }
+      
+      /* Constrain hero image to match card width and remove top space */
+      .hero {
+        max-width: 100%;
+        margin: 0 0 14px 0;
+        background: transparent;
+        overflow: hidden;
+        border-radius: 14px;
+        position: relative;
+        max-height: 400px;
+      }
+      
+      .hero img {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+        display: block;
+        object-fit: cover;
+        object-position: center;
+      }
+      
+      /* Ensure app-content container is properly constrained - override duplicate */
+      .app-content {
+        max-width: 820px !important;
+        margin: 0 auto !important;
+        padding: 0 16px 96px !important;
+        background: var(--beige) !important;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .navbar .user-info {
+          gap: 6px;
+        }
+        
+        .navbar .user-avatar,
+        .navbar .user-avatar-placeholder {
+          width: 32px;
+          height: 32px;
+        }
+        
+        .navbar .username {
+          font-size: 12px;
+          max-width: 80px;
+        }
+        
+        .navbar .btn-logout {
+          padding: 4px 10px;
+          font-size: 12px;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <img
+            src="{{ url_for('static', filename='uploads/yogologo.jpg') }}"
+            alt="Yoga Logo"
+            style="height: 40px"
+          />
+          <span class="logo-text">AI Yoga Trainer</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('yoga_manual') }}">Yoga Manual</a></li>
+          <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+          {% if current_user.is_authenticated %}
+          <!-- User is logged in -->
+          <div class="user-info">
+            {% if current_user.user_data and current_user.user_data.profile and current_user.user_data.profile.avatar_url %}
+            <img src="{{ current_user.user_data.profile.avatar_url }}" alt="Avatar" class="user-avatar" />
+            {% else %}
+            <div class="user-avatar-placeholder">👤</div>
+            {% endif %}
+            <span class="username">{{ current_user.username }}</span>
+            <a href="{{ url_for('logout', next='/') }}" class="btn btn-logout">Logout</a>
+          </div>
+          {% else %}
+          <!-- User is not logged in -->
+          <a
+            href="{{ url_for('login') }}"
+            class="btn btn-login"
+            style="
+              background-color: #22c55e;
+              color: #ffffff;
+              padding: 8px 14px;
+              border-radius: 8px;
+              text-decoration: none;
+              font-weight: 600;
+            "
+            >Login</a
+          >
+          {% endif %}
+        </div>
+        <div class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
     <header class="app-header">
       <button class="back-btn" id="backBtn" aria-label="Back">←</button>
       <h1 class="title">Surya Namaskar</h1>
@@ -362,5 +570,24 @@
     </div>
 
     <script src="{{ url_for('static', filename='suryanamaskara/app.js') }}"></script>
+    <script>
+      // Override back button to go to dashboard
+      document.addEventListener('DOMContentLoaded', function() {
+        const backBtn = document.getElementById('backBtn');
+        if (backBtn) {
+          backBtn.addEventListener('click', function(e) {
+            // Check if we're in practice mode
+            const practiceScreen = document.getElementById('practice');
+            if (practiceScreen && practiceScreen.classList.contains('active')) {
+              // Let the original handler deal with it (shows exit confirmation)
+              return;
+            }
+            // Otherwise, go to dashboard
+            e.preventDefault();
+            window.location.href = "{{ url_for('dashboard') }}";
+          });
+        }
+      });
+    </script>
   </body>
 </html>

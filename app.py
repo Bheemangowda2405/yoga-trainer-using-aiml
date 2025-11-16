@@ -622,6 +622,40 @@ def webcam():
     """Webcam pose detection page"""
     return render_template('webcam.html')
 
+@app.route('/index-standalone')
+@login_required
+def index_standalone():
+    """Standalone index page"""
+    # Get user data
+    user_info = None
+    if current_user.is_authenticated:
+        try:
+            # Get user data from database
+            user_doc = db.db.users.find_one({'_id': ObjectId(current_user.id)})
+            if user_doc:
+                profile = user_doc.get('profile', {})
+                user_info = {
+                    'username': user_doc.get('username', ''),
+                    'email': user_doc.get('email', ''),
+                    'avatar_url': profile.get('avatar_url', '')
+                }
+        except Exception as e:
+            print(f"Error getting user info for index-standalone: {e}")
+            # Fallback to basic info
+            user_info = {
+                'username': current_user.username,
+                'email': current_user.email,
+                'avatar_url': ''
+            }
+    
+    return render_template('index-standalone.html', user=user_info)
+
+@app.route('/suryanamaskara')
+@login_required
+def suryanamaskara():
+    """Surya Namaskara practice page"""
+    return render_template('suryanamaskara.html')
+
 @app.route('/speak_feedback', methods=['POST'])
 @login_required
 def speak_feedback():

@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yoga Journey | Find Your Inner Peace</title>
+    <meta
+      name="description"
+      content="Discover transformative yoga practices - from traditional asanas to sacred Surya Namaskara. Begin your journey to balance, strength, and inner peace."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Brand Colors - #667eea */
+        --brand-primary: hsl(239, 72%, 69%);
+        --brand-primary-light: hsl(239, 72%, 80%);
+        --brand-primary-lighter: hsl(239, 72%, 92%);
+        --brand-primary-dark: hsl(239, 72%, 55%);
+
+        /* Complementary Gold */
+        --brand-gold: hsl(36, 85%, 62%);
+        --brand-gold-light: hsl(36, 85%, 75%);
+        --brand-gold-lighter: hsl(36, 85%, 90%);
+
+        /* Base Colors */
+        --background: hsl(240, 20%, 99%);
+        --foreground: hsl(239, 20%, 20%);
+        --card: hsl(0, 0%, 100%);
+        --border: hsl(240, 10%, 90%);
+        --muted-foreground: hsl(239, 10%, 45%);
+
+        /* Shadows */
+        --shadow-glow: 0 0 40px hsla(239, 72%, 69%, 0.3);
+        --shadow-elegant: 0 8px 32px hsla(239, 72%, 69%, 0.15);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        line-height: 1.6;
+        color: var(--foreground);
+        background: linear-gradient(
+          180deg,
+          var(--background) 0%,
+          hsl(240, 20%, 97%) 100%
+        );
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Playfair Display", serif;
+      }
+
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* Navigation */
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #2d5a27;
+        transition: transform 0.3s ease;
+      }
+
+      .nav-logo:hover {
+        transform: scale(1.05);
+      }
+
+      .nav-logo img {
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .nav-logo img:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d5a27;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        position: relative;
+      }
+
+      .nav-links a:hover {
+        color: #2d5a27;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #2d5a27;
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .nav-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .nav-toggle span {
+        width: 25px;
+        height: 3px;
+        background: #333;
+        margin: 3px 0;
+        transition: 0.3s;
+      }
+
+      /* Page Transitions */
+      .page {
+        display: none;
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Header */
+      header {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          135deg,
+          var(--brand-primary-dark) 0%,
+          var(--brand-primary) 50%,
+          var(--brand-primary-light) 100%
+        );
+        padding: 5rem 1.5rem;
+        text-align: center;
+        color: white;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 50%,
+          rgba(255, 255, 255, 0.1),
+          transparent 50%
+        );
+      }
+
+      header .content {
+        position: relative;
+        z-index: 10;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 7vw, 4.5rem);
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      .subtitle {
+        font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+        font-weight: 300;
+        opacity: 0.9;
+        animation: fadeIn 0.6s ease-out 0.1s both;
+      }
+
+      .icons {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        animation: fadeIn 0.6s ease-out 0.2s both;
+      }
+
+      .icon {
+        width: 2rem;
+        height: 2rem;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .icon:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+
+      .icon:nth-child(3) {
+        animation-delay: 0.6s;
+      }
+
+      /* Main Content */
+      .main-content {
+        padding: 4rem 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .section-header h2 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        margin-bottom: 1rem;
+      }
+
+      .section-header p {
+        font-size: 1.125rem;
+        color: var(--muted-foreground);
+        max-width: 42rem;
+        margin: 0 auto;
+      }
+
+      /* Cards Grid */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        align-items: stretch;
+      }
+
+      @media (min-width: 768px) {
+        .cards-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .card {
+        position: relative;
+        background: var(--card);
+        border: 2px solid transparent;
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 8rem;
+        height: 8rem;
+        border-radius: 50%;
+        margin-right: -4rem;
+        margin-top: -4rem;
+        transition: transform 0.5s ease;
+      }
+
+      .card:hover::before {
+        transform: scale(1.5);
+      }
+
+      .card-primary {
+        border-color: hsla(239, 72%, 69%, 0.2);
+        animation: slideInLeft 0.6s ease-out;
+      }
+
+      .card-primary::before {
+        background: hsla(239, 72%, 69%, 0.05);
+      }
+
+      .card-primary:hover {
+        border-color: hsla(239, 72%, 69%, 0.6);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .card-accent {
+        border-color: hsla(36, 85%, 62%, 0.2);
+        animation: slideInRight 0.6s ease-out;
+      }
+
+      .card-accent::before {
+        background: hsla(36, 85%, 62%, 0.05);
+      }
+
+      .card-accent:hover {
+        border-color: hsla(36, 85%, 62%, 0.6);
+        box-shadow: var(--shadow-elegant);
+      }
+
+      .card-header {
+        position: relative;
+        padding: 2rem;
+        flex-shrink: 0;
+      }
+
+      .icon-badge {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .icon-badge-primary {
+        background: linear-gradient(
+          135deg,
+          var(--brand-primary) 0%,
+          var(--brand-primary-light) 100%
+        );
+      }
+
+      .icon-badge-accent {
+        background: linear-gradient(
+          135deg,
+          var(--brand-gold) 0%,
+          var(--brand-gold-light) 100%
+        );
+      }
+
+      .icon-badge svg {
+        width: 2rem;
+        height: 2rem;
+        color: white;
+      }
+
+      .card-title {
+        font-size: 1.875rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .card-description {
+        color: var(--muted-foreground);
+        font-size: 1rem;
+      }
+
+      .card-content {
+        position: relative;
+        padding: 0 2rem 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-text {
+        color: var(--muted-foreground);
+        line-height: 1.75;
+        margin-bottom: 1.5rem;
+      }
+
+      .benefits-list {
+        padding-top: 1rem;
+        flex-grow: 1;
+      }
+
+      .benefit-item {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .checkmark {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 0.125rem;
+      }
+
+      .checkmark-primary {
+        background: hsla(239, 72%, 69%, 0.1);
+      }
+
+      .checkmark-accent {
+        background: hsla(36, 85%, 62%, 0.1);
+      }
+
+      .checkmark svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .checkmark-primary svg {
+        color: var(--brand-primary);
+      }
+
+      .checkmark-accent svg {
+        color: var(--brand-gold);
+      }
+
+      .benefit-title {
+        font-weight: 600;
+        color: var(--foreground);
+        margin-bottom: 0.25rem;
+      }
+
+      .benefit-description {
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+
+      /* Buttons */
+      .btn {
+        width: 100%;
+        padding: 1.5rem 2rem;
+        font-size: 1.125rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: "Inter", sans-serif;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--brand-primary) 0%,
+          var(--brand-primary-light) 100%
+        );
+        color: white;
+      }
+
+      .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+      }
+
+      .btn-accent {
+        background: linear-gradient(
+          135deg,
+          var(--brand-gold) 0%,
+          var(--brand-gold-light) 100%
+        );
+        color: white;
+      }
+
+      .btn-accent:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        background: white;
+        color: var(--foreground);
+        border: 1px solid var(--border);
+        width: auto;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      .btn-outline:hover {
+        background: hsl(240, 20%, 97%);
+      }
+
+      .btn svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        transition: transform 0.3s ease;
+      }
+
+      .btn:hover svg {
+        transform: translateX(4px);
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 4rem 0 2rem;
+      }
+
+      footer p {
+        font-size: 1.125rem;
+        color: var(--muted-foreground);
+        font-style: italic;
+      }
+
+      /* Detail Pages */
+      .detail-card {
+        border: 2px solid transparent;
+      }
+
+      .detail-card.card-primary {
+        border-color: hsla(239, 72%, 69%, 0.2);
+      }
+
+      .detail-card.card-accent {
+        border-color: hsla(36, 85%, 62%, 0.2);
+      }
+
+      .detail-content {
+        padding: 2rem;
+      }
+
+      .detail-text {
+        color: var(--muted-foreground);
+        line-height: 1.75;
+        font-size: 1.125rem;
+        margin-bottom: 2rem;
+      }
+
+      .detail-section {
+        margin-top: 2rem;
+      }
+
+      .detail-section h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .benefits-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .benefits-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .benefit-card {
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        border: 1px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .benefit-card-primary {
+        background: linear-gradient(
+          to bottom right,
+          hsla(239, 72%, 69%, 0.05),
+          transparent
+        );
+        border-color: hsla(239, 72%, 69%, 0.1);
+      }
+
+      .benefit-card-primary:hover {
+        border-color: hsla(239, 72%, 69%, 0.3);
+      }
+
+      .benefit-card-accent {
+        background: linear-gradient(
+          to bottom right,
+          hsla(36, 85%, 62%, 0.05),
+          transparent
+        );
+        border-color: hsla(36, 85%, 62%, 0.1);
+      }
+
+      .benefit-card-accent:hover {
+        border-color: hsla(36, 85%, 62%, 0.3);
+      }
+
+      .benefit-card-content {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .benefit-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .benefit-icon-primary {
+        background: hsla(239, 72%, 69%, 0.1);
+      }
+
+      .benefit-icon-accent {
+        background: hsla(36, 85%, 62%, 0.1);
+      }
+
+      .benefit-card h4 {
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        font-size: 1.125rem;
+      }
+
+      .highlight-box {
+        padding: 2rem;
+        border-radius: 0.75rem;
+        border: 2px solid transparent;
+        margin-top: 2rem;
+      }
+
+      .highlight-box-primary {
+        background: linear-gradient(
+          to bottom right,
+          hsla(239, 72%, 69%, 0.1),
+          hsla(239, 72%, 69%, 0.05),
+          transparent
+        );
+        border-color: hsla(239, 72%, 69%, 0.2);
+      }
+
+      .highlight-box-accent {
+        background: linear-gradient(
+          to bottom right,
+          hsla(36, 85%, 62%, 0.1),
+          hsla(36, 85%, 62%, 0.05),
+          transparent
+        );
+        border-color: hsla(36, 85%, 62%, 0.2);
+      }
+
+      .highlight-box p {
+        color: var(--foreground);
+        line-height: 1.75;
+        font-size: 1.125rem;
+        font-style: italic;
+      }
+
+      /* Navbar Avatar Styling - Compact version */
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      
+      .user-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #22c55e;
+      }
+      
+      .user-avatar-placeholder {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        border: 2px solid #22c55e;
+      }
+      
+      .username {
+        font-weight: 600;
+        color: #333;
+        font-size: 12px;
+      }
+      
+      .btn-logout {
+        background-color: #ef4444;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 12px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .btn-logout:hover {
+        background-color: #dc2626;
+      }
+      
+      /* Responsive adjustments for navbar */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .nav-actions {
+          display: flex;
+        }
+        
+        .user-info {
+          flex-direction: row;
+          gap: 8px;
+        }
+        
+        .username {
+          font-size: 12px;
+        }
+
+        .nav-toggle {
+          display: flex;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <img
+            src="{{ url_for('static', filename='uploads/yogologo.jpg') }}"
+            alt="Yoga Logo"
+            style="height: 40px"
+          />
+          <span class="logo-text">AI Yoga Trainer</span>
+        </div>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('yoga_manual') }}">Yoga Manual</a></li>
+          <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        </ul>
+        <div class="nav-actions">
+          {% if user %}
+          <!-- User is logged in -->
+          <div class="user-info">
+            {% if user.avatar_url %}
+            <img src="{{ user.avatar_url }}" alt="Avatar" class="user-avatar" />
+            {% else %}
+            <div class="user-avatar-placeholder">👤</div>
+            {% endif %}
+            <span class="username">{{ user.username }}</span>
+            <a href="{{ url_for('logout', next='/') }}" class="btn btn-logout">Logout</a>
+          </div>
+          {% else %}
+          <!-- User is not logged in -->
+          <a href="{{ url_for('login') }}" class="btn btn-login" style="background-color: #22c55e; color: #ffffff; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 600;">Login</a>
+          {% endif %}
+        </div>
+        <div class="nav-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+      <header>
+        <div class="content">
+          <h1>Yoga Journey</h1>
+          <p class="subtitle">Find Your Inner Peace</p>
+          <div class="icons">
+            <svg
+              class="icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="10" stroke-width="2" />
+            </svg>
+            <svg
+              class="icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                stroke-width="2"
+              />
+            </svg>
+            <svg
+              class="icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="5" stroke-width="2" />
+              <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" />
+              <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke-width="2" />
+              <line
+                x1="18.36"
+                y1="18.36"
+                x2="19.78"
+                y2="19.78"
+                stroke-width="2"
+              />
+              <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" />
+              <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" />
+              <line
+                x1="4.22"
+                y1="19.78"
+                x2="5.64"
+                y2="18.36"
+                stroke-width="2"
+              />
+              <line
+                x1="18.36"
+                y1="5.64"
+                x2="19.78"
+                y2="4.22"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <div class="container main-content">
+        <div class="section-header">
+          <h2>Choose Your Path to Wellness</h2>
+          <p>
+            Discover ancient practices that harmonize body, mind, and spirit
+          </p>
+        </div>
+
+        <div class="cards-grid">
+          <!-- Yoga Journey Card -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <div class="icon-badge icon-badge-primary">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" stroke-width="2" />
+                </svg>
+              </div>
+              <h3 class="card-title">Begin Your Yoga Journey</h3>
+              <p class="card-description">
+                Discover the transformative power of traditional asanas
+              </p>
+            </div>
+            <div class="card-content">
+              <p class="card-text">
+                Yoga is far more than physical exercise—it's a comprehensive
+                science of living that originated in ancient India over 5,000
+                years ago. While modern fitness focuses primarily on the body,
+                yoga integrates physical postures (asanas), breathing techniques
+                (pranayama), and meditation to create profound transformation.
+              </p>
+
+              <div class="benefits-list">
+                <div class="benefit-item">
+                  <div class="checkmark checkmark-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <polyline points="9 11 12 14 22 4" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="benefit-title">Mind-Body Integration</p>
+                    <p class="benefit-description">
+                      Unlike Western exercise, yoga unifies mental focus with
+                      physical practice in every moment
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <div class="checkmark checkmark-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <polyline points="9 11 12 14 22 4" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="benefit-title">Breath-Centered Movement</p>
+                    <p class="benefit-description">
+                      Pranayama (breath control) is fundamental, transforming
+                      poses into moving meditation
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <div class="checkmark checkmark-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <polyline points="9 11 12 14 22 4" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="benefit-title">Holistic System</p>
+                    <p class="benefit-description">
+                      Addresses physical, mental, emotional, and spiritual
+                      dimensions simultaneously
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" onclick="navigateTo('yoga')">
+                Begin Your Journey
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Surya Namaskara Card -->
+          <div class="card card-accent">
+            <div class="card-header">
+              <div class="icon-badge icon-badge-accent">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="5" stroke-width="2" />
+                  <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" />
+                  <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" />
+                  <line
+                    x1="4.22"
+                    y1="4.22"
+                    x2="5.64"
+                    y2="5.64"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="18.36"
+                    y1="18.36"
+                    x2="19.78"
+                    y2="19.78"
+                    stroke-width="2"
+                  />
+                  <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" />
+                  <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" />
+                  <line
+                    x1="4.22"
+                    y1="19.78"
+                    x2="5.64"
+                    y2="18.36"
+                    stroke-width="2"
+                  />
+                  <line
+                    x1="18.36"
+                    y1="5.64"
+                    x2="19.78"
+                    y2="4.22"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <h3 class="card-title">Start Surya Namaskara Practice</h3>
+              <p class="card-description">
+                Experience the sacred solar salutation
+              </p>
+            </div>
+            <div class="card-content">
+              <p class="card-text">
+                Surya Namaskara is not merely exercise - it's a moving
+                meditation that honors the sun, the source of all life and
+                energy.
+              </p>
+
+              <div class="benefits-list">
+                <div class="benefit-item">
+                  <div class="checkmark checkmark-accent">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <polyline points="9 11 12 14 22 4" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="benefit-title">Dynamic Flow vs. Static Holds</p>
+                    <p class="benefit-description">
+                      Unlike stationary asanas, Surya Namaskar is a fluid
+                      sequence of 12 postures performed in continuous motion
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <div class="checkmark checkmark-accent">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <polyline points="9 11 12 14 22 4" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="benefit-title">Complete System in One Practice</p>
+                    <p class="benefit-description">
+                      This single sequence provides strength, flexibility,
+                      cardio, and respiratory benefits simultaneously
+                    </p>
+                  </div>
+                </div>
+                <div class="benefit-item">
+                  <div class="checkmark checkmark-accent">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <polyline points="9 11 12 14 22 4" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="benefit-title">Mantra Integration</p>
+                    <p class="benefit-description">
+                      Each of the 12 postures connects to a specific mantra,
+                      enhancing spiritual dimension
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn btn-accent" onclick="navigateTo('surya')">
+                Start Surya Namaskara
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <footer>
+          <p>
+            Embrace the journey within. Your path to wellness begins with a
+            single breath.
+          </p>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Yoga Journey Detail Page -->
+    <div id="yoga" class="page">
+      <header>
+        <div class="content">
+          <h1>Yoga Journey</h1>
+          <p class="subtitle">Find Your Inner Peace</p>
+        </div>
+      </header>
+
+      <div class="container main-content">
+        <button class="btn btn-outline" onclick="navigateTo('home')">
+          ← Back to Home
+        </button>
+
+        <div class="card detail-card card-primary" style="margin-top: 2rem">
+          <div class="card-header">
+            <div
+              class="icon-badge icon-badge-primary"
+              style="width: 5rem; height: 5rem; margin-bottom: 1.5rem"
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style="width: 2.5rem; height: 2.5rem"
+              >
+                <circle cx="12" cy="12" r="10" stroke-width="2" />
+              </svg>
+            </div>
+            <h3
+              class="card-title"
+              style="font-size: 2.5rem; margin-bottom: 1rem"
+            >
+              The Yoga Journey
+            </h3>
+            <p class="card-description" style="font-size: 1.125rem">
+              A comprehensive guide to traditional yoga practice
+            </p>
+          </div>
+          <div class="detail-content">
+            <p class="detail-text">
+              Yoga is far more than physical exercise—it's a comprehensive
+              science of living that originated in ancient India over 5,000
+              years ago. While modern fitness focuses primarily on the body,
+              yoga integrates physical postures (asanas), breathing techniques
+              (pranayama), and meditation to create profound transformation.
+            </p>
+
+            <div class="detail-section">
+              <h3>How Yoga Differs From Regular Exercise</h3>
+              <div class="benefits-grid">
+                <div class="benefit-card benefit-card-primary">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-primary">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-primary);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Mind-Body Integration</h4>
+                      <p class="benefit-description">
+                        Unlike Western exercise, yoga unifies mental focus with
+                        physical practice in every moment
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-primary">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-primary">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-primary);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Breath-Centered Movement</h4>
+                      <p class="benefit-description">
+                        Pranayama (breath control) is fundamental, transforming
+                        poses into moving meditation
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-primary">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-primary">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-primary);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Holistic System</h4>
+                      <p class="benefit-description">
+                        Addresses physical, mental, emotional, and spiritual
+                        dimensions simultaneously
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-primary">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-primary">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-primary);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Subtle Energy Work</h4>
+                      <p class="benefit-description">
+                        Focus on chakras and nadis (energy centers and channels)
+                        beyond muscular development
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-primary">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-primary">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-primary);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Progressive Depth</h4>
+                      <p class="benefit-description">
+                        Same asanas deepen over years of practice, revealing new
+                        layers of understanding
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-primary">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-primary">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-primary);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Therapeutic Precision</h4>
+                      <p class="benefit-description">
+                        Specific poses target particular organs, glands, and
+                        systems for healing
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlight-box highlight-box-primary">
+              <p>
+                This ancient wisdom transforms not just how you move, but how
+                you live. Yoga cultivates awareness in every breath, every
+                posture, every moment—creating a bridge between your external
+                actions and internal consciousness that regular exercise simply
+                cannot provide.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surya Namaskara Detail Page -->
+    <div id="surya" class="page">
+      <header>
+        <div class="content">
+          <h1>Yoga Journey</h1>
+          <p class="subtitle">Find Your Inner Peace</p>
+        </div>
+      </header>
+
+      <div class="container main-content">
+        <button class="btn btn-outline" onclick="navigateTo('home')">
+          ← Back to Home
+        </button>
+
+        <div class="card detail-card card-accent" style="margin-top: 2rem">
+          <div class="card-header">
+            <div
+              class="icon-badge icon-badge-accent"
+              style="width: 5rem; height: 5rem; margin-bottom: 1.5rem"
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style="width: 2.5rem; height: 2.5rem"
+              >
+                <circle cx="12" cy="12" r="5" stroke-width="2" />
+                <line x1="12" y1="1" x2="12" y2="3" stroke-width="2" />
+                <line x1="12" y1="21" x2="12" y2="23" stroke-width="2" />
+                <line
+                  x1="4.22"
+                  y1="4.22"
+                  x2="5.64"
+                  y2="5.64"
+                  stroke-width="2"
+                />
+                <line
+                  x1="18.36"
+                  y1="18.36"
+                  x2="19.78"
+                  y2="19.78"
+                  stroke-width="2"
+                />
+                <line x1="1" y1="12" x2="3" y2="12" stroke-width="2" />
+                <line x1="21" y1="12" x2="23" y2="12" stroke-width="2" />
+                <line
+                  x1="4.22"
+                  y1="19.78"
+                  x2="5.64"
+                  y2="18.36"
+                  stroke-width="2"
+                />
+                <line
+                  x1="18.36"
+                  y1="5.64"
+                  x2="19.78"
+                  y2="4.22"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <h3
+              class="card-title"
+              style="font-size: 2.5rem; margin-bottom: 1rem"
+            >
+              Surya Namaskara
+            </h3>
+            <p class="card-description" style="font-size: 1.125rem">
+              The sacred solar salutation practice
+            </p>
+          </div>
+          <div class="detail-content">
+            <p class="detail-text">
+              Surya Namaskara is not merely exercise - it's a moving meditation
+              that honors the sun, the source of all life and energy.
+            </p>
+
+            <div class="detail-section">
+              <h3>The Sacred Practice</h3>
+              <div class="benefits-grid">
+                <div class="benefit-card benefit-card-accent">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-accent">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-gold);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Dynamic Flow vs. Static Holds</h4>
+                      <p class="benefit-description">
+                        Unlike stationary asanas, Surya Namaskar is a fluid
+                        sequence of 12 postures performed in continuous motion
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-accent">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-accent">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-gold);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Complete System in One Practice</h4>
+                      <p class="benefit-description">
+                        This single sequence provides strength, flexibility,
+                        cardio, and respiratory benefits simultaneously
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-accent">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-accent">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-gold);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Mantra Integration</h4>
+                      <p class="benefit-description">
+                        Each of the 12 postures connects to a specific mantra,
+                        enhancing spiritual dimension
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-accent">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-accent">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-gold);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Rhythmic Breathing</h4>
+                      <p class="benefit-description">
+                        Coordinated breath with movement creates a meditative,
+                        flowing practice
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-accent">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-accent">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-gold);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Energetic Activation</h4>
+                      <p class="benefit-description">
+                        Specifically designed to stimulate the solar plexus and
+                        activate prana (life force energy)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="benefit-card benefit-card-accent">
+                  <div class="benefit-card-content">
+                    <div class="benefit-icon benefit-icon-accent">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        style="
+                          width: 1.25rem;
+                          height: 1.25rem;
+                          color: var(--brand-gold);
+                        "
+                      >
+                        <polyline points="9 18 15 12 9 6" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4>Traditional Significance</h4>
+                      <p class="benefit-description">
+                        An ancient practice with roots in Vedic traditions of
+                        sun worship
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="highlight-box highlight-box-accent">
+              <p>
+                The 12 mantras of Surya Namaskar honor different aspects of the
+                sun's energy, transforming physical movement into a sacred
+                ritual that aligns your inner rhythm with the cosmic cycle.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function navigateTo(page) {
+        // Redirect to appropriate pages
+        if (page === "yoga") {
+          // Redirect to webcam page for yoga journey
+          window.location.href = "/webcam";
+        } else if (page === "surya") {
+          // Redirect to Surya Namaskara page
+          window.location.href = "/suryanamaskara";
+        } else if (page === "home") {
+          // Stay on current page and show home section
+          document.querySelectorAll(".page").forEach((p) => {
+            p.classList.remove("active");
+          });
+          document.getElementById(page).classList.add("active");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+    </script>
+  </body>
+</html>

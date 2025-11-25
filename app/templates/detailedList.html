@@ -87,8 +87,8 @@
       header {
         background: linear-gradient(
           135deg,
-          rgba(255, 255, 255, 0.1) 0%,
-          rgba(255, 215, 0, 0.05) 100%
+          rgb(221, 204, 110) 0%,
+          rgba(0, 255, 255, 0.54) 100%
         );
         backdrop-filter: blur(20px);
         border-bottom: 2px solid rgba(255, 215, 0, 0.3);
@@ -152,19 +152,16 @@
         font-size: 3.5rem;
         font-weight: 900;
         margin: 0;
+        margin-bottom: 0px;
         letter-spacing: -1px;
-        background: linear-gradient(
-          135deg,
-          #ffd700 0%,
-          #ffa500 50%,
-          #ff8c42 100%
-        );
+        background: linear-gradient(135deg, #f00 0%, #ffa500 50%, #42ff45 100%);
+        background-clip: border-box;
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        -webkit-text-fill-color: #ffffffc4;
         background-clip: text;
         font-family: "Segoe UI", "Arial Black", "Helvetica", sans-serif;
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3))
-          drop-shadow(0 2px 4px rgba(255, 215, 0, 0.4));
+        filter: drop-shadow(0 4px 12px rgb(255, 215, 0))
+          drop-shadow(0 2px 4px rgba(255, 0, 0, 0.9));
         text-transform: uppercase;
         position: relative;
         z-index: 1;

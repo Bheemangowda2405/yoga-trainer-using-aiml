@@ -25,24 +25,24 @@ class AdvancedIndianTTSSystem:
         if self.gemini_api_key:
             genai.configure(api_key=self.gemini_api_key)
             self.gemini_model = genai.GenerativeModel('gemini-2.5-flash')
-            print("✅ Gemini API initialized successfully")
+            print("Gemini API initialized successfully")
         else:
-            print("⚠️ GEMINI_API_KEY not found in environment variables")
+            print("GEMINI_API_KEY not found in environment variables")
             self.gemini_model = None
         
         # Initialize pygame for audio playback with optimized settings
         try:
             pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=256)  # Smaller buffer for faster response
-            print("✅ Pygame audio initialized")
+            print("Pygame audio initialized")
         except Exception as e:
-            print(f"⚠️ Pygame audio initialization failed: {e}")
+            print(f" Pygame audio initialization failed: {e}")
         
-        print("✅ gTTS system initialized with non-blocking audio")
+        print(" gTTS system initialized with non-blocking audio")
         
     def translate_with_gemini(self, text, target_language):
         """Use Gemini to translate text to target language"""
         if not self.gemini_model:
-            print("⚠️ Gemini model not available, using original text")
+            print("Gemini model not available, using original text")
             return text
             
         try:
@@ -97,7 +97,7 @@ class AdvancedIndianTTSSystem:
                     pass
                 self.current_temp_file = None
                 
-            print("🔇 Speech stopped")
+            print(" Speech stopped")
         except Exception as e:
             print(f"Error stopping speech: {e}")
 
@@ -113,7 +113,7 @@ class AdvancedIndianTTSSystem:
             else:
                 translated_text = text
             
-            print(f"🎤 Speaking ({language}): {translated_text}")
+            print(f" Speaking ({language}): {translated_text}")
             
             # Create gTTS object with optimized settings for speed
             tts = gTTS(
@@ -178,7 +178,7 @@ class AdvancedIndianTTSSystem:
         """Set current language"""
         if language in self.get_available_languages():
             self.current_language = language
-            print(f"🎤 Language set to: {language}")
+            print(f" Language set to: {language}")
             return True
         return False
     
@@ -187,19 +187,19 @@ class AdvancedIndianTTSSystem:
         try:
             pygame.mixer.music.stop()
             self.is_speaking = False
-            print("🛑 Speech stopped")
+            print(" Speech stopped")
         except Exception as e:
             print(f"Error stopping speech: {e}")
 
 if __name__ == "__main__":
     tts = AdvancedIndianTTSSystem()
     
-    print("\n🧪 Testing welcome messages...")
+    print("\n Testing welcome messages...")
     tts.speak_welcome('en')
     time.sleep(2)
     tts.speak_welcome('hi')
     time.sleep(2)
     tts.speak_welcome('kn')
     
-    print("\n🧪 Testing pose feedback...")
+    print("\n Testing pose feedback...")
     tts.speak_pose_feedback("Tree Pose", "Keep your spine straight and shoulders relaxed. Breathe deeply.", 'ta')

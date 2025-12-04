@@ -1,4 +1,3 @@
-
 // Load leaderboard when page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadLeaderboard();
@@ -321,3 +320,37 @@ async function refreshLeaderboard(button) {
         }, 2000);
     }
 }
+
+// Mobile Navigation Toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('navToggle');
+    const navbarNav = document.getElementById('navbarNav');
+    
+    if (navToggle && navbarNav) {
+        navToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navToggle.classList.toggle('active');
+            navbarNav.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a nav link
+        const navLinks = navbarNav.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navToggle.classList.remove('active');
+                navbarNav.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = navbarNav.contains(event.target);
+            const isClickOnToggle = navToggle.contains(event.target);
+            
+            if (!isClickInsideNav && !isClickOnToggle && navbarNav.classList.contains('active')) {
+                navToggle.classList.remove('active');
+                navbarNav.classList.remove('active');
+            }
+        });
+    }
+});

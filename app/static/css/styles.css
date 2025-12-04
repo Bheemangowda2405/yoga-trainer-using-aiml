@@ -957,90 +957,315 @@ body {
   color: #d4edda;
 }
 
+/* Navigation Actions - User Info */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-avatar-placeholder {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.username {
+  font-weight: 500;
+  color: #333;
+}
+
+.btn-logout {
+  background: #ef4444;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.btn-logout:hover {
+  background: #dc2626;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 15px 20px;
+    gap: 10px;
+  }
+
+  .nav-logo {
+    flex: 1;
+  }
+
+  .nav-logo img {
+    height: 35px;
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+
   .nav-links {
     display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links.active {
+    display: flex;
   }
 
   .nav-toggle {
     display: flex;
+    order: 3;
+  }
+
+  .nav-actions {
+    order: 2;
+  }
+
+  .user-info {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .username {
+    display: none;
+  }
+
+  .btn-logout {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .btn-login {
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Hero Section Mobile */
+  .hero {
+    height: auto;
+    min-height: 100vh;
+    padding: 100px 0 60px;
   }
 
   .hero-content {
     grid-template-columns: 1fr;
-    gap: 50px;
+    gap: 40px;
     text-align: center;
     padding: 0 20px;
   }
 
   .hero-text {
     text-align: center;
+    order: 2;
   }
 
   .hero-image {
-    height: 400px;
-    order: -1;
+    height: 280px;
+    order: 1;
+    padding: 15px;
   }
 
   .hero-title {
-    font-size: 2.8rem;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 15px;
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
-    margin-bottom: 35px;
+    font-size: 1rem;
+    margin-bottom: 25px;
     max-width: 100%;
   }
 
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-manual,
   .btn-hero {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 24px;
     font-size: 1rem;
-    padding: 14px 28px;
+  }
+
+  /* Welcome Section Mobile */
+  .welcome {
+    padding: 60px 0;
+  }
+
+  .welcome::after {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin: 0 auto 30px;
+    width: 250px;
+    height: 250px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 40px;
   }
 
   .welcome-content {
     grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
-  }
-
-  .welcome::after {
-    position: static;
-    transform: none;
-    margin: 30px auto;
-    display: block;
-    width: 300px;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .importance::before {
-    position: static;
-    transform: none;
-    margin: 30px auto;
-    display: block;
-    width: 350px;
-    height: 350px;
-    background-size: cover;
-    background-position: center;
+    gap: 30px;
   }
 
   .feature-cards {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 20px;
+  }
+
+  .feature-card {
+    padding: 25px 20px;
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+
+  .feature-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .featured-manual {
+    transform: none;
+  }
+
+  .featured-manual:hover {
+    transform: translateY(-5px);
+  }
+
+  .manual-badge {
+    top: 10px;
+    right: 10px;
+    padding: 4px 10px;
+    font-size: 0.7rem;
+  }
+
+  /* Philosophy Section Mobile */
+  .philosophy {
+    padding: 60px 0;
+  }
+
+  .philosophy-quote {
+    padding: 30px 20px;
+    border-radius: 15px;
+  }
+
+  .sanskrit-text {
+    font-size: 1.6rem;
+  }
+
+  .transliteration {
+    font-size: 1rem;
+  }
+
+  .english-meaning {
+    font-size: 1.1rem;
+  }
+
+  .attribution {
+    font-size: 0.95rem;
+  }
+
+  .philosophy-description {
+    text-align: center;
+  }
+
+  .philosophy-description p {
+    font-size: 1rem;
+  }
+
+  /* Importance Section Mobile */
+  .importance {
+    padding: 60px 0;
+  }
+
+  .importance::before {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin: 0 auto 30px;
+    width: 280px;
+    height: 280px;
+    border-radius: 15px;
   }
 
   .importance-content {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 30px;
+  }
+
+  .importance-text {
+    padding: 0;
+  }
+
+  .text-content p {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .highlight-box {
+    padding: 20px;
+  }
+
+  .highlight-box p {
+    font-size: 1rem;
+  }
+
+  /* About Section Mobile */
+  .about {
+    padding: 60px 0;
   }
 
   .about-content {
     grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
+    gap: 30px;
   }
 
   .about-image {
@@ -1048,35 +1273,43 @@ body {
   }
 
   .about-img {
-    max-width: 350px;
+    max-width: 280px;
+    border-radius: 15px;
   }
 
   .about-text p {
+    font-size: 1rem;
     text-align: center;
+  }
+
+  /* CTA Section Mobile */
+  .cta {
+    padding: 60px 0;
+  }
+
+  .cta-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .cta-content p {
+    font-size: 1rem;
+    margin-bottom: 30px;
   }
 
   .cta-buttons {
     flex-direction: column;
     align-items: center;
+    gap: 12px;
   }
 
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+  .cta-buttons .btn {
+    width: 100%;
+    max-width: 280px;
   }
 
-  .btn {
-    width: 200px;
-  }
-
-  .featured-manual {
-    transform: scale(1);
-    order: 0;
-  }
-
-  .featured-manual:hover {
-    transform: translateY(-10px) scale(1);
+  /* Footer Mobile */
+  .footer {
+    padding: 30px 0 15px;
   }
 
   .footer-content {
@@ -1085,44 +1318,155 @@ body {
     text-align: center;
   }
 
-  .footer-links {
-    flex-wrap: wrap;
+  .footer-logo {
     justify-content: center;
   }
 
-  .sanskrit-text {
-    font-size: 2rem;
+  .footer-logo img {
+    height: 35px;
   }
 
-  .philosophy-quote {
-    padding: 40px 20px;
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .footer-links a {
+    font-size: 0.9rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: 2rem;
+  .nav-container {
+    padding: 10px 15px;
   }
 
-  .hero-subtitle {
+  .nav-logo img {
+    height: 30px;
+  }
+
+  .logo-text {
     font-size: 1rem;
   }
 
+  .btn-logout {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  .user-avatar,
+  .user-avatar-placeholder {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hero {
+    padding: 90px 0 50px;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .hero-image {
+    height: 220px;
+    padding: 10px;
+  }
+
+  .btn-manual,
+  .btn-hero {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+
   .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+
+  .feature-card {
+    padding: 20px 15px;
+  }
+
+  .feature-icon {
     font-size: 2rem;
   }
 
-  .sanskrit-text {
-    font-size: 1.8rem;
+  .feature-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    font-size: 0.9rem;
+  }
+
+  .welcome::after {
+    width: 200px;
+    height: 200px;
+  }
+
+  .importance::before {
+    width: 220px;
+    height: 220px;
   }
 
   .philosophy-quote {
-    padding: 30px 15px;
+    padding: 25px 15px;
   }
 
-  .welcome-illustration img {
-    max-width: 250px;
-    height: 250px;
+  .sanskrit-text {
+    font-size: 1.4rem;
+  }
+
+  .english-meaning {
+    font-size: 1rem;
+  }
+
+  .about-img {
+    max-width: 240px;
+  }
+
+  .cta-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta-content p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 360px) {
+  .nav-logo img {
+    height: 25px;
+  }
+
+  .logo-text {
+    font-size: 0.9rem;
+  }
+
+  .hero-title {
+    font-size: 1.4rem;
+  }
+
+  .hero-image {
+    height: 180px;
+  }
+
+  .btn-manual,
+  .btn-hero {
+    padding: 10px 16px;
+    font-size: 0.85rem;
   }
 }
 

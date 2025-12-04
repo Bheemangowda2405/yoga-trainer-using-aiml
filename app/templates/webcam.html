@@ -75,7 +75,15 @@
               <span class="logo-text">AI Yoga Trainer</span>
             </div>
           </div>
-          <div class="header-nav-buttons">
+          
+          <!-- Hamburger Menu Toggle -->
+          <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          
+          <div class="header-nav-buttons" id="headerNavButtons">
             <button id="homeBtn" class="nav-btn home-btn" onclick="window.location.href='/'" title="Go to Home">
               🏠 Home
             </button>
@@ -132,7 +140,7 @@
               <option value="te">Telugu (తెలుగు)</option>
               <option value="mr">Marathi (मराठी)</option>
               <option value="bn">Bengali (বাংলা)</option>
-              <option value="gu">Gujarati (ગুজরાতী)</option>
+              <option value="gu">Gujarati (ગુજરાtી)</option>
               <option value="pa">Punjabi (ਪੰਜਾਬੀ)</option>
             </select>
             <button id="startBtn">
@@ -275,5 +283,38 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/js-webcam.js') }}?v=1008"></script>
+
+    <!-- Mobile Navigation Toggle Script -->
+    <script>
+      // Mobile Navigation Toggle
+      document.addEventListener('DOMContentLoaded', function() {
+        const navToggle = document.getElementById('navToggle');
+        const headerNavButtons = document.getElementById('headerNavButtons');
+        
+        if (navToggle && headerNavButtons) {
+          navToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navToggle.classList.toggle('active');
+            headerNavButtons.classList.toggle('active');
+          });
+          
+          // Close menu when clicking a button
+          headerNavButtons.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+              navToggle.classList.remove('active');
+              headerNavButtons.classList.remove('active');
+            });
+          });
+          
+          // Close menu when clicking outside
+          document.addEventListener('click', function(event) {
+            if (!headerNavButtons.contains(event.target) && !navToggle.contains(event.target)) {
+              navToggle.classList.remove('active');
+              headerNavButtons.classList.remove('active');
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

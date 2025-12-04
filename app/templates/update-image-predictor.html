@@ -20,7 +20,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    
   </head>
   <body>
     <!-- Navigation -->
@@ -32,18 +31,19 @@
           </div>
           <span class="nav-title">Yoga Asana Predictor</span>
         </a>
-        <div class="nav-links">
+        
+        <!-- Hamburger Menu Toggle -->
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <div class="nav-links" id="navLinks">
           <a href="{{ url_for('index') }}" class="nav-link">Home</a>
           <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
           <a href="{{ url_for('webcam') }}" class="nav-link">Practice</a>
-          <!-- <a
-            href="{{ url_for('update_image_predictor') }}"
-            class="nav-link active"
-            >Upload Image</a
-          > -->
-          <a href="{{ url_for('yoga_manual') }}" class="nav-link"
-            >Yoga Manual</a
-          >
+          <a href="{{ url_for('yoga_manual') }}" class="nav-link">Yoga Manual</a>
         </div>
       </div>
     </nav>
@@ -118,5 +118,37 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/js-image-predictor.js') }}"></script>
+    
+    <!-- Mobile Navigation Toggle Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (navToggle && navLinks) {
+          navToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+          });
+          
+          // Close menu when clicking a link
+          navLinks.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+              navToggle.classList.remove('active');
+              navLinks.classList.remove('active');
+            });
+          });
+          
+          // Close menu when clicking outside
+          document.addEventListener('click', function(event) {
+            if (!navLinks.contains(event.target) && !navToggle.contains(event.target)) {
+              navToggle.classList.remove('active');
+              navLinks.classList.remove('active');
+            }
+          });
+        }
+      });
+    </script>
   </body>
 </html>

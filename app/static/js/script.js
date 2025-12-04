@@ -7,7 +7,19 @@ document.addEventListener("DOMContentLoaded", function () {
   if (navToggle && navLinks) {
     navToggle.addEventListener("click", function () {
       navLinks.classList.toggle("active");
-      navToggle.classList.toggle("active");
+
+      // Animate hamburger to X
+      const spans = navToggle.querySelectorAll("span");
+      spans.forEach((span, index) => {
+        span.classList.toggle("active");
+      });
+    });
+
+    // Close menu when clicking a link
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", function () {
+        navLinks.classList.remove("active");
+      });
     });
   }
 

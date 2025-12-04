@@ -598,8 +598,8 @@ function detectPoseTransition(newPose, confidence) {
  * @returns {Promise<void>}
  * 
  * Actions handled:
- * - START_NEW_POSE: First pose of session, initialize tracking
- * - TRANSITION: User changed poses, log previous pose and start tracking new one
+ * - START_NEW_POSE: First pose of the session, initialize tracking
+ * - TRANSITION: User changed poses, log the previous pose and start tracking new one
  * - CONTINUE: Same pose detected, update duration tracking only
  * - IGNORE: Low confidence detection, no state changes
  * - STABILIZING: Pose change detected, waiting for confidence stabilization
@@ -1596,6 +1596,16 @@ async function updatePoseDisplay(poseName, confidence, landmarks = null) {
     confidenceValueAnalysis.textContent = confidencePercent + '%';
     confidenceBarAnalysis.style.width = confidencePercent + '%';
     
+    // Toggle body angles container visibility based on confidence
+    const bodyAnglesContainer = document.querySelector('.body-angles-container');
+    if (bodyAnglesContainer) {
+        if (confidence >= 0.85) {
+            bodyAnglesContainer.style.display = 'block';
+        } else {
+            bodyAnglesContainer.style.display = 'none';
+        }
+    }
+
     // Update body angles - try to get real measurements if landmarks available
     if (landmarks && confidence >= 0.85) {
         try {
@@ -1603,7 +1613,7 @@ async function updatePoseDisplay(poseName, confidence, landmarks = null) {
             if (measurements) {
                 updateBodyAngles(poseName, confidence, measurements);
             } else {
-    updateBodyAngles(poseName, confidence);
+                updateBodyAngles(poseName, confidence);
             }
         } catch (error) {
             console.error('Error getting body measurements:', error);
@@ -1618,7 +1628,7 @@ async function updatePoseDisplay(poseName, confidence, landmarks = null) {
         // Get traditional name from the backend mapping
         const traditionalName = getTraditionalName(poseName);
         
-        // Update main pose name with traditional Sanskrit name only
+        // Update main pose name
         poseNameEl.textContent = traditionalName;
         
         // Update analysis box - show English name in analysis box
@@ -1791,18 +1801,8 @@ async function captureAndPredict() {
         if (data.confidence >= MIN_CONFIDENCE_FOR_LOGGING) {
             if (data.pose === currentPose) {
                 if (poseStartTime && (Date.now() - poseStartTime) >= POSE_CONFIRMATION_TIME) {
-                    if (data.pose !== lastAnnouncedPose) {
-                        lastAnnouncedPose = data.pose;
-                        
-                        // Get instructions and feedback in parallel for speed
-                        const instructionsData = await getInstructionsAndFeedback(data.pose);
-                        if (instructionsData) {
-                            updateInstructions(instructionsData.instructions);
-                        }
-                        
-                        // Reset timer for next pose
-                        poseStartTime = Date.now();
-                    }
+
+                    poseStartTime = Date.now();
                 }
             } else {
                 // New pose detected, reset timer for voice feedback
@@ -1859,6 +1859,9 @@ function resetUI() {
     instructionsList.innerHTML = '<li>Start session to see pose instructions</li>';
     
     // Reset body measurements
+    const bodyAnglesContainer = document.querySelector('.body-angles-container');
+    if (bodyAnglesContainer) bodyAnglesContainer.style.display = 'none';
+
     spineAngle.textContent = '—';
     kneeAngle.textContent = '—';
     hipAngle.textContent = '—';

@@ -1,4 +1,574 @@
 {
+  "Akarna_Dhanurasana": {
+    "benefits": [
+      "Strengthens arms and shoulders",
+      "Improves flexibility of legs and hips",
+      "Enhances concentration and focus",
+      "Tones abdominal muscles",
+      "Improves coordination and balance"
+    ],
+    "warnings": "Keep spine straight, pull heel toward ear, and maintain steady breathing throughout"
+  },
+  "Bharadvajas_Twist_pose_or_Bharadvajasana_I_": {
+    "benefits": [
+      "Improves spinal flexibility",
+      "Massages abdominal organs",
+      "Relieves lower back pain",
+      "Stretches spine, shoulders, and hips",
+      "Calms the nervous system"
+    ],
+    "warnings": "Keep both sit bones grounded, twist from the waist up, and keep shoulders level"
+  },
+  "Boat_Pose_or_Paripurna_Navasana_": {
+    "benefits": [
+      "Strengthens core and hip flexors",
+      "Improves balance and digestion",
+      "Tones abdominal muscles",
+      "Strengthens spine and hip flexors",
+      "Stimulates kidneys and intestines"
+    ],
+    "warnings": "Keep chest lifted, spine straight, legs together at 45 degrees, and avoid rounding lower back"
+  },
+  "Bound_Angle_Pose_or_Baddha_Konasana_": {
+    "benefits": [
+      "Opens hips and groin",
+      "Stimulates abdominal organs",
+      "Improves circulation",
+      "Relieves mild depression and fatigue",
+      "Soothes menstrual discomfort"
+    ],
+    "warnings": "Keep spine tall, press soles of feet together, and let knees drop naturally without forcing"
+  },
+  "Bow_Pose_or_Dhanurasana_": {
+    "benefits": [
+      "Strengthens back muscles",
+      "Opens chest and shoulders",
+      "Improves posture",
+      "Stimulates digestive organs",
+      "Reduces stress and fatigue"
+    ],
+    "warnings": "Keep knees hip-width apart, lift chest and thighs equally, and avoid compressing lower back"
+  },
+  "Bridge_Pose_or_Setu_Bandha_Sarvangasana_": {
+    "benefits": [
+      "Strengthens back, glutes, and legs",
+      "Opens chest and heart",
+      "Calms the brain and reduces anxiety",
+      "Improves digestion",
+      "Rejuvenates tired legs"
+    ],
+    "warnings": "Keep feet parallel hip-width apart, knees over ankles, and avoid turning head side to side"
+  },
+  "Camel_Pose_or_Ustrasana_": {
+    "benefits": [
+      "Opens chest and hip flexors",
+      "Strengthens back muscles",
+      "Improves posture",
+      "Stimulates thyroid gland",
+      "Increases spinal flexibility"
+    ],
+    "warnings": "Keep hips stacked over knees, lift chest before reaching back, and support lower back with hands"
+  },
+  "Cat_Cow_Pose_or_Marjaryasana_": {
+    "benefits": [
+      "Improves spinal flexibility",
+      "Stretches back and neck",
+      "Massages digestive organs",
+      "Relieves stress and calms mind",
+      "Coordinates breath with movement"
+    ],
+    "warnings": "Keep wrists under shoulders, knees under hips, and move smoothly between positions with breath"
+  },
+  "Chair_Pose_or_Utkatasana_": {
+    "benefits": [
+      "Strengthens thighs, calves, and spine",
+      "Tones core muscles",
+      "Stimulates heart and diaphragm",
+      "Reduces flat feet",
+      "Builds stamina and endurance"
+    ],
+    "warnings": "Keep knees behind toes, weight in heels, arms alongside ears, and tailbone tucked down"
+  },
+  "Child_Pose_or_Balasana_": {
+    "benefits": [
+      "Gently stretches hips, thighs, and ankles",
+      "Calms the brain and relieves stress",
+      "Relieves back and neck pain",
+      "Promotes relaxation",
+      "Helps relieve fatigue"
+    ],
+    "warnings": "Keep big toes touching, knees apart, arms extended or alongside body, and forehead resting on floor"
+  },
+  "Cobra_Pose_or_Bhujangasana_": {
+    "benefits": [
+      "Strengthens spine and buttocks",
+      "Opens chest and lungs",
+      "Stimulates abdominal organs",
+      "Helps relieve stress and fatigue",
+      "Improves posture"
+    ],
+    "warnings": "Keep elbows close to body, shoulders away from ears, and lift chest using back muscles not hands"
+  },
+  "Cockerel_Pose": {
+    "benefits": [
+      "Strengthens arms and wrists",
+      "Tones abdominal muscles",
+      "Improves balance and concentration",
+      "Stimulates digestive system",
+      "Builds core strength"
+    ],
+    "warnings": "Keep arms straight through thighs, engage core to lift, and balance weight evenly on palms"
+  },
+  "Corpse_Pose_or_Savasana_": {
+    "benefits": [
+      "Deeply relaxes entire body",
+      "Reduces blood pressure and anxiety",
+      "Calms the nervous system",
+      "Reduces headache and fatigue",
+      "Promotes mental clarity"
+    ],
+    "warnings": "Lie flat on back, arms at 45 degrees palms up, feet fall open naturally, and close eyes completely"
+  },
+  "Cow_Face_Pose_or_Gomukhasana_": {
+    "benefits": [
+      "Stretches hips, thighs, and ankles",
+      "Opens chest and shoulders",
+      "Improves posture",
+      "Reduces stress and anxiety",
+      "Stretches triceps and armpits"
+    ],
+    "warnings": "Stack knees in center line, keep spine tall, and use strap if hands don't clasp behind back"
+  },
+  "Crane_(Crow)_Pose_or_Bakasana_": {
+    "benefits": [
+      "Strengthens arms, wrists, and core",
+      "Improves balance and concentration",
+      "Tones abdominal muscles",
+      "Opens groins and stretches upper back",
+      "Builds confidence"
+    ],
+    "warnings": "Keep elbows bent over wrists, knees high on triceps, gaze forward, and round upper back slightly"
+  },
+  "Dolphin_Plank_Pose_or_Makara_Adho_Mukha_Svanasana_": {
+    "benefits": [
+      "Strengthens core, arms, and legs",
+      "Tones abdominal muscles",
+      "Improves posture",
+      "Builds endurance",
+      "Prepares for arm balances"
+    ],
+    "warnings": "Keep forearms parallel, elbows under shoulders, body in straight line, and core engaged throughout"
+  },
+  "Dolphin_Pose_or_Ardha_Pincha_Mayurasana_": {
+    "benefits": [
+      "Strengthens arms and legs",
+      "Opens shoulders and chest",
+      "Calms the brain and relieves stress",
+      "Stretches hamstrings and calves",
+      "Prepares for headstand"
+    ],
+    "warnings": "Keep forearms parallel, press inner wrists down, lift hips high, and walk feet toward elbows"
+  },
+  "Downward-Facing_Dog_pose_or_Adho_Mukha_Svanasana_": {
+    "benefits": [
+      "Stretches shoulders, hamstrings, and calves",
+      "Strengthens arms and legs",
+      "Energizes the body",
+      "Improves digestion",
+      "Relieves headache and insomnia"
+    ],
+    "warnings": "Keep hands shoulder-width, feet hip-width, spine long, and press heels toward floor with soft knees"
+  },
+  "Eagle_Pose_or_Garudasana_": {
+    "benefits": [
+      "Improves balance and focus",
+      "Stretches shoulders and upper back",
+      "Strengthens legs and ankles",
+      "Opens hips",
+      "Improves concentration"
+    ],
+    "warnings": "Keep standing leg bent, wrap arms with elbows stacked, and gaze at fixed point for balance"
+  },
+  "Eight-Angle_Pose_or_Astavakrasana_": {
+    "benefits": [
+      "Strengthens arms, wrists, and core",
+      "Improves balance and coordination",
+      "Tones abdominal muscles",
+      "Opens hips",
+      "Builds confidence"
+    ],
+    "warnings": "Keep arms bent at 90 degrees, hook ankles together, lean forward, and engage core throughout"
+  },
+  "Extended_Puppy_Pose_or_Uttana_Shishosana_": {
+    "benefits": [
+      "Stretches spine and shoulders",
+      "Opens chest and heart",
+      "Calms the mind",
+      "Relieves tension in upper back",
+      "Improves flexibility"
+    ],
+    "warnings": "Keep hips over knees, arms extended forward, chest melting toward floor, and forehead resting down"
+  },
+  "Extended_Revolved_Side_Angle_Pose_or_Utthita_Parsvakonasana_": {
+    "benefits": [
+      "Strengthens and stretches legs",
+      "Opens hips and chest",
+      "Improves stamina",
+      "Stimulates abdominal organs",
+      "Improves digestion"
+    ],
+    "warnings": "Keep front knee at 90 degrees over ankle, reach arm overhead by ear, and stack shoulders vertically"
+  },
+  "Extended_Revolved_Triangle_Pose_or_Utthita_Trikonasana_": {
+    "benefits": [
+      "Stretches legs, hips, and spine",
+      "Opens chest and shoulders",
+      "Improves balance",
+      "Stimulates abdominal organs",
+      "Relieves stress"
+    ],
+    "warnings": "Keep both legs straight, hips squared forward, and reach bottom hand to shin or block not floor"
+  },
+  "Feathered_Peacock_Pose_or_Pincha_Mayurasana_": {
+    "benefits": [
+      "Strengthens shoulders, arms, and back",
+      "Stretches chest and neck",
+      "Improves balance",
+      "Calms the brain",
+      "Builds confidence"
+    ],
+    "warnings": "Keep forearms parallel, elbows shoulder-width, engage core, and stack hips over shoulders"
+  },
+  "Firefly_Pose_or_Tittibhasana_": {
+    "benefits": [
+      "Strengthens arms and wrists",
+      "Stretches inner groins and hamstrings",
+      "Tones abdominal muscles",
+      "Improves balance",
+      "Builds core strength"
+    ],
+    "warnings": "Keep arms straight, legs over upper arms, straighten legs forward, and lift hips high"
+  },
+  "Fish_Pose_or_Matsyasana_": {
+    "benefits": [
+      "Opens chest and throat",
+      "Stretches hip flexors",
+      "Stimulates thyroid gland",
+      "Improves posture",
+      "Relieves tension in neck and shoulders"
+    ],
+    "warnings": "Keep legs together and active, lift chest high, rest crown of head lightly on floor, and breathe deeply"
+  },
+  "Four-Limbed_Staff_Pose_or_Chaturanga_Dandasana_": {
+    "benefits": [
+      "Strengthens arms, shoulders, and core",
+      "Tones abdominal muscles",
+      "Prepares for arm balances",
+      "Builds upper body strength",
+      "Improves posture"
+    ],
+    "warnings": "Keep elbows at 90 degrees hugging ribs, body in straight line, and shoulders level with elbows"
+  },
+  "Frog_Pose_or_Bhekasana": {
+    "benefits": [
+      "Stretches inner thighs and groins",
+      "Opens hips deeply",
+      "Strengthens back muscles",
+      "Improves posture",
+      "Stimulates digestive organs"
+    ],
+    "warnings": "Keep knees bent at 90 degrees, hips in line with knees, and lower slowly with hands pressing feet"
+  },
+  "Garland_Pose_or_Malasana_": {
+    "benefits": [
+      "Opens hips and groins",
+      "Stretches ankles and lower back",
+      "Tones abdominal muscles",
+      "Aids digestion",
+      "Improves balance"
+    ],
+    "warnings": "Keep feet flat or on blanket, knees wide over toes, spine long, and use elbows to press knees open"
+  },
+  "Gate_Pose_or_Parighasana_": {
+    "benefits": [
+      "Stretches side body and intercostals",
+      "Opens shoulders and chest",
+      "Stimulates abdominal organs",
+      "Improves respiration",
+      "Stretches hamstrings"
+    ],
+    "warnings": "Keep kneeling leg hip directly over knee, extended leg straight, and reach arm overhead not forward"
+  },
+  "Half_Lord_of_the_Fishes_Pose_or_Ardha_Matsyendrasana_": {
+    "benefits": [
+      "Improves spinal flexibility",
+      "Stimulates digestive organs",
+      "Opens shoulders and hips",
+      "Energizes the spine",
+      "Relieves menstrual discomfort"
+    ],
+    "warnings": "Keep both sit bones grounded, lengthen spine before twisting, and twist from lower belly upward"
+  },
+  "Half_Moon_Pose_or_Ardha_Chandrasana_": {
+    "benefits": [
+      "Strengthens legs and ankles",
+      "Opens hips and chest",
+      "Improves balance and coordination",
+      "Stretches hamstrings and calves",
+      "Relieves stress"
+    ],
+    "warnings": "Keep standing leg micro-bent, stack hips and shoulders vertically, and gaze up or forward for balance"
+  },
+  "Handstand_pose_or_Adho_Mukha_Vrksasana_": {
+    "benefits": [
+      "Strengthens shoulders, arms, and wrists",
+      "Improves balance and body awareness",
+      "Calms the brain",
+      "Builds core strength",
+      "Boosts confidence"
+    ],
+    "warnings": "Keep arms straight, fingers spread wide, engage core, and stack hips over shoulders over wrists"
+  },
+  "Happy_Baby_Pose_or_Ananda_Balasana_": {
+    "benefits": [
+      "Opens hips and inner groins",
+      "Stretches inner thighs and spine",
+      "Calms the brain",
+      "Relieves stress and fatigue",
+      "Gently stretches lower back"
+    ],
+    "warnings": "Keep sacrum and shoulders flat on floor, hold outer edges of feet, and pull knees toward armpits"
+  },
+  "Head-to-Knee_Forward_Bend_pose_or_Janu_Sirsasana_": {
+    "benefits": [
+      "Stretches spine, hamstrings, and groins",
+      "Stimulates liver and kidneys",
+      "Improves digestion",
+      "Calms the brain",
+      "Relieves anxiety and fatigue"
+    ],
+    "warnings": "Keep extended leg active with foot flexed, hinge from hips, and fold over straight leg not bent knee"
+  },
+  "Heron_Pose_or_Krounchasana_": {
+    "benefits": [
+      "Stretches hamstrings deeply",
+      "Stimulates abdominal organs",
+      "Improves digestion",
+      "Stretches calves",
+      "Strengthens back"
+    ],
+    "warnings": "Keep spine tall, hold foot or use strap, straighten lifted leg fully, and ground sitting bones"
+  },
+  "Intense_Side_Stretch_Pose_or_Parsvottanasana_": {
+    "benefits": [
+      "Stretches spine, hips, and hamstrings",
+      "Strengthens legs",
+      "Calms the brain",
+      "Improves posture and balance",
+      "Stimulates digestion"
+    ],
+    "warnings": "Keep hips squared forward, both legs straight, fold from hips over front leg with flat back"
+  },
+  "Legs-Up-the-Wall_Pose_or_Viparita_Karani_": {
+    "benefits": [
+      "Relieves tired legs and feet",
+      "Calms the nervous system",
+      "Reduces anxiety and insomnia",
+      "Gently stretches hamstrings",
+      "Improves circulation"
+    ],
+    "warnings": "Keep hips close to wall, legs relaxed straight up, arms by sides palms up, and close eyes completely"
+  },
+  "Locust_Pose_or_Salabhasana_": {
+    "benefits": [
+      "Strengthens back muscles",
+      "Stretches shoulders and chest",
+      "Improves posture",
+      "Stimulates abdominal organs",
+      "Relieves stress"
+    ],
+    "warnings": "Keep legs together and straight, lift chest and legs simultaneously, and gaze slightly forward"
+  },
+  "Lord_of_the_Dance_Pose_or_Natarajasana_": {
+    "benefits": [
+      "Improves balance and concentration",
+      "Stretches shoulders and chest",
+      "Strengthens legs and ankles",
+      "Opens hip flexors",
+      "Develops grace and poise"
+    ],
+    "warnings": "Keep standing leg strong and micro-bent, kick back into hand, lift chest, and gaze at fixed point"
+  },
+  "Low_Lunge_pose_or_Anjaneyasana_": {
+    "benefits": [
+      "Stretches hip flexors and quads",
+      "Opens chest and shoulders",
+      "Strengthens legs",
+      "Improves balance",
+      "Releases tension in hips"
+    ],
+    "warnings": "Keep front knee over ankle at 90 degrees, back knee padded, hips squared, and reach arms overhead"
+  },
+  "Noose_Pose_or_Pasasana_": {
+    "benefits": [
+      "Stretches ankles, groins, and spine",
+      "Opens chest and shoulders",
+      "Improves digestion",
+      "Strengthens legs",
+      "Detoxifies abdominal organs"
+    ],
+    "warnings": "Keep heels grounded or on blanket, wrap arms around legs, bind hands, and twist from lower belly"
+  },
+  "Peacock_Pose_or_Mayurasana_": {
+    "benefits": [
+      "Strengthens wrists and forearms",
+      "Tones abdominal muscles",
+      "Improves digestion",
+      "Builds core strength",
+      "Improves balance"
+    ],
+    "warnings": "Keep elbows pressing into abdomen, wrists turned back, body horizontal, and gaze forward"
+  },
+  "Pigeon_Pose_or_Kapotasana_": {
+    "benefits": [
+      "Opens hips and hip flexors",
+      "Stretches thighs and groins",
+      "Relieves sciatic pain",
+      "Opens chest and shoulders",
+      "Releases stored emotions"
+    ],
+    "warnings": "Keep front shin angled based on flexibility, back leg straight, hips squared, and fold forward slowly"
+  },
+  "Plank_Pose_or_Kumbhakasana_": {
+    "benefits": [
+      "Strengthens arms, wrists, and spine",
+      "Tones core muscles",
+      "Builds stamina and endurance",
+      "Improves posture",
+      "Prepares for arm balances"
+    ],
+    "warnings": "Keep wrists under shoulders, body in straight line from head to heels, and core engaged throughout"
+  },
+  "Plow_Pose_or_Halasana_": {
+    "benefits": [
+      "Stretches spine and shoulders",
+      "Calms the nervous system",
+      "Reduces stress and fatigue",
+      "Stimulates thyroid gland",
+      "Improves digestion"
+    ],
+    "warnings": "Keep weight on shoulders not neck, support back with hands if needed, and keep legs straight and together"
+  },
+  "Pose_Dedicated_to_the_Sage_Koundinya_or_Eka_Pada_Koundinyanasana_I_and_II": {
+    "benefits": [
+      "Strengthens arms and wrists",
+      "Stretches groins and hamstrings",
+      "Tones abdominal muscles",
+      "Improves balance",
+      "Opens hips"
+    ],
+    "warnings": "Keep elbows bent at 90 degrees, one leg on upper arm, extend back leg straight, and lean forward"
+  },
+  "Rajakapotasana": {
+    "benefits": [
+      "Opens hips deeply",
+      "Stretches thighs and groins",
+      "Opens chest and shoulders",
+      "Stimulates abdominal organs",
+      "Improves posture"
+    ],
+    "warnings": "Keep front hip grounded, reach back for foot, open chest upward, and avoid compressing lower back"
+  },
+  "Reclining_Hand-to-Big-Toe_Pose_or_Supta_Padangusthasana_": {
+    "benefits": [
+      "Stretches hamstrings and calves",
+      "Relieves lower back pain",
+      "Improves digestion",
+      "Stretches hips and groins",
+      "Calms the brain"
+    ],
+    "warnings": "Keep bottom leg grounded and active, use strap if needed, and keep both hips level on floor"
+  },
+  "Revolved_Head-to-Knee_Pose_or_Parivrtta_Janu_Sirsasana_": {
+    "benefits": [
+      "Stretches spine and hamstrings",
+      "Opens shoulders and chest",
+      "Stimulates abdominal organs",
+      "Stretches side body",
+      "Calms the brain"
+    ],
+    "warnings": "Keep extended leg straight, rotate torso toward ceiling, reach arm overhead toward foot"
+  },
+  "Scale_Pose_or_Tolasana_": {
+    "benefits": [
+      "Strengthens wrists and arms",
+      "Tones abdominal muscles",
+      "Improves balance",
+      "Builds core strength",
+      "Develops focus"
+    ],
+    "warnings": "Keep hands firmly planted, cross legs in lotus, engage core to lift, and breathe steadily"
+  },
+  "Scorpion_pose_or_vrischikasana": {
+    "benefits": [
+      "Strengthens shoulders and arms",
+      "Opens chest and hip flexors",
+      "Improves balance",
+      "Builds confidence",
+      "Increases spinal flexibility"
+    ],
+    "warnings": "Keep forearms parallel, engage core, arch back slowly, and reach feet toward head with control"
+  },
+  "Seated_Forward_Bend_pose_or_Paschimottanasana_": {
+    "benefits": [
+      "Stretches spine and hamstrings",
+      "Calms the brain and relieves stress",
+      "Stimulates liver and kidneys",
+      "Improves digestion",
+      "Soothes headache and anxiety"
+    ],
+    "warnings": "Keep legs straight with feet flexed, hinge from hips not waist, and lengthen spine forward"
+  },
+  "Shoulder-Pressing_Pose_or_Bhujapidasana_": {
+    "benefits": [
+      "Strengthens arms and wrists",
+      "Tones abdominal muscles",
+      "Opens hips and groins",
+      "Improves balance",
+      "Builds core strength"
+    ],
+    "warnings": "Keep arms bent, hook ankles in front, squeeze thighs against arms, and lean forward to balance"
+  },
+  "Side-Reclining_Leg_Lift_pose_or_Anantasana_": {
+    "benefits": [
+      "Stretches hamstrings and calves",
+      "Strengthens core muscles",
+      "Improves balance",
+      "Opens hips",
+      "Tones abdominal muscles"
+    ],
+    "warnings": "Keep body in straight line, prop head on hand, hold toe with top hand, and keep bottom leg grounded"
+  },
+  "Side_Crane_(Crow)_Pose_or_Parsva_Bakasana_": {
+    "benefits": [
+      "Strengthens arms and wrists",
+      "Tones abdominal obliques",
+      "Improves balance",
+      "Opens hips",
+      "Builds core strength"
+    ],
+    "warnings": "Keep both legs on one arm, twist from core, look forward, and lean weight into arms to balance"
+  },
+  "Side_Plank_Pose_or_Vasisthasana_": {
+    "benefits": [
+      "Strengthens arms, wrists, and core",
+      "Improves balance",
+      "Stretches and strengthens wrists",
+      "Tones obliques",
+      "Builds concentration"
+    ],
+    "warnings": "Keep bottom wrist under shoulder, stack feet or stagger, lift hips high, and reach top arm to sky"
+  },
   "Sitting_pose_1_normal": {
     "benefits": [
       "Provides relaxation for the body",
@@ -7,13 +577,7 @@
       "Encourages mindful breathing",
       "Prepares body for meditation"
     ],
-    "warnings": [
-      "Avoid slouching to prevent back strain",
-      "Not suitable for long durations without support if you have back pain",
-      "People with hip stiffness may need a cushion",
-      "Avoid sitting on hard surfaces for long",
-      "Those with knee injuries should avoid cross-legged position"
-    ]
+    "warnings": "Keep spine straight, shoulders relaxed, and sit bones grounded on the floor"
   },
   "Split_pose": {
     "benefits": [
@@ -23,13 +587,7 @@
       "Opens pelvic region",
       "Boosts circulation in lower limbs"
     ],
-    "warnings": [
-      "Avoid with hamstring or groin injuries",
-      "Not suitable during pregnancy",
-      "Do not force legs into full split",
-      "Beginners should use props for support",
-      "Avoid if suffering from severe lower back pain"
-    ]
+    "warnings": "Keep hips squared forward, back leg rotated inward, and use blocks under hands for support"
   },
   "Staff_Pose_or_Dandasana_": {
     "benefits": [
@@ -39,13 +597,7 @@
       "Prepares body for seated poses",
       "Enhances focus and stability"
     ],
-    "warnings": [
-      "Avoid with severe back pain",
-      "People with tight hamstrings should sit on cushion",
-      "Not suitable for those with hip injuries",
-      "Avoid slouching during pose",
-      "Do not practice after spinal surgery without guidance"
-    ]
+    "warnings": "Keep legs straight, feet flexed, spine tall, and shoulders stacked over hips"
   },
   "Standing_big_toe_hold_pose_or_Utthita_Padangusthasana": {
     "benefits": [
@@ -55,13 +607,7 @@
       "Enhances concentration",
       "Stimulates abdominal organs"
     ],
-    "warnings": [
-      "Avoid with hamstring injuries",
-      "Not suitable for people with dizziness",
-      "Avoid during pregnancy",
-      "Do not overstretch knee joint",
-      "Beginners should use wall support"
-    ]
+    "warnings": "Keep standing leg micro-bent, hips level, and spine straight while holding the toe"
   },
   "Standing_Forward_Bend_pose_or_Uttanasana_": {
     "benefits": [
@@ -71,13 +617,7 @@
       "Improves digestion",
       "Relieves fatigue"
     ],
-    "warnings": [
-      "Avoid with severe back pain",
-      "Not suitable for people with sciatica",
-      "Avoid during late pregnancy",
-      "Do not lock knees",
-      "People with glaucoma should avoid holding head low for long"
-    ]
+    "warnings": "Keep knees soft, fold from hips not waist, and let head hang heavy with relaxed neck"
   },
   "Standing_Split_pose_or_Urdhva_Prasarita_Eka_Padasana_": {
     "benefits": [
@@ -87,13 +627,7 @@
       "Enhances circulation",
       "Boosts energy"
     ],
-    "warnings": [
-      "Avoid with hamstring or hip injuries",
-      "Not suitable during pregnancy",
-      "People with dizziness should avoid",
-      "Do not overstretch spine",
-      "Beginners should practice near support"
-    ]
+    "warnings": "Keep standing leg strong, hips squared to floor, and raised leg internally rotated"
   },
   "Supported_Headstand_pose_or_Salamba_Sirsasana_": {
     "benefits": [
@@ -103,13 +637,7 @@
       "Boosts confidence",
       "Stimulates digestive organs"
     ],
-    "warnings": [
-      "Avoid with high blood pressure or heart problems",
-      "Not suitable for people with neck injuries",
-      "Avoid during pregnancy",
-      "Do not practice without supervision as a beginner",
-      "People with glaucoma should not attempt"
-    ]
+    "warnings": "Keep 80% weight on forearms not head, engage core, and stack hips over shoulders"
   },
   "Supported_Shoulderstand_pose_or_Salamba_Sarvangasana_": {
     "benefits": [
@@ -119,13 +647,7 @@
       "Strengthens shoulders and arms",
       "Relieves fatigue and stress"
     ],
-    "warnings": [
-      "Avoid with neck or shoulder injuries",
-      "Not suitable during pregnancy",
-      "Avoid if suffering from high blood pressure",
-      "People with glaucoma should not attempt",
-      "Do not practice after spinal injury"
-    ]
+    "warnings": "Keep weight on shoulders not neck, elbows shoulder-width apart, and legs active together"
   },
   "Supta_Baddha_Konasana_": {
     "benefits": [
@@ -135,13 +657,7 @@
       "Improves blood circulation",
       "Relieves fatigue"
     ],
-    "warnings": [
-      "Avoid with severe hip injuries",
-      "Not suitable during late pregnancy without support",
-      "People with lower back issues should use a bolster",
-      "Do not force knees to ground",
-      "Avoid after hip surgery"
-    ]
+    "warnings": "Keep soles of feet together, support knees with blocks if needed, and relax lower back"
   },
   "Supta_Virasana_Vajrasana": {
     "benefits": [
@@ -151,13 +667,7 @@
       "Relieves fatigue in legs",
       "Calms the mind"
     ],
-    "warnings": [
-      "Avoid with knee or ankle injuries",
-      "Not suitable during pregnancy",
-      "Avoid if suffering from severe lower back pain",
-      "Do not force knees to ground",
-      "People with hip stiffness should use support"
-    ]
+    "warnings": "Keep knees together, feet beside hips, and use bolster under back if tight"
   },
   "Tortoise_Pose": {
     "benefits": [
@@ -167,13 +677,7 @@
       "Stimulates abdominal organs",
       "Enhances concentration"
     ],
-    "warnings": [
-      "Avoid with back or hip injuries",
-      "Not suitable during pregnancy",
-      "Do not force torso forward",
-      "People with sciatica should avoid",
-      "Beginners should attempt under guidance"
-    ]
+    "warnings": "Keep legs wide, slide arms under knees, and lengthen spine forward before folding"
   },
   "Tree_Pose_or_Vrksasana_": {
     "benefits": [
@@ -183,13 +687,7 @@
       "Opens hips",
       "Boosts confidence"
     ],
-    "warnings": [
-      "Avoid with ankle or knee injuries",
-      "Not suitable for people with vertigo",
-      "Avoid during pregnancy without support",
-      "Do not lock standing knee",
-      "Beginners should use wall support"
-    ]
+    "warnings": "Place foot on inner thigh or calf never on knee, keep hips level, and gaze at fixed point"
   },
   "Upward_Bow_(Wheel)Pose_or_Urdhva_Dhanurasana": {
     "benefits": [
@@ -199,13 +697,17 @@
       "Boosts energy and reduces fatigue",
       "Improves spinal flexibility"
     ],
-    "warnings": [
-      "Avoid with back or wrist injuries",
-      "Not suitable during pregnancy",
-      "People with hernia should avoid",
-      "Do not attempt with high blood pressure",
-      "Beginners should warm up thoroughly"
-    ]
+    "warnings": "Keep feet parallel hip-width apart, press through all four corners of hands, and lift chest toward wall behind"
+  },
+  "Upward_Bow_(Wheel)_Pose_or_Urdhva_Dhanurasana_": {
+    "benefits": [
+      "Strengthens arms, legs, and spine",
+      "Opens chest and improves lung capacity",
+      "Stimulates thyroid and pituitary glands",
+      "Boosts energy and reduces fatigue",
+      "Improves spinal flexibility"
+    ],
+    "warnings": "Keep feet parallel hip-width apart, press through all four corners of hands, and lift chest toward wall behind"
   },
   "Upward_Facing_Two-Foot_Staff_Pose_or_Dwi_Pada_Viparita_Dandasana_": {
     "benefits": [
@@ -215,13 +717,7 @@
       "Boosts energy",
       "Enhances spinal flexibility"
     ],
-    "warnings": [
-      "Avoid with back injuries",
-      "Not suitable during pregnancy",
-      "Avoid if suffering from heart conditions",
-      "Do not overstretch shoulders",
-      "People with neck pain should avoid"
-    ]
+    "warnings": "Keep elbows shoulder-width, forearms parallel, legs strong and active, chest lifting"
   },
   "Upward_Plank_Pose_or_Purvottanasana_": {
     "benefits": [
@@ -231,13 +727,7 @@
       "Tones core muscles",
       "Boosts energy"
     ],
-    "warnings": [
-      "Avoid with wrist or shoulder injuries",
-      "Not suitable for people with neck issues",
-      "Avoid during pregnancy",
-      "Do not collapse lower back",
-      "Beginners should practice gradually"
-    ]
+    "warnings": "Keep fingers pointing toward feet, lift hips high, and press chest toward ceiling"
   },
   "viparita_virabhadrasana_or_reverse_warrior_pose": {
     "benefits": [
@@ -247,13 +737,7 @@
       "Boosts energy",
       "Enhances concentration"
     ],
-    "warnings": [
-      "Avoid with knee injuries",
-      "Not suitable for people with spinal issues",
-      "Avoid during pregnancy without guidance",
-      "Do not overstretch torso",
-      "Beginners should avoid collapsing lower back"
-    ]
+    "warnings": "Keep front knee bent over ankle at 90 degrees, reach back arm down thigh, and open chest to sky"
   },
   "Virasana_or_Vajrasana": {
     "benefits": [
@@ -263,13 +747,7 @@
       "Improves posture",
       "Relieves fatigue"
     ],
-    "warnings": [
-      "Avoid with knee or ankle injuries",
-      "Not suitable for people with hip stiffness",
-      "Avoid after knee surgery",
-      "Do not sit for long durations without support",
-      "Beginners should use cushion support"
-    ]
+    "warnings": "Keep feet beside hips not under, sit on block if knees hurt, and lengthen spine upward"
   },
   "Warrior_I_Pose_or_Virabhadrasana_I_": {
     "benefits": [
@@ -279,13 +757,7 @@
       "Boosts stamina and energy",
       "Enhances concentration"
     ],
-    "warnings": [
-      "Avoid with knee or hip injuries",
-      "Not suitable for people with high blood pressure",
-      "Avoid during pregnancy",
-      "Do not overstretch spine",
-      "Beginners should align hips properly"
-    ]
+    "warnings": "Keep front knee at 90 degrees over ankle, back foot at 45 degrees, and hips squared forward"
   },
   "Warrior_II_Pose_or_Virabhadrasana_II_": {
     "benefits": [
@@ -295,13 +767,7 @@
       "Enhances concentration",
       "Boosts stamina"
     ],
-    "warnings": [
-      "Avoid with knee or hip injuries",
-      "Not suitable for people with high blood pressure",
-      "Avoid during pregnancy",
-      "Do not collapse front knee inward",
-      "Beginners should avoid overstretching arms"
-    ]
+    "warnings": "Keep front knee stacked over ankle pointing toward toes, arms parallel to floor, and gaze over front hand"
   },
   "Warrior_III_Pose_or_Virabhadrasana_III_": {
     "benefits": [
@@ -311,13 +777,7 @@
       "Boosts stamina",
       "Enhances posture"
     ],
-    "warnings": [
-      "Avoid with ankle or knee injuries",
-      "Not suitable for people with dizziness",
-      "Avoid during pregnancy",
-      "Do not lock standing knee",
-      "Beginners should use wall support"
-    ]
+    "warnings": "Keep standing leg micro-bent, body and back leg in one line parallel to floor, and hips level"
   },
   "Wide-Angle_Seated_Forward_Bend_pose_or_Upavistha_Konasana_": {
     "benefits": [
@@ -327,13 +787,7 @@
       "Calms the mind",
       "Relieves fatigue"
     ],
-    "warnings": [
-      "Avoid with hamstring or groin injuries",
-      "Not suitable during pregnancy",
-      "Do not overstretch lower back",
-      "People with sciatica should avoid",
-      "Beginners should sit on cushion support"
-    ]
+    "warnings": "Keep legs active with toes pointing up, hinge from hips not waist, and lengthen spine forward"
   },
   "Wide-Legged_Forward_Bend_pose_or_Prasarita_Padottanasana_": {
     "benefits": [
@@ -343,13 +797,7 @@
       "Improves blood circulation",
       "Relieves stress"
     ],
-    "warnings": [
-      "Avoid with hamstring injuries",
-      "Not suitable for people with high blood pressure",
-      "Avoid during pregnancy",
-      "Do not lock knees",
-      "Beginners should avoid forcing head to ground"
-    ]
+    "warnings": "Keep feet parallel, outer edges grounded, fold from hips, and place hands or head on floor"
   },
   "Wild_Thing_pose_or_Camatkarasana_": {
     "benefits": [
@@ -359,13 +807,7 @@
       "Boosts energy",
       "Enhances confidence"
     ],
-    "warnings": [
-      "Avoid with shoulder or wrist injuries",
-      "Not suitable for people with back issues",
-      "Avoid during pregnancy",
-      "Do not collapse lower back",
-      "Beginners should avoid forcing the backbend"
-    ]
+    "warnings": "Keep bottom arm straight, lift hips high, and reach top arm overhead with chest open to sky"
   },
   "Wind_Relieving_pose_or_Pawanmuktasana": {
     "benefits": [
@@ -375,13 +817,7 @@
       "Relieves stress",
       "Calms the mind"
     ],
-    "warnings": [
-      "Avoid with abdominal surgery",
-      "Not suitable during pregnancy",
-      "People with hernia should avoid",
-      "Avoid with severe spinal problems",
-      "Do not hold breath while in pose"
-    ]
+    "warnings": "Keep shoulders and head relaxed on floor, hug knees gently to chest, and breathe deeply"
   },
   "Yogic_sleep_pose": {
     "benefits": [
@@ -391,12 +827,6 @@
       "Balances nervous system",
       "Promotes mindfulness"
     ],
-    "warnings": [
-      "Avoid sleeping posture on hard surface without support",
-      "Not suitable for people with severe back pain",
-      "Avoid if suffering from insomnia triggers with lying down",
-      "Do not practice immediately after heavy meals",
-      "Beginners should use cushion support if uncomfortable"
-    ]
+    "warnings": "Lie flat on back, arms at 45 degrees palms up, feet fall open naturally, and close eyes"
   }
 }

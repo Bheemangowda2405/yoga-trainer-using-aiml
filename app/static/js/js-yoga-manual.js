@@ -1,4 +1,4 @@
-// Sample asana data - you can expand this with your full dataset
+//  asana data 
 const asanas = [
   {
     id: "vrksasana",

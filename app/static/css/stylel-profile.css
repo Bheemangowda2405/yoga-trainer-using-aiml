@@ -6,7 +6,7 @@
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(235deg, #66eab2 0%, #4ba25945 100%);
   min-height: 100vh;
   padding: 20px;
 }
@@ -58,7 +58,7 @@ body {
 }
 
 .profile-header {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(35deg, #0c8335, #1558238f);
   color: white;
   padding: 3rem 2rem;
   text-align: center;

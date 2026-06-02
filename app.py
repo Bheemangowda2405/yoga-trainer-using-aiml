@@ -1,4 +1,8 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+
 import cv2
 import numpy as np
 from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for, flash, send_from_directory
@@ -9,7 +13,6 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 import pickle
 import google.generativeai as genai
-from dotenv import load_dotenv
 import threading
 import time
 import base64
@@ -25,23 +28,27 @@ from utils.pose_utils import PoseUtils
 from services.tts_service import AdvancedIndianTTSSystem
 from utils.user import log_user_activity, get_user_activity_stats, get_user_streak
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, 'models', 'yoga_pose_dnn_model.h5')
+LABEL_ENCODER_PATH = os.path.join(BASE_DIR, 'models', 'label_encoder_dnn.pkl')
+ASANA_DATA_PATH = os.path.join(BASE_DIR, 'app', 'static', 'asana_data.json')
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'app', 'static', 'uploads')
+
 # Initialize Flask app with CORRECT paths
 app = Flask(__name__, 
            template_folder="app/templates", 
            static_folder="app/static")
-app.config['UPLOAD_FOLDER'] = 'app/static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Configuration
-app.config.from_object(config['development'])
+app.config.from_object(config.get(os.getenv('FLASK_CONFIG', 'development'), config['default']))
 
 # Initialize extensions
 db.init_app(app)
 
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp'}
-
-load_dotenv('.env')
 
 # Load model and utilities
 model = None
@@ -63,7 +70,7 @@ def load_asana_data():
     """Load asana data from JSON file"""
     global asana_data
     try:
-        with open('app/static/asana_data.json', 'r', encoding='utf-8') as f:  # Updated path
+        with open(ASANA_DATA_PATH, 'r', encoding='utf-8') as f:
             asana_data = json.load(f)
         print("Asana data loaded successfully")
     except Exception as e:
@@ -92,14 +99,22 @@ def load_model_and_encoder():
     """Load the trained model and label encoder"""
     global model, le
     try:
-        model = load_model('models/yoga_pose_dnn_model.h5')
-        with open('models/label_encoder_dnn.pkl', 'rb') as f:
+        model = load_model(MODEL_PATH)
+        with open(LABEL_ENCODER_PATH, 'rb') as f:
             le = pickle.load(f)
         print("Model and encoder loaded successfully")
     except Exception as e:
         print(f"Error loading model: {e}")
         model = None
         le = None
+
+
+def initialize_runtime():
+    """Load runtime assets needed by both local and WSGI startup paths."""
+    load_model_and_encoder()
+    load_asana_data()
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    cleanup_temp_files()
 
 # Traditional Sanskrit pose names mapping
 traditional_names = {
@@ -1235,19 +1250,10 @@ def cleanup_temp_files_route():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
+
+initialize_runtime()
+
 if __name__ == '__main__':
-    # Load model before starting the server
-    load_model_and_encoder()
-    
-    # Load asana data
-    load_asana_data()
-    
-    # Create upload directory if it doesn't exist
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    
-    # Clean up any existing temp files on startup
-    cleanup_temp_files()
-    
     try:
         # Run the Flask app
         app.run(debug=True, host='0.0.0.0', port=5000)
